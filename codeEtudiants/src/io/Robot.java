@@ -1,4 +1,5 @@
 package io;
+import enumerator.*;
 import java.util.Dictionary;
 
 public class Robot{
@@ -32,10 +33,10 @@ public class Robot{
         return res;
     }
 
-    public setPosition(Case c){
-        this.x = c.line;
-        this.y = c.column;
-        this.terrain_actuel = c.nature;
+    public void setPosition(Case c){
+        this.x = c.getLine();
+        this.y = c.getColumne();
+        this.terrain_actuel = c.getNature();
     }
 
 }

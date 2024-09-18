@@ -1,5 +1,5 @@
 package io;
-import NatureTerrain;
+import enumerator.*;
 
 class Case
 {
