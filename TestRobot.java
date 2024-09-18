@@ -1,3 +1,6 @@
+import io.Direction;
+import io.NatureTerrain;
+
 public class TestRobot {
     public static void main(String[] args) {
         // Access the NORD enum constant
