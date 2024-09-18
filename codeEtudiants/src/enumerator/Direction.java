@@ -1,5 +1,5 @@
 package enumerator;
-enum Direction {
+public enum Direction {
     NORD(0, 1), SUD(0, -1), OUEST(-1, 0), EST(1, 0);
 
     private final int x, y;

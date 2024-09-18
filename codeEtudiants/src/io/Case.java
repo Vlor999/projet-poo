@@ -1,7 +1,7 @@
 package io;
 import enumerator.*;
 
-class Case
+public class Case
 {
     private int line;
     private int column;

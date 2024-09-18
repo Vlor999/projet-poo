@@ -1,5 +1,5 @@
 package enumerator;
-enum NatureTerrain {
+public enum NatureTerrain {
     /*
      * It may be interesting to change value and order them to know if there is something special
      * And also which categorie it is

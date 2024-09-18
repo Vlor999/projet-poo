@@ -42,3 +42,4 @@ exeLecture:
 
 clean:
 	rm -rf bin/*
+

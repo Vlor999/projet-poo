@@ -1,5 +1,7 @@
-package io;
+package Robot;
 import enumerator.*;
+import io.Case;
+
 import java.util.Dictionary;
 
 public class Robot{
