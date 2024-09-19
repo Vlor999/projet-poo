@@ -12,6 +12,11 @@ public class Case {
     private int row;
     private int column;
 
+    private boolean isFire = false;
+    private int intensity = 0;
+
+    private boolean isRobot = false;
+
     // The type of terrain for this Case
     private TypeLand typeLand;
 
@@ -53,5 +58,64 @@ public class Case {
      */
     public TypeLand getNature() {
         return this.typeLand;
+    }
+
+    /**
+     * Inform if the case is on fire
+     * 
+     * @return true if the case is on fire
+     */
+    public boolean getFire() 
+    {
+        return this.isFire;
+    }
+    /**
+     * Set the case on fire
+     * 
+     * @param isFire
+     */
+    public void setFire(boolean isFire)
+    {
+        this.isFire = isFire;
+    }
+
+    /**
+     * Get the intensity of the fire
+     * 
+     * @return the intensity of the fire
+     */
+    public int getIntensity()
+    {
+        return this.intensity;
+    }
+
+    /**
+     * Set the intensity of the fire
+     * 
+     * @param intensity
+     */
+    public void setIntensity(int intensity)
+    {
+        this.intensity = intensity;
+    }
+
+    /**
+     * Inform if the case is a robot
+     * 
+     * @return true if the case is a robot
+     */
+    public boolean getRobot()
+    {
+        return this.isRobot;
+    }
+
+    /**
+     * Set the case as a robot
+     * 
+     * @param isRobot
+     */
+    public void setRobot(boolean isRobot)
+    {
+        this.isRobot = isRobot;
     }
 }

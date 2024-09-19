@@ -40,6 +40,9 @@ exeInvader:
 exeLecture: 
 	java -classpath bin TestLecteurDonnees cartes/carteSujet.map
 
+exeLectureAll:
+	java -classpath bin TestLecteurDonnees cartes/*.map
+
 clean:
 	rm -rf bin/* src/*/docs
 

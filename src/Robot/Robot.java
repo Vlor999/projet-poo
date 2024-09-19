@@ -1,12 +1,13 @@
 package Robot;
 
 import enumerator.*;
+import io.Data;
 import map.Case;
 
 public abstract class Robot {
-    // Position of the robot
-    private int x;
-    private int y;
+    // Position of the robot 
+    private int myXPosition;
+    private int myYPosition;
     
     // Water tank capacity and volume already spilled (in liters)
     private int tankCapacity;
@@ -28,13 +29,16 @@ public abstract class Robot {
     // Current terrain type robot is on
     private Case currentCase;
     
+    // The number of robots created
+    private static int robotCount = 0;
+
     /**
      * Constructor to initialize a Robot object.
      * 
      * @param maxX               The maximum x-coordinate of the grid
      * @param maxY               The maximum y-coordinate of the grid
-     * @param startX             Initial x-coordinate
-     * @param startY             Initial y-coordinate
+     * @param startX             Initial myXPosition-coordinate
+     * @param startY             Initial myYPosition-coordinate
      * @param tankCapacity       Tank capacity in liters
      * @param spilledVolume      Volume already spilled in liters
      * @param fillingType        Filling type (0: on case, 1: adjacent, -1: not required)
@@ -43,15 +47,20 @@ public abstract class Robot {
      * @param travelSpeed        Speed of the robot in km/h
      * @param currentCase     Terrain type on which the robot starts
      */
-    public Robot(int maxX, int maxY, int startX, int startY, int tankCapacity, int spilledVolume, 
-                 int fillingType, int fillingTime, int spillTime, int travelSpeed, Case currentCase) {
+    public Robot(Data mapData, int tankCapacity, int spilledVolume, int fillingType, 
+                int fillingTime, int spillTime, int travelSpeed, Case currentCase) {
         
+        int startX = currentCase.getRow();
+        int startY = currentCase.getColumne();
+
+        int maxX = mapData.getRows();
+        int maxY = mapData.getColumns();
         if (startX >= maxX || startX < 0 || startY >= maxY || startY < 0) {
             throw new IllegalArgumentException("Invalid coordinates for the robot's starting position.");
         }
 
-        this.x = startX;
-        this.y = startY;
+        this.myXPosition = startX;
+        this.myYPosition = startY;
         this.tankCapacity = tankCapacity;
         this.spilledVolume = spilledVolume;
         this.fillingType = fillingType;
@@ -59,6 +68,7 @@ public abstract class Robot {
         this.spillTime = spillTime;
         this.travelSpeed = travelSpeed;
         this.currentCase = currentCase;
+        robotCount++;
     }
     
     /**

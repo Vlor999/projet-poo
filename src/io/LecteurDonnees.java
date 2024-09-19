@@ -6,7 +6,6 @@ import java.util.*;
 import java.util.zip.DataFormatException;
 
 import enumerator.TypeLand;
-import io.Data;
 import map.Case;
 import map.Map;
 
@@ -45,8 +44,8 @@ public class LecteurDonnees {
         System.out.println("\n == Lecture du fichier" + fichierDonnees);
         LecteurDonnees lecteur = new LecteurDonnees(fichierDonnees);
         Map myMap = lecteur.lireCarte();
-        lecteur.lireIncendies();
-        lecteur.lireRobots();
+        lecteur.lireIncendies(myMap);
+        lecteur.lireRobots(myMap);
         scanner.close();
         System.out.println("\n == Lecture terminee");
         System.out.println(myMap);
@@ -123,9 +122,7 @@ public class LecteurDonnees {
 
         try {
             chaineNature = scanner.next();
-            // si NatureTerrain est un Enum, vous pouvez recuperer la valeur
-            // de l'enum a partir d'une String avec:
-            //			NatureTerrain nature = NatureTerrain.valueOf(chaineNature);
+            // We are converting the string to the corresponding enum
 
             verifieLigneTerminee();
 
@@ -143,13 +140,13 @@ public class LecteurDonnees {
     /**
      * Lit et affiche les donnees des incendies.
      */
-    private void lireIncendies() throws DataFormatException {
+    private void lireIncendies(Map myMap) throws DataFormatException {
         ignorerCommentaires();
         try {
             int nbIncendies = scanner.nextInt();
             System.out.println("Nb d'incendies = " + nbIncendies);
             for (int i = 0; i < nbIncendies; i++) {
-                lireIncendie(i);
+                lireIncendie(i, myMap);
             }
 
         } catch (NoSuchElementException e) {
@@ -163,7 +160,7 @@ public class LecteurDonnees {
      * Lit et affiche les donnees du i-eme incendie.
      * @param i
      */
-    private void lireIncendie(int i) throws DataFormatException {
+    private void lireIncendie(int i, Map myMap) throws DataFormatException {
         ignorerCommentaires();
         System.out.print("Incendie " + i + ": ");
 
@@ -179,6 +176,7 @@ public class LecteurDonnees {
 
             System.out.println("position = (" + lig + "," + col
                     + ");\t intensite = " + intensite);
+            myMap.setFire(lig, col, true, intensite);
 
         } catch (NoSuchElementException e) {
             throw new DataFormatException("format d'incendie invalide. "
@@ -190,13 +188,13 @@ public class LecteurDonnees {
     /**
      * Lit et affiche les donnees des robots.
      */
-    private void lireRobots() throws DataFormatException {
+    private void lireRobots(Map myMap) throws DataFormatException {
         ignorerCommentaires();
         try {
             int nbRobots = scanner.nextInt();
             System.out.println("Nb de robots = " + nbRobots);
             for (int i = 0; i < nbRobots; i++) {
-                lireRobot(i);
+                lireRobot(i, myMap);
             }
 
         } catch (NoSuchElementException e) {
@@ -210,7 +208,7 @@ public class LecteurDonnees {
      * Lit et affiche les donnees du i-eme robot.
      * @param i
      */
-    private void lireRobot(int i) throws DataFormatException {
+    private void lireRobot(int i, Map myMap) throws DataFormatException {
         ignorerCommentaires();
         System.out.print("Robot " + i + ": ");
 
@@ -235,7 +233,7 @@ public class LecteurDonnees {
                 System.out.print(vitesse);
             }
             verifieLigneTerminee();
-
+            myMap.setRobot(lig, col, true);
             System.out.println();
 
         } catch (NoSuchElementException e) {
