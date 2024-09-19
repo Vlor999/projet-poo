@@ -52,6 +52,13 @@ javac *.java && java TestRobot
 ```
 Which will launch the tests if and only if the compilation is successful.
 
+But we can also use the makefile to do it. 
+```bash
+make
+make exeLecture
+```
+If you want to see more things about the makefile you can open it and see the features.
+
 ## Useful Unix Command
 
 ### Found Files
@@ -59,7 +66,7 @@ If you want to search file from your directory with a specific name :
 ```bash
 find . -name "name-file"
 ```
-name-file mais also be a **wildcard**
+name-file mais also be a [**wildcard**](https://tldp.org/LDP/GNU-Linux-Tools-Summary/html/x11655.htm)
 
 ### Found Text on Files
 If you want to found a specific part of text onto a directory you can use :
@@ -68,7 +75,24 @@ grep "some texte to search" ./directory/to/look/ --exclude-dir="dir-to-exclude" 
 ```
 
 ## Things to Know
-We are good to code with the lower Camel Case Format. Link : https://en.wikipedia.org/wiki/Camel_case
+We are good to code with the lower [**Camel Case**](https://en.wikipedia.org/wiki/Camel_case) Format.
+
+## Infos 
+### src 
+- Contains the classes provided by the teachers :
+  - LecteurDonnees.java : 
+    - reads all the elements of a data description file (cases, fires and robots) and displays them.
+    - You have to MODIFY this class (or write a new one) to create the objects corresponding to your own classes
+  - TestLecteurDonnees.java : reads a data file and displays its content
+  - TestInvader : creates a "mini Invaders" simulator in a graphical window
+### maps
+- Some examples of data files
+### bin/gui.jar
+- Java archive containing the classes of the graphical interface. See an example of use in TestInvader.java
+### doc
+- The documentation (API) of the classes of the graphical interface contained in gui.jar. Entry point: index.html
+### Makefile 
+- Some explanations on online compilation, in particular the notion of classpath and the use of gui.jar
 
 ## Badges
 On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge. I should look how to do it.\
