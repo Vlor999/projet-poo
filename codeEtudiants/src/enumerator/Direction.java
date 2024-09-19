@@ -1,6 +1,6 @@
 package enumerator;
 public enum Direction {
-    NORD(0, 1), SUD(0, -1), OUEST(-1, 0), EST(1, 0);
+    NORTH(0, 1), SOUTH(0, -1), WEST(-1, 0), EST(1, 0);
 
     private final int x, y;
 

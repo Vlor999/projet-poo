@@ -5,13 +5,13 @@ public class Case
 {
     private int line;
     private int column;
-    private NatureTerrain natureTerrain;
+    private TypeLand typeLand;
 
-    public Case(int line, int column, NatureTerrain natureTerrain)
+    public Case(int line, int column, TypeLand typeLand)
     {
         this.line = line;
         this.column = column;
-        this.natureTerrain = natureTerrain;
+        this.typeLand = typeLand;
     }
 
     public int getLine()
@@ -22,8 +22,8 @@ public class Case
     {
         return this.column;
     }
-    public NatureTerrain getNature()
+    public TypeLand getNature()
     {
-        return this.natureTerrain;
+        return this.typeLand;
     }
 }

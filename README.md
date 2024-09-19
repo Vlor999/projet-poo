@@ -52,10 +52,28 @@ javac *.java && java TestRobot
 ```
 Which will launch the tests if and only if the compilation is successful.
 
+## Useful Unix Command
+
+### Found Files
+If you want to search file from your directory with a specific name : 
+```bash
+find . -name "name-file"
+```
+name-file mais also be a **wildcard**
+
+### Found Text on Files
+If you want to found a specific part of text onto a directory you can use :
+```bash
+grep "some texte to search" ./directory/to/look/ --exclude-dir="dir-to-exclude" --include="*.java" -rIl
+```
+
+## Things to Know
+We are good to code with the lower Camel Case Format. Link : https://en.wikipedia.org/wiki/Camel_case
+
 ## Badges
 On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge. I should look how to do it.\
 ![Static Badge](https://img.shields.io/badge/test1-PASSED-green)\
 ![Static Badge](https://img.shields.io/badge/test2-FAILED-red)\
 ![Static Badge](https://img.shields.io/badge/test3-FAILED-red)\
 ![Static Badge](https://img.shields.io/badge/test4-PASSED-green)\
-Lien : https://shields.io/badges
+Link : https://shields.io/badges

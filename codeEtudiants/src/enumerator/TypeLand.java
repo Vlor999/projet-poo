@@ -1,5 +1,5 @@
 package enumerator;
-public enum NatureTerrain {
+public enum TypeLand {
     /*
      * It may be interesting to change value and order them to know if there is something special
      * And also which categorie it is
@@ -9,7 +9,7 @@ public enum NatureTerrain {
     private final int valueTerrain;
     private final String name;
 
-    NatureTerrain(int valueTerrain, String name) {
+    TypeLand(int valueTerrain, String name) {
         this.valueTerrain = valueTerrain;
         this.name = name;
     }
