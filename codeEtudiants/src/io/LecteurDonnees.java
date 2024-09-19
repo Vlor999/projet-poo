@@ -5,7 +5,10 @@ import java.io.*;
 import java.util.*;
 import java.util.zip.DataFormatException;
 
-
+import enumerator.TypeLand;
+import io.Data;
+import map.Case;
+import map.Map;
 
 /**
  * Lecteur de cartes au format spectifié dans le sujet.
@@ -41,15 +44,13 @@ public class LecteurDonnees {
         throws FileNotFoundException, DataFormatException {
         System.out.println("\n == Lecture du fichier" + fichierDonnees);
         LecteurDonnees lecteur = new LecteurDonnees(fichierDonnees);
-        lecteur.lireCarte();
+        Map myMap = lecteur.lireCarte();
         lecteur.lireIncendies();
         lecteur.lireRobots();
         scanner.close();
         System.out.println("\n == Lecture terminee");
+        System.out.println(myMap);
     }
-
-
-
 
     // Tout le reste de la classe est prive!
 
@@ -69,7 +70,7 @@ public class LecteurDonnees {
      * Lit et affiche les donnees de la carte.
      * @throws ExceptionFormatDonnees
      */
-    private void lireCarte() throws DataFormatException {
+    private Map lireCarte() throws DataFormatException {
         ignorerCommentaires();
         try {
             int nbLignes = scanner.nextInt();
@@ -77,13 +78,15 @@ public class LecteurDonnees {
             int tailleCases = scanner.nextInt();	// en m
             System.out.println("Carte " + nbLignes + "x" + nbColonnes
                     + "; taille des cases = " + tailleCases);
-
+            Data myData = new Data(nbLignes, nbColonnes, tailleCases);
+            Map myMap = new Map(myData);
             for (int lig = 0; lig < nbLignes; lig++) {
                 for (int col = 0; col < nbColonnes; col++) {
-                    lireCase(lig, col);
+                    TypeLand currentTypeLand = lireCase(lig, col);
+                    myMap.setMapValue(new Case(lig, col, currentTypeLand));
                 }
             }
-
+            return myMap;
         } catch (NoSuchElementException e) {
             throw new DataFormatException("Format invalide. "
                     + "Attendu: nbLignes nbColonnes tailleCases");
@@ -91,13 +94,28 @@ public class LecteurDonnees {
         // une ExceptionFormat levee depuis lireCase est remontee telle quelle
     }
 
-
-
+    private TypeLand convertStringToTypeLand(String chaineNature)
+    {
+        switch (chaineNature) {
+            case "TERRAIN_LIBRE":
+                return TypeLand.FIELD;
+            case "EAU":
+                return TypeLand.WATER;
+            case "HABITAT":
+                return TypeLand.HABITATION;
+            case "FORET":
+                return TypeLand.FOREST;
+            case "ROCHE":
+                return TypeLand.STONE;
+            default:
+                throw new IllegalArgumentException("Unknown terrain type: " + chaineNature);
+        }
+    }
 
     /**
      * Lit et affiche les donnees d'une case.
      */
-    private void lireCase(int lig, int col) throws DataFormatException {
+    private TypeLand lireCase(int lig, int col) throws DataFormatException {
         ignorerCommentaires();
         System.out.print("Case (" + lig + "," + col + "): ");
         String chaineNature = new String();
@@ -111,14 +129,14 @@ public class LecteurDonnees {
 
             verifieLigneTerminee();
 
-            System.out.print("nature = " + chaineNature);
+            System.out.print("nature = " + chaineNature + "\n");
+            TypeLand currentTypeLand = convertStringToTypeLand(chaineNature);
+            return currentTypeLand;
 
         } catch (NoSuchElementException e) {
             throw new DataFormatException("format de case invalide. "
-                    + "Attendu: nature altitude [valeur_specifique]");
+                    + "Attendu: nature altitude [valeur_specifique]\n");
         }
-
-        System.out.println();
     }
 
 
