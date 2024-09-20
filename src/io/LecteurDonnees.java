@@ -5,7 +5,6 @@ import java.io.*;
 import java.util.*;
 import java.util.zip.DataFormatException;
 
-import Robot.Drone;
 import Robot.Robot;
 import enumerator.TypeLand;
 import map.Box;

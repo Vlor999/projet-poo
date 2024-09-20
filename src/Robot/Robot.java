@@ -1,6 +1,5 @@
 package Robot;
 
-import enumerator.*;
 import io.Data;
 import map.Box;
 import java.util.List;
@@ -14,9 +13,7 @@ public abstract class Robot {
     
     // Travel speed (in km/h)
     private int travelSpeed;
-    
-    // Array of terrains the robot can navigate
-    private TypeLand[] availableLandTypes;
+
     
     // Filling type and time (0: on case, 1: adjacent, -1: not required)
     private int fillingType;
@@ -126,18 +123,25 @@ public abstract class Robot {
      * Getters for various robot properties.
      */
 
+    
+    public int getTankCapacity() { return tankCapacity; }
+    
+    public int getSpillVolumePerTimes() { return spillVolumePerTimes; }
+    
+    public int getTravelSpeed() { return travelSpeed; }
+    
+    public int getFillingType() { return fillingType; }
+    
+    public int getFillingTime() { return fillingTime; }
+
+    public int getSpillTime() { return spillTime; }
+    
     /**
      * Gets the current position of the robot.
      *
      * @return A Box object representing the robot's current position.
      */
     public Box getPositionRobot() { return currentCase;}
-    
-    public int getTankCapacity() { return tankCapacity; }
-
-    public int getSpillVolumePerTimes() { return spillVolumePerTimes; }
-
-    public int getTravelSpeed() { return travelSpeed; }
     
     /**
      * Sets the robot's position to a new case with a deep copy.
