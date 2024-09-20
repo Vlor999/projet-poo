@@ -118,4 +118,14 @@ public class Case {
     {
         this.isRobot = isRobot;
     }
+
+    /**
+     * Returns a string representation of this Case object.
+     * 
+     * @return a string representation of this object.
+     */
+    public String toString() 
+    {
+        return "Row:" + this.row + ", column: " + this.column + " terrain type: " + this.typeLand;
+    }
 }

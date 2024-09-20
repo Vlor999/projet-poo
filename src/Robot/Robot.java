@@ -11,7 +11,7 @@ public abstract class Robot {
     
     // Water tank capacity and volume already spilled (in liters)
     private int tankCapacity;
-    private int spilledVolume;
+    private int spillVolumePerTimes;
     
     // Travel speed (in km/h)
     private int travelSpeed;
@@ -35,20 +35,21 @@ public abstract class Robot {
     /**
      * Constructor to initialize a Robot object.
      * 
-     * @param maxX               The maximum x-coordinate of the grid
-     * @param maxY               The maximum y-coordinate of the grid
-     * @param startX             Initial myXPosition-coordinate
-     * @param startY             Initial myYPosition-coordinate
-     * @param tankCapacity       Tank capacity in liters
-     * @param spilledVolume      Volume already spilled in liters
-     * @param fillingType        Filling type (0: on case, 1: adjacent, -1: not required)
-     * @param fillingTime        Time to fill the tank in minutes
-     * @param spillTime          Time to spill the tank in seconds
-     * @param travelSpeed        Speed of the robot in km/h
-     * @param currentCase     Terrain type on which the robot starts
+     * @param maxX                       The maximum x-coordinate of the grid
+     * @param maxY                       The maximum y-coordinate of the grid
+     * @param startX                     Initial myXPosition-coordinate
+     * @param startY                     Initial myYPosition-coordinate
+     * @param tankCapacity               Tank capacity in liters
+     * @param spillVolumePerTimes      Volume spilled per times in liters
+     * @param fillingType                Filling type (0: on case, 1: adjacent, -1: not required)
+     * @param fillingTime                Time to fill the tank in minutes
+     * @param spillTime                  Time to spill the tank in seconds
+     * @param travelSpeed                Speed of the robot in km/h
+     * @param currentCase                Terrain type on which the robot starts
      */
-    public Robot(Data mapData, int tankCapacity, int spilledVolume, int fillingType, 
-                int fillingTime, int spillTime, int travelSpeed, Case currentCase) {
+    public Robot(Data mapData, Case currentCase, int spillVolumePerTimes, int spillTime, 
+                int fillingType, int fillingTime, int tankCapacity,int travelSpeed) 
+    {
         
         int startX = currentCase.getRow();
         int startY = currentCase.getColumne();
@@ -62,7 +63,7 @@ public abstract class Robot {
         this.myXPosition = startX;
         this.myYPosition = startY;
         this.tankCapacity = tankCapacity;
-        this.spilledVolume = spilledVolume;
+        this.spillVolumePerTimes = spillVolumePerTimes;
         this.fillingType = fillingType;
         this.fillingTime = fillingTime;
         this.spillTime = spillTime;
@@ -73,37 +74,47 @@ public abstract class Robot {
     
     /**
      * Gets the current position of the robot.
-     * 
      * @return A Case object representing the robot's current position.
      */
-    public Case getPosition() {
-        return currentCase;
+    public Case getPositionRobot() {
+        return this.currentCase;
     }
     
     /**
      * Sets the robot's position to a new case with a deep copy.
-     * 
      * @param newCase The new case where the robot should move to.
      */
-    public void setPosition(Case newCase) {
+    public void setPositionRobot(Case newCase) {
         this.currentCase = new Case(newCase.getRow(), newCase.getColumne(), newCase.getNature());
     }
-    
+
     /**
-     * Spill a specified volume of water.
-     * 
-     * @param volume The volume of water to spill (in liters).
+     * Gets the tank capacity of the robot.
+     * @return The tank capacity of the robot in liters.
      */
-    public void spillOut(int volume) {
-        if (volume <= 0) {
-            throw new IllegalArgumentException("The volume to spill must be greater than 0.");
-        }
-        
-        if (this.tankCapacity >= volume) {
-            this.tankCapacity -= volume;
-            this.spilledVolume += volume;
-        } else {
-            throw new IllegalArgumentException("The volume to spill exceeds the tank capacity.");
-        }
+    public int getTankCapacity() {
+        return this.tankCapacity;
     }
+
+    /**
+     * getSpilledVolume
+     * @param volume
+     */
+    public int getSpillVolumePerTimes() {
+        return this.spillVolumePerTimes;
+    }
+
+    public String toString()
+    {
+        return "Drone info: \n" 
+        + "\t * " + this.getPositionRobot() + 
+        "\n\t * Spill volume per times: " + this.getSpillVolumePerTimes()
+        + "\n\t * Tank capacity: " + this.getTankCapacity();
+    }
+
+    public static int getRobotCount() {
+        return robotCount;
+    }
+
+
 }
