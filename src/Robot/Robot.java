@@ -3,6 +3,8 @@ package Robot;
 import enumerator.*;
 import io.Data;
 import map.Box;
+import java.util.List;
+import java.util.ArrayList;
 
 public abstract class Robot {
     
@@ -28,6 +30,7 @@ public abstract class Robot {
     
     // The number of robots created
     private static int robotCount = 0;
+    private static List<Robot> listRobots = new ArrayList<>();
 
     /**
      * Constructor to initialize a Robot object.
@@ -44,15 +47,7 @@ public abstract class Robot {
     public Robot(Data mapData, Box currentCase, int spillVolumePerTimes, int spillTime, 
                 int fillingType, int fillingTime, int tankCapacity,int travelSpeed) 
     {
-        
-        int startX = currentCase.getRow();
-        int startY = currentCase.getColumne();
-
-        int maxX = mapData.getRows();
-        int maxY = mapData.getColumns();
-        if (startX >= maxX || startX < 0 || startY >= maxY || startY < 0) {
-            throw new IllegalArgumentException("Invalid coordinates for the robot's starting position.");
-        }
+        validatePosition(currentCase, mapData);
 
         this.tankCapacity = tankCapacity;
         this.spillVolumePerTimes = spillVolumePerTimes;
@@ -62,6 +57,55 @@ public abstract class Robot {
         this.travelSpeed = travelSpeed;
         this.currentCase = currentCase;
         robotCount++;
+        listRobots.add(this);
+    }
+
+        /**
+     * Validates if the current position of the robot is within the map boundaries.
+     */
+    private void validatePosition(Box currentCase, Data mapData) {
+        int startX = currentCase.getRow();
+        int startY = currentCase.getColumn();
+
+        if (startX < 0 || startY < 0 || startX >= mapData.getRows() || startY >= mapData.getColumns()) {
+            throw new IllegalArgumentException("Invalid coordinates for the robot's starting position.");
+        }
+    }
+
+
+    /**
+     * Converts a string to a specific type of Robot.
+     *
+     * @param type        String indicating the type of robot
+     * @param mapData     Data object containing map metadata
+     * @param currentCase Terrain type on which the robot starts
+     * @param travelSpeed Speed of the robot
+     * @return Robot instance
+     */
+    public static Robot stringToRobot(String type, Data mapData, Box currentCase, int travelSpeed) {
+        switch (type.toUpperCase()) {
+            case "CHENILLES":
+                return new CaterpillarRobot(mapData, currentCase, validTravelSpeed(travelSpeed, 80));
+            case "DRONE":
+                return new Drone(mapData, currentCase, validTravelSpeed(travelSpeed, 150));
+            case "PATTES":
+                return new LeggedRobot(mapData, currentCase, 30);
+            case "ROUES":
+                return new WheeledRobot(mapData, currentCase, travelSpeed > 0 ? travelSpeed : 50);
+            default:
+                throw new IllegalArgumentException("Invalid type of robot.");
+        }
+    }
+
+    /**
+     * Validates and caps the travel speed to ensure it does not exceed maximum speed.
+     * 
+     * @param speed     The travel speed to validate
+     * @param maxSpeed  The maximum speed allowed
+     * @return The valid travel speed
+     */
+    private static int validTravelSpeed(int speed, int maxSpeed) {
+        return Math.min(Math.max(speed, 0), maxSpeed);
     }
 
     /**
@@ -71,19 +115,29 @@ public abstract class Robot {
      */
     public String toString()
     {
-        return "Drone info: \n" 
+        return  this.getType() + " info: \n" 
         + "\t * Current Position: \n" + this.getPositionRobot().toString(2)
         + "\n\t * Spill volume per times: " + this.getSpillVolumePerTimes()
-        + "\n\t * Tank capacity: " + this.getTankCapacity();
+        + "\n\t * Tank capacity: " + this.getTankCapacity()
+        + "\n\t * Travel speed: " + this.getTravelSpeed();
     }
     
     /**
-     * Gets the current position of the robot.
-     * @return A Case object representing the robot's current position.
+     * Getters for various robot properties.
      */
-    public Box getPositionRobot() {
-        return this.currentCase;
-    }
+
+    /**
+     * Gets the current position of the robot.
+     *
+     * @return A Box object representing the robot's current position.
+     */
+    public Box getPositionRobot() { return currentCase;}
+    
+    public int getTankCapacity() { return tankCapacity; }
+
+    public int getSpillVolumePerTimes() { return spillVolumePerTimes; }
+
+    public int getTravelSpeed() { return travelSpeed; }
     
     /**
      * Sets the robot's position to a new case with a deep copy.
@@ -91,31 +145,27 @@ public abstract class Robot {
      */
     public void setPositionRobot(Box newCase) 
     {
-        this.currentCase = new Box(newCase.getRow(), newCase.getColumne(), newCase.getNature());
+        this.currentCase = new Box(newCase.getRow(), newCase.getColumn(), newCase.getNature());
     }
 
     /**
-     * Gets the tank capacity of the robot.
-     * @return The tank capacity of the robot in liters.
+     * Static methods to manage the list of robots.
      */
-    public int getTankCapacity() {
-        return this.tankCapacity;
+    public static int getRobotCount() { return robotCount; }
+
+    public static List<Robot> getListRobots() { return new ArrayList<>(listRobots); }
+
+    public static void removeRobot(Robot robot) { listRobots.remove(robot); }
+
+    public static void clearRobots() { listRobots.clear(); }
+
+    public static String showAllRobots() {
+        String result = "";
+        for (Robot robot : listRobots) {
+            result += robot.toString() + "\n";
+        }
+        return result;
     }
 
-    /**
-     * getSpillVolumePerTimes
-     * @param volume
-     */
-    public int getSpillVolumePerTimes() {
-        return this.spillVolumePerTimes;
-    }
-
-    /**
-     * Get the number of robots created.
-     * 
-     * @return The number of robots created.
-     */
-    public static int getRobotCount() {
-        return robotCount;
-    }
+    public abstract String getType();
 }

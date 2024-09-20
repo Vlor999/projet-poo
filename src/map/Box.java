@@ -47,7 +47,7 @@ public class Box {
      *
      * @return the column number.
      */
-    public int getColumne() {
+    public int getColumn() {
         return this.column;
     }
 

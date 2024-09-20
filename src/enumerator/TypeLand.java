@@ -89,6 +89,26 @@ public enum TypeLand {
     public static TypeLand randomTypeLand() {
         return TypeLand.values()[(int) (Math.random() * TypeLand.values().length)];
     }
-
-
+    /**
+     * Convert a string to a TypeLand
+     * @param chaineNature wich is the string to convert
+     * @return the TypeLand corresponding to the string
+     */
+    public static TypeLand convertStringToTypeLand(String chaineNature)
+    {
+        switch (chaineNature) {
+            case "TERRAIN_LIBRE":
+                return TypeLand.FIELD;
+            case "EAU":
+                return TypeLand.WATER;
+            case "HABITAT":
+                return TypeLand.HABITATION;
+            case "FORET":
+                return TypeLand.FOREST;
+            case "ROCHE":
+                return TypeLand.STONE;
+            default:
+                throw new IllegalArgumentException("Unknown terrain type: " + chaineNature);
+        }
+    }
 }

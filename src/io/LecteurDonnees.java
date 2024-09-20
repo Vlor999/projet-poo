@@ -5,6 +5,8 @@ import java.io.*;
 import java.util.*;
 import java.util.zip.DataFormatException;
 
+import Robot.Drone;
+import Robot.Robot;
 import enumerator.TypeLand;
 import map.Box;
 import map.Map;
@@ -49,6 +51,7 @@ public class LecteurDonnees {
         scanner.close();
         System.out.println("\n == Lecture terminee");
         System.out.println(myMap);
+        System.out.println(Robot.showAllRobots());
     }
 
     // Tout le reste de la classe est prive!
@@ -93,24 +96,6 @@ public class LecteurDonnees {
         // une ExceptionFormat levee depuis lireCase est remontee telle quelle
     }
 
-    private TypeLand convertStringToTypeLand(String chaineNature)
-    {
-        switch (chaineNature) {
-            case "TERRAIN_LIBRE":
-                return TypeLand.FIELD;
-            case "EAU":
-                return TypeLand.WATER;
-            case "HABITAT":
-                return TypeLand.HABITATION;
-            case "FORET":
-                return TypeLand.FOREST;
-            case "ROCHE":
-                return TypeLand.STONE;
-            default:
-                throw new IllegalArgumentException("Unknown terrain type: " + chaineNature);
-        }
-    }
-
     /**
      * Lit et affiche les donnees d'une case.
      */
@@ -127,7 +112,7 @@ public class LecteurDonnees {
             verifieLigneTerminee();
 
             System.out.print("nature = " + chaineNature + "\n");
-            TypeLand currentTypeLand = convertStringToTypeLand(chaineNature);
+            TypeLand currentTypeLand = TypeLand.convertStringToTypeLand(chaineNature);
             return currentTypeLand;
 
         } catch (NoSuchElementException e) {
@@ -219,19 +204,21 @@ public class LecteurDonnees {
             String type = scanner.next();
 
             System.out.print("\t type = " + type);
-
+            Box currentBox = new Box(lig, col, myMap.getTypeLand(lig, col));
 
             // lecture eventuelle d'une vitesse du robot (entier)
             System.out.print("; \t vitesse = ");
             String s = scanner.findInLine("(\\d+)");	// 1 or more digit(s) ?
             // pour lire un flottant:    ("(\\d+(\\.\\d+)?)");
 
+            int vitesse = -1;
             if (s == null) {
                 System.out.print("valeur par defaut");
             } else {
-                int vitesse = Integer.parseInt(s);
+                vitesse = Integer.parseInt(s);
                 System.out.print(vitesse);
             }
+            Robot.stringToRobot(type, myMap.getDataMap(), currentBox, vitesse);
             verifieLigneTerminee();
             myMap.setRobot(lig, col, true);
             System.out.println();

@@ -4,19 +4,24 @@ import map.Box;
 
 public class LeggedRobot extends Robot
 {
-    public LeggedRobot(Data mapData, Box currentCase, int spilledVolume, int spillTime, 
-                int fillingType, int fillingTime, int tankCapacity,int travelSpeed)
+    public LeggedRobot(Data mapData, Box currentCase, int travelSpeed)
     {
-        super(mapData, currentCase, spilledVolume, spillTime, fillingType, fillingTime, tankCapacity, travelSpeed);
+        super(mapData, currentCase, 10, 1, -1, 0, -1, travelSpeed);
     }
     public LeggedRobot(Data mapData, Box currentCase)
     {
-        super(mapData, currentCase, 10, 1, -1, 0, -1, 30);
+        this(mapData, currentCase, 30);
     }
 
     public Box getPositionLeggedRobot()
     {
         return this.getPositionRobot();
+    }
+
+    @Override
+    public String getType()
+    {
+        return "LeggedRobot";
     }
 
 }

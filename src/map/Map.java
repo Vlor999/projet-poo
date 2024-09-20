@@ -13,6 +13,7 @@ public class Map {
     // Data object containing map metadata (e.g., number of rows and columns)
     private Data dataMap;
 
+
     /**
      * Constructor for the Map class.
      * 
@@ -34,7 +35,7 @@ public class Map {
     public void setMapValue(Box currentCase) {
         // Validate row and column indices
         int row = currentCase.getRow();
-        int column = currentCase.getColumne();
+        int column = currentCase.getColumn();
         if (row < 0 || row >= dataMap.getRows() || column < 0 || column >= dataMap.getColumns()) {
             throw new IllegalArgumentException("Invalid row or column index. Must be within the map bounds.");
         }
@@ -119,5 +120,15 @@ public class Map {
     public void setRobot(int row, int column, boolean isRobot)
     {
         this.currentMap[row][column].setRobot(isRobot);
+    }
+
+    /**
+     * Get the dataMap
+     * 
+     * @return Data
+     */
+    public Data getDataMap()
+    {
+        return this.dataMap;
     }
 }
