@@ -1,12 +1,14 @@
 package map;
 
 import io.*;
-import Robot.Robot;
 import enumerator.*;
 
 public class Map {
     // 2D array representing the current map made up of Case objects
-    private Case[][] currentMap;
+    static String RED = "\u001B[31m";
+    static String GREEN = "\u001B[32m";
+    static String RESET = "\u001B[0m";
+    private Box[][] currentMap;
     
     // Data object containing map metadata (e.g., number of rows and columns)
     private Data dataMap;
@@ -19,7 +21,7 @@ public class Map {
     public Map(Data dataMap) {
         this.dataMap = dataMap;
         // Initialize the map based on the number of rows and columns from the Data object
-        this.currentMap = new Case[dataMap.getRows()][dataMap.getColumns()];
+        this.currentMap = new Box[dataMap.getRows()][dataMap.getColumns()];
     }
 
     /**
@@ -29,7 +31,7 @@ public class Map {
      * @param column The column index where the case should be placed.
      * @param currentCase The Case object to place on the map.
      */
-    public void setMapValue(Case currentCase) {
+    public void setMapValue(Box currentCase) {
         // Validate row and column indices
         int row = currentCase.getRow();
         int column = currentCase.getColumne();
@@ -62,9 +64,6 @@ public class Map {
      */
     public String toString()
     {
-        String RED = "\u001B[31m";
-        String GREEN = "\u001B[32m";
-        String RESET = "\u001B[0m";
         String myData = "Datas about the map : \n" + this.dataMap.toString();
         String myMap = "\nMap : \n";
         String lineOf = this.lineString();

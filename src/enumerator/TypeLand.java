@@ -81,5 +81,14 @@ public enum TypeLand {
         return "" + this.valueTerrain;
     }
 
+    /**
+     * Returns a random terrain type.
+     * 
+     * @return a random terrain type.
+     */
+    public static TypeLand randomTypeLand() {
+        return TypeLand.values()[(int) (Math.random() * TypeLand.values().length)];
+    }
+
 
 }

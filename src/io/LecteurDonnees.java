@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.zip.DataFormatException;
 
 import enumerator.TypeLand;
-import map.Case;
+import map.Box;
 import map.Map;
 
 /**
@@ -82,7 +82,7 @@ public class LecteurDonnees {
             for (int lig = 0; lig < nbLignes; lig++) {
                 for (int col = 0; col < nbColonnes; col++) {
                     TypeLand currentTypeLand = lireCase(lig, col);
-                    myMap.setMapValue(new Case(lig, col, currentTypeLand));
+                    myMap.setMapValue(new Box(lig, col, currentTypeLand));
                 }
             }
             return myMap;

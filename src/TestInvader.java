@@ -60,6 +60,7 @@ class Invader implements Simulable {
 
         planCoordinates();
         draw();
+        drawrect(0, 0, 50, 50, Color.BLUE);
     }
 
     /**
@@ -108,15 +109,27 @@ class Invader implements Simulable {
         if (this.yIterator.hasNext())
             this.y = this.yIterator.next();		
         draw();
+        drawrect(0, 0, 50, 50, Color.BLUE);
     }
 
     @Override
     public void restart() {
         planCoordinates();
         draw();
+        drawrect(0, 0, 50, 50, Color.BLUE);
     }
 
-
+    /**
+     * Drw a rectangle and it could be useful for the fires, robot, water and others.
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     * @param color
+     */
+    public void drawrect(int x, int y, int width, int height, Color color) {
+        gui.addGraphicalElement(new Rectangle(x, y, color, color, width));
+    }
     /**
      * Dessine l'invader.
      */
