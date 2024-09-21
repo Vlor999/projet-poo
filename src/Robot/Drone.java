@@ -13,14 +13,7 @@ public class Drone extends Robot
     
     public Drone(Data mapData, Box currentCase)
     {
-        // Default values for a drone
-        // spilledVolume = 10000 because throw everything in one time
         this(mapData, currentCase, 100);
-    }
-
-    public Box getPositionDrone()
-    {
-        return this.getPositionRobot();
     }
 
     @Override
@@ -28,5 +21,4 @@ public class Drone extends Robot
     {
         return "Drone";
     }
-
 }

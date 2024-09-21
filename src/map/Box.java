@@ -11,12 +11,6 @@ public class Box {
     // The row and column where this Case is located
     private int row;
     private int column;
-
-    private boolean isFire = false;
-    private int intensity = 0;
-
-    private boolean isRobot = false;
-
     // The type of terrain for this Case
     private TypeLand typeLand;
 
@@ -34,82 +28,6 @@ public class Box {
     }
 
     /**
-     * Gets the row (row number) of this Case.
-     *
-     * @return the row number.
-     */
-    public int getRow() {
-        return this.row;
-    }
-
-    /**
-     * Gets the column number of this Case.
-     *
-     * @return the column number.
-     */
-    public int getColumn() {
-        return this.column;
-    }
-
-    /**
-     * Gets the type of terrain ({@code TypeLand}) of this Case.
-     *
-     * @return the type of terrain.
-     */
-    public TypeLand getNature() {
-        return this.typeLand;
-    }
-
-    /**
-     * Inform if the case is on fire
-     * 
-     * @return true if the case is on fire
-     */
-    public boolean getFire() 
-    {
-        return this.isFire;
-    }
-    /**
-     * Set the case on fire
-     * 
-     * @param isFire
-     */
-    public void setFire(boolean isFire)
-    {
-        this.isFire = isFire;
-    }
-
-    /**
-     * Get the intensity of the fire
-     * 
-     * @return the intensity of the fire
-     */
-    public int getIntensity()
-    {
-        return this.intensity;
-    }
-
-    /**
-     * Set the intensity of the fire
-     * 
-     * @param intensity
-     */
-    public void setIntensity(int intensity)
-    {
-        this.intensity = intensity;
-    }
-
-    /**
-     * Inform if the case is a robot
-     * 
-     * @return true if the case is a robot
-     */
-    public boolean getRobot()
-    {
-        return this.isRobot;
-    }
-
-    /**
      * Returns a random case with random coordinates and a random terrain type. 
      * Must be static to be called without creating an instance of the class.
      * 
@@ -121,6 +39,13 @@ public class Box {
         TypeLand typeLand = TypeLand.randomTypeLand();
         return new Box(row, column, typeLand);
     }
+
+    public int getRow() {return this.row;}
+
+    public int getColumn() {return this.column;}
+
+    public TypeLand getNature() {return this.typeLand;}
+
     
     /**
      * Returns a string representation of this Case object.

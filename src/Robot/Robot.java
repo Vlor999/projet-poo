@@ -108,8 +108,8 @@ public abstract class Robot {
      */
     public String toString()
     {
-        return  this.getType() + " info: \n" 
-        + "\t * Current Position: \n" + this.getPositionRobot().toString(2)
+        return  this.getType() + " info:" 
+        + "\n\t * Current Position: \n" + this.getPositionRobot().toString(2)
         + "\n\t * Spill volume per times: " + this.getSpillVolumePerTimes()
         + "\n\t * Tank capacity: " + this.getTankCapacity()
         + "\n\t * Travel speed: " + this.getTravelSpeed();
@@ -130,12 +130,14 @@ public abstract class Robot {
 
     public int getSpillTime() { return spillTime; }
     
-    /**
-     * Gets the current position of the robot.
-     * @return A Box object representing the robot's current position.
-     */
     public Box getPositionRobot() { return currentCase;}
     
+    public static int getRobotCount() { return robotCount; }
+
+    public static List<Robot> getListRobots() { return new ArrayList<>(listRobots); }
+    
+    public abstract String getType();
+
     /**
      * Sets the robot's position to a new case with a deep copy.
      * @param newCase The new case where the robot should move to.
@@ -144,13 +146,6 @@ public abstract class Robot {
     {
         this.currentCase = new Box(newCase.getRow(), newCase.getColumn(), newCase.getNature());
     }
-
-    /**
-     * Static methods to manage the list of robots.
-     */
-    public static int getRobotCount() { return robotCount; }
-
-    public static List<Robot> getListRobots() { return new ArrayList<>(listRobots); }
 
     public static void removeRobot(Robot robot) { listRobots.remove(robot); }
 
@@ -163,8 +158,6 @@ public abstract class Robot {
         }
         return result;
     }
-
-    public abstract String getType();
 
     /**
      * Will say if at the position there is a robot

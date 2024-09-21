@@ -38,9 +38,21 @@ public class Map {
         currentMap = new Box[dataMap.getRows()][dataMap.getColumns()];
     }
 
-    public static TypeLand getTypeLand(int row, int column)
-    {
-        return currentMap[row][column].getNature();
+    public static void setDataMap(Data dataMap) 
+    { 
+        Map.dataMap = dataMap; 
+        preSetMap();
+    }
+
+    /**
+     * Set the fire on the map
+     * 
+     * @param row
+     * @param column
+     * @param intensity
+     */
+    public static void setFire(int row, int column, int intensity){
+        new Fire(currentMap[row][column], intensity);
     }
 
     public String lineString()
@@ -60,62 +72,51 @@ public class Map {
      */
     public String toString()
     {
+        int numberRows = dataMap.getRows();
+        int numberColumns = dataMap.getColumns();
         String myData = "Datas about the map : \n" + dataMap.toString();
         String myMap = "\nMap : \n";
-        String lineOf = this.lineString();
-        myMap += lineOf + '\n';
-        for (int l = 0; l < dataMap.getRows(); l +=1)
+        String lineOff = this.lineString();
+        myMap += lineOff + '\n';
+        for (int l = 0; l < numberRows; l +=1)
         {
-            for (int c = 0; c < dataMap.getColumns(); c +=1)
-            {
-                myMap += "|";
-                boolean fire = Fire.isFire(l,c);
-                boolean robot = Robot.isRobot(l,c);
-                if (fire)
-                {
-                    myMap += RED;
-                }
-                else if (robot)
-                {
-                    myMap += GREEN;
-                }
-                myMap += getTypeLand(l, c);
-                if (fire || robot)
-                {
-                    myMap += RESET;
-                }
+            for (int c = 0; c < numberColumns; c +=1){
+                String txt = positionColored(l, c);
+                myMap += txt; 
             }
             myMap += "|\n";
-            myMap += lineOf + '\n';
+            myMap += lineOff + '\n';
         }
         return myData + myMap;
+    }
+    
+    private final static String positionColored(int row, int column)
+    {
+        String txt = "|";
+        boolean fire = Fire.isFire(row,column);
+        boolean robot = Robot.isRobot(row,column);
+        if (fire){
+            txt += RED;
+        }
+        else if (robot){
+            txt += GREEN;
+        }
+        txt += getTypeLand(row, column);
+        if (fire || robot){
+            txt += RESET;
+        }
+        txt += "";
+        return txt;
     }
 
     public static String showMap()
     {
         return new Map().toString();
     }
-
-    /**
-     * Set the fire on the map
-     * 
-     * @param row
-     * @param column
-     * @param intensity
-     */
-    public static void setFire(int row, int column, int intensity)
-    {
-        new Fire(currentMap[row][column], intensity);
+    
+    public static Data getDataMap() { return dataMap; }
+    public static Box[][] getCurrentMap() { return currentMap; }
+    public static TypeLand getTypeLand(int row, int column){
+        return currentMap[row][column].getNature();
     }
-
-    public static Data getDataMap(){ return dataMap; }
-
-    public static void setDataMap(Data dataMap) 
-    { 
-        Map.dataMap = dataMap; 
-        preSetMap();
-    }
-
-
-
 }

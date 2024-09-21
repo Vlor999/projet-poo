@@ -13,11 +13,6 @@ public class WheeledRobot extends Robot
         this(mapData, currentCase, 80);
     }
 
-    public Box getPositionWheeledRobot()
-    {
-        return this.getPositionRobot();
-    }
-
     @Override
     public String getType()
     {

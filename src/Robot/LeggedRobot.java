@@ -13,11 +13,6 @@ public class LeggedRobot extends Robot
         this(mapData, currentCase, 30);
     }
 
-    public Box getPositionLeggedRobot()
-    {
-        return this.getPositionRobot();
-    }
-
     @Override
     public String getType()
     {

@@ -32,6 +32,9 @@ public class Fire
         }
     }
 
+    /**
+     * I do not have to do this function but for the fun, I wanted to creat it
+     */
     public void splitFire(){
         int row = this.currentPosition.getRow();
         int column = this.currentPosition.getColumn();
@@ -49,29 +52,11 @@ public class Fire
         }
     }
     
-    /**
-     * Get the list of fires
-     * @return List of Fire
-     */
-    public List<Fire> getListFires(){
-        return listFires;
-    }
+    public List<Fire> getListFires(){return listFires;}
 
-    /**
-     * Reset the list of fires
-     * @return void
-     */
-    public static void resetListFires(){
-        listFires.clear();
-    }
+    public static void resetListFires(){listFires.clear();}
 
-    /**
-     * Remove a fire from the list of fires
-     * @param fire
-     */
-    public void removeFire(Fire fire){
-        listFires.remove(fire);
-    }
+    public void removeFire(Fire fire){listFires.remove(fire);}
 
     /**
      * Show the list of fires

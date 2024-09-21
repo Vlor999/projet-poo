@@ -1,10 +1,12 @@
 package map;
 
+import Robot.*;
 import java.util.*;
 import enumerator.*;
+import io.Data;
 
 
-class Node implements Comparable<Node> {
+class Node implements Comparable<Node>{
     public int x, y; // Node position
     public Node parent; // Parent node in the path
 
@@ -28,8 +30,8 @@ class Node implements Comparable<Node> {
     }
 
     @Override
-    public int compareTo(Node o) {
-        return Integer.compare(this.f, o.f);
+    public int compareTo(Node aNode) {
+        return Integer.compare(this.f, aNode.f);
     }
 
     @Override
@@ -39,20 +41,22 @@ class Node implements Comparable<Node> {
         return this.x == other.x && this.y == other.y;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(x, y);
+    public int[] compareNode(Node aNode) {
+        return new int[]{this.x - aNode.x, this.y - aNode.y};
     }
 }
 
 public class AStarAlgorithm {
     private static final Direction[] DIRECTIONS = { Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH }; // Right, Down, Left, Up
     public static List<Direction> listDirection = new ArrayList<>();
-
-    public List<Node> aStarSearch(int[][] grid, Node start, Node end) {
+    
+    public List<Node> aStarSearch(int[][] grid, Robot currenRobot, Box endBox) {
         PriorityQueue<Node> openList = new PriorityQueue<>();
         Set<Node> closedList = new HashSet<>();
         
+        Box currentBox = currenRobot.getPositionRobot();
+        Node end = new Node(endBox.getRow(), endBox.getColumn());
+        Node start = new Node(currentBox.getRow(), currentBox.getColumn());
         start.calculateCosts(start, end);
         openList.add(start);
 
@@ -64,16 +68,15 @@ public class AStarAlgorithm {
             }
 
             closedList.add(current);
-
+            
             for (Direction direction : DIRECTIONS) {
                 int newX = current.x + direction.getX();
                 int newY = current.y + direction.getY();
-
+                
                 if (isValidMove(grid, newX, newY) && !closedList.contains(new Node(newX, newY))) {
                     Node neighbor = new Node(newX, newY);
                     neighbor.parent = current;
                     neighbor.calculateCosts(start, end);
-                    listDirection.add(direction);
 
                     if (!openList.contains(neighbor)) {
                         openList.add(neighbor);
@@ -81,18 +84,31 @@ public class AStarAlgorithm {
                 }
             }
         }
-
+        
         return Collections.emptyList(); // Return an empty list if no path is found
     }
-
+    
     private List<Node> reconstructPath(Node end) {
         List<Node> path = new ArrayList<>();
         Node current = end;
         while (current != null) {
             path.add(current);
+            if (current.parent != null) {
+                int[] diff = current.compareNode(current.parent);
+                if (diff[0] == 1 && diff[1] == 0) {
+                    listDirection.add(Direction.EAST);
+                } else if (diff[0] == -1 && diff[1] == 0) {
+                    listDirection.add(Direction.WEST);
+                } else if (diff[0] == 0 && diff[1] == 1) {
+                    listDirection.add(Direction.NORTH);
+                } else if (diff[0] == 0 && diff[1] == -1) {
+                    listDirection.add(Direction.SOUTH);
+                }
+            }
             current = current.parent;
         }
         Collections.reverse(path);
+        Collections.reverse(listDirection);
         return path;
     }
 
@@ -106,21 +122,25 @@ public class AStarAlgorithm {
             {0, 0, 0, 0, 0},
             {1, 1, 0, 1, 1},
             {0, 0, 0, 0, 0},
-            {0, 1, 1, 1, 0},
+            {0, 1, 1, 1, 1},
             {0, 0, 0, 0, 0}
         };
+        // Lecture grille : -> et v. Donc faire attention au cardinaux.
 
-        Node start = new Node(0, 0);
-        Node end = new Node(4, 4);
-
+        Box endBox = new Box(4, 4, TypeLand.WATER);
+        Box currentCase = new Box(0, 0, TypeLand.WATER);
+        
         AStarAlgorithm aStar = new AStarAlgorithm();
-        List<Node> path = aStar.aStarSearch(grid, start, end);
+        
+        Data mapData = new Data(grid.length, grid[0].length, 1);
+                
+        Drone drone = new Drone(mapData, currentCase);
 
+        List<Node> path = aStar.aStarSearch(grid, drone, endBox);
         if (path.isEmpty()) {
             System.out.println("No path found.");
         } else {
-            System.out.println("Path found:");
-            System.out.println("" + listDirection);
+            System.out.println("Path found:" + listDirection);
             for (Node node : path) {
                 System.out.println("(" + node.x + ", " + node.y + ")");
             }

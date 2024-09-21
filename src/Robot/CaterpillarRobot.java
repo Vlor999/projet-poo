@@ -10,19 +10,10 @@ public class CaterpillarRobot extends Robot
         super(mapData, currentCase, 100, 8, 1, 5, 2000, travelSpeed);
     }
     public CaterpillarRobot(Data mapData, Box currentCase)
-    {
-        this(mapData, currentCase, 60);
-    }
-
-    public Box getPositionCaterpillarRobot()
-    {
-        return this.getPositionRobot();
-    }
+    {this(mapData, currentCase, 60);}
 
     @Override
     public String getType()
-    {
-        return "CaterpillarRobot";
-    }
+    { return "CaterpillarRobot";}
 
 }
