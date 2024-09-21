@@ -1,29 +1,21 @@
 package map;
 
 import io.*;
+
+
+import Robot.Robot;
 import enumerator.*;
+import fire.*;
 
 public class Map {
     // 2D array representing the current map made up of Case objects
     static String RED = "\u001B[31m";
     static String GREEN = "\u001B[32m";
     static String RESET = "\u001B[0m";
-    private Box[][] currentMap;
+    static Box[][] currentMap;
     
     // Data object containing map metadata (e.g., number of rows and columns)
-    private Data dataMap;
-
-
-    /**
-     * Constructor for the Map class.
-     * 
-     * @param dataMap The Data object containing the map's dimensions and other relevant information.
-     */
-    public Map(Data dataMap) {
-        this.dataMap = dataMap;
-        // Initialize the map based on the number of rows and columns from the Data object
-        this.currentMap = new Box[dataMap.getRows()][dataMap.getColumns()];
-    }
+    static Data dataMap;
 
     /**
      * Set a specific case on the map at the given row and column.
@@ -32,25 +24,29 @@ public class Map {
      * @param column The column index where the case should be placed.
      * @param currentCase The Case object to place on the map.
      */
-    public void setMapValue(Box currentCase) {
+    public static void setMapValue(Box currentCase) {
         // Validate row and column indices
         int row = currentCase.getRow();
         int column = currentCase.getColumn();
         if (row < 0 || row >= dataMap.getRows() || column < 0 || column >= dataMap.getColumns()) {
             throw new IllegalArgumentException("Invalid row or column index. Must be within the map bounds.");
         }
-        this.currentMap[row][column] = currentCase;
+        currentMap[row][column] = currentCase;
+    }
+    public static void preSetMap()
+    {
+        currentMap = new Box[dataMap.getRows()][dataMap.getColumns()];
     }
 
-    public TypeLand getTypeLand(int row, int column)
+    public static TypeLand getTypeLand(int row, int column)
     {
-        return this.currentMap[row][column].getNature();
+        return currentMap[row][column].getNature();
     }
 
     public String lineString()
     {
         String line = "";
-        for (int c = 0; c < this.dataMap.getColumns() *  2; c += 2)
+        for (int c = 0; c < dataMap.getColumns() *  2; c += 2)
         {
             line += "+-";
         }
@@ -65,17 +61,17 @@ public class Map {
      */
     public String toString()
     {
-        String myData = "Datas about the map : \n" + this.dataMap.toString();
+        String myData = "Datas about the map : \n" + dataMap.toString();
         String myMap = "\nMap : \n";
         String lineOf = this.lineString();
         myMap += lineOf + '\n';
-        for (int l = 0; l < this.dataMap.getRows(); l +=1)
+        for (int l = 0; l < dataMap.getRows(); l +=1)
         {
-            for (int c = 0; c < this.dataMap.getColumns(); c +=1)
+            for (int c = 0; c < dataMap.getColumns(); c +=1)
             {
                 myMap += "|";
-                boolean fire = this.currentMap[l][c].getFire();
-                boolean robot = this.currentMap[l][c].getRobot();
+                boolean fire = Fire.isFire(l,c);
+                boolean robot = Robot.isRobot(l,c);
                 if (fire)
                 {
                     myMap += RED;
@@ -84,7 +80,7 @@ public class Map {
                 {
                     myMap += GREEN;
                 }
-                myMap += this.getTypeLand(l, c);
+                myMap += getTypeLand(l, c);
                 if (fire || robot)
                 {
                     myMap += RESET;
@@ -96,39 +92,28 @@ public class Map {
         return myData + myMap;
     }
 
+    public static String showMap()
+    {
+        return new Map().toString();
+    }
+
     /**
      * Set the fire on the map
      * 
      * @param row
      * @param column
-     * @param isFire
+     * @param intensity
      */
-    public void setFire(int row, int column, boolean isFire, int intensity)
+    public static void setFire(int row, int column, int intensity)
     {
-        this.currentMap[row][column].setFire(isFire);
-        this.currentMap[row][column].setIntensity(intensity);
+        new Fire(currentMap[row][column], intensity);
     }
 
+    public static Data getDataMap(){ return dataMap; }
 
-    /**
-     * Set the robot on the map
-     * 
-     * @param row
-     * @param column
-     * @param isRobot
-     */
-    public void setRobot(int row, int column, boolean isRobot)
-    {
-        this.currentMap[row][column].setRobot(isRobot);
-    }
-
-    /**
-     * Get the dataMap
-     * 
-     * @return Data
-     */
-    public Data getDataMap()
-    {
-        return this.dataMap;
+    public static void setDataMap(Data dataMap) 
+    { 
+        Map.dataMap = dataMap; 
+        preSetMap();
     }
 }

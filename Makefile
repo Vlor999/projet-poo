@@ -47,8 +47,8 @@ exeRobot:
 	java -classpath bin TestRobot
 
 exeLectureAll:
-	java -classpath bin TestLecteurDonnees cartes/*.map
+	clear && java -classpath bin TestLecteurDonnees cartes/*.map
 
 clean:
-	rm -rf bin/* src/*/docs
+	rm -rf bin/*
 

@@ -44,12 +44,12 @@ public class LecteurDonnees {
         throws FileNotFoundException, DataFormatException {
         System.out.println("\n == Lecture du fichier" + fichierDonnees);
         LecteurDonnees lecteur = new LecteurDonnees(fichierDonnees);
-        Map myMap = lecteur.lireCarte();
-        lecteur.lireIncendies(myMap);
-        lecteur.lireRobots(myMap);
+        lecteur.lireCarte();
+        lecteur.lireIncendies();
+        lecteur.lireRobots();
         scanner.close();
         System.out.println("\n == Lecture terminee");
-        System.out.println(myMap);
+        System.out.println(Map.showMap());
         System.out.println(Robot.showAllRobots());
     }
 
@@ -71,7 +71,7 @@ public class LecteurDonnees {
      * Lit et affiche les donnees de la carte.
      * @throws ExceptionFormatDonnees
      */
-    private Map lireCarte() throws DataFormatException {
+    private void lireCarte() throws DataFormatException {
         ignorerCommentaires();
         try {
             int nbLignes = scanner.nextInt();
@@ -80,14 +80,13 @@ public class LecteurDonnees {
             System.out.println("Carte " + nbLignes + "x" + nbColonnes
                     + "; taille des cases = " + tailleCases);
             Data myData = new Data(nbLignes, nbColonnes, tailleCases);
-            Map myMap = new Map(myData);
+            Map.setDataMap(myData);
             for (int lig = 0; lig < nbLignes; lig++) {
                 for (int col = 0; col < nbColonnes; col++) {
                     TypeLand currentTypeLand = lireCase(lig, col);
-                    myMap.setMapValue(new Box(lig, col, currentTypeLand));
+                    Map.setMapValue(new Box(lig, col, currentTypeLand));
                 }
             }
-            return myMap;
         } catch (NoSuchElementException e) {
             throw new DataFormatException("Format invalide. "
                     + "Attendu: nbLignes nbColonnes tailleCases");
@@ -124,13 +123,13 @@ public class LecteurDonnees {
     /**
      * Lit et affiche les donnees des incendies.
      */
-    private void lireIncendies(Map myMap) throws DataFormatException {
+    private void lireIncendies() throws DataFormatException {
         ignorerCommentaires();
         try {
             int nbIncendies = scanner.nextInt();
             System.out.println("Nb d'incendies = " + nbIncendies);
             for (int i = 0; i < nbIncendies; i++) {
-                lireIncendie(i, myMap);
+                lireIncendie(i);
             }
 
         } catch (NoSuchElementException e) {
@@ -144,7 +143,7 @@ public class LecteurDonnees {
      * Lit et affiche les donnees du i-eme incendie.
      * @param i
      */
-    private void lireIncendie(int i, Map myMap) throws DataFormatException {
+    private void lireIncendie(int i) throws DataFormatException {
         ignorerCommentaires();
         System.out.print("Incendie " + i + ": ");
 
@@ -160,7 +159,7 @@ public class LecteurDonnees {
 
             System.out.println("position = (" + lig + "," + col
                     + ");\t intensite = " + intensite);
-            myMap.setFire(lig, col, true, intensite);
+            Map.setFire(lig, col, intensite);
 
         } catch (NoSuchElementException e) {
             throw new DataFormatException("format d'incendie invalide. "
@@ -172,13 +171,13 @@ public class LecteurDonnees {
     /**
      * Lit et affiche les donnees des robots.
      */
-    private void lireRobots(Map myMap) throws DataFormatException {
+    private void lireRobots() throws DataFormatException {
         ignorerCommentaires();
         try {
             int nbRobots = scanner.nextInt();
             System.out.println("Nb de robots = " + nbRobots);
             for (int i = 0; i < nbRobots; i++) {
-                lireRobot(i, myMap);
+                lireRobot(i);
             }
 
         } catch (NoSuchElementException e) {
@@ -192,7 +191,7 @@ public class LecteurDonnees {
      * Lit et affiche les donnees du i-eme robot.
      * @param i
      */
-    private void lireRobot(int i, Map myMap) throws DataFormatException {
+    private void lireRobot(int i) throws DataFormatException {
         ignorerCommentaires();
         System.out.print("Robot " + i + ": ");
 
@@ -203,7 +202,7 @@ public class LecteurDonnees {
             String type = scanner.next();
 
             System.out.print("\t type = " + type);
-            Box currentBox = new Box(lig, col, myMap.getTypeLand(lig, col));
+            Box currentBox = new Box(lig, col, Map.getTypeLand(lig, col));
 
             // lecture eventuelle d'une vitesse du robot (entier)
             System.out.print("; \t vitesse = ");
@@ -217,9 +216,10 @@ public class LecteurDonnees {
                 vitesse = Integer.parseInt(s);
                 System.out.print(vitesse);
             }
-            Robot.stringToRobot(type, myMap.getDataMap(), currentBox, vitesse);
+            // Creation of the robot based on the type, the map and the box
+            Robot.stringToRobot(type, Map.getDataMap(), currentBox, vitesse);
+            
             verifieLigneTerminee();
-            myMap.setRobot(lig, col, true);
             System.out.println();
 
         } catch (NoSuchElementException e) {

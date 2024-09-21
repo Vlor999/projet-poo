@@ -110,16 +110,6 @@ public class Box {
     }
 
     /**
-     * Set the case as a robot
-     * 
-     * @param isRobot
-     */
-    public void setRobot(boolean isRobot)
-    {
-        this.isRobot = isRobot;
-    }
-
-    /**
      * Returns a random case with random coordinates and a random terrain type. 
      * Must be static to be called without creating an instance of the class.
      * 

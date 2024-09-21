@@ -57,22 +57,19 @@ public abstract class Robot {
         listRobots.add(this);
     }
 
-        /**
+    /**
      * Validates if the current position of the robot is within the map boundaries.
      */
     private void validatePosition(Box currentCase, Data mapData) {
         int startX = currentCase.getRow();
         int startY = currentCase.getColumn();
-
         if (startX < 0 || startY < 0 || startX >= mapData.getRows() || startY >= mapData.getColumns()) {
             throw new IllegalArgumentException("Invalid coordinates for the robot's starting position.");
         }
     }
 
-
     /**
      * Converts a string to a specific type of Robot.
-     *
      * @param type        String indicating the type of robot
      * @param mapData     Data object containing map metadata
      * @param currentCase Terrain type on which the robot starts
@@ -81,6 +78,7 @@ public abstract class Robot {
      */
     public static Robot stringToRobot(String type, Data mapData, Box currentCase, int travelSpeed) {
         switch (type.toUpperCase()) {
+            // toUpperCase to be sure that all the letters are in uppercase and that there is no miss match
             case "CHENILLES":
                 return new CaterpillarRobot(mapData, currentCase, validTravelSpeed(travelSpeed, 80));
             case "DRONE":
@@ -96,7 +94,6 @@ public abstract class Robot {
 
     /**
      * Validates and caps the travel speed to ensure it does not exceed maximum speed.
-     * 
      * @param speed     The travel speed to validate
      * @param maxSpeed  The maximum speed allowed
      * @return The valid travel speed
@@ -107,7 +104,6 @@ public abstract class Robot {
 
     /**
      * Returns a string representation of the robot's information.
-     * 
      * @return A string containing the robot's information.
      */
     public String toString()
@@ -122,8 +118,6 @@ public abstract class Robot {
     /**
      * Getters for various robot properties.
      */
-
-    
     public int getTankCapacity() { return tankCapacity; }
     
     public int getSpillVolumePerTimes() { return spillVolumePerTimes; }
@@ -138,7 +132,6 @@ public abstract class Robot {
     
     /**
      * Gets the current position of the robot.
-     *
      * @return A Box object representing the robot's current position.
      */
     public Box getPositionRobot() { return currentCase;}
@@ -164,7 +157,7 @@ public abstract class Robot {
     public static void clearRobots() { listRobots.clear(); }
 
     public static String showAllRobots() {
-        String result = "";
+        String result = "Number of robots: " + robotCount + "\n";
         for (Robot robot : listRobots) {
             result += robot.toString() + "\n";
         }
@@ -172,4 +165,22 @@ public abstract class Robot {
     }
 
     public abstract String getType();
+
+    /**
+     * Will say if at the position there is a robot
+     * @param row The row index where the robot should be placed.
+     * @param column The column index where the robot should be placed.
+     * @return boolean
+     */
+    public static boolean isRobot(int row, int column)
+    {
+        for (Robot robot : listRobots)
+        {
+            if (robot.getPositionRobot().getRow() == row && robot.getPositionRobot().getColumn() == column)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

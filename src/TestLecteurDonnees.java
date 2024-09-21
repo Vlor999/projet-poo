@@ -1,6 +1,7 @@
 
 import io.LecteurDonnees;
 import Robot.*;
+import fire.Fire;
 
 import java.io.FileNotFoundException;
 import java.util.zip.DataFormatException;
@@ -17,7 +18,9 @@ public class TestLecteurDonnees {
         {
             try {
                 LecteurDonnees.lire(args[i]);
+                System.out.println(Fire.showListFires());
                 Robot.clearRobots();
+                Fire.resetListFires();
             } catch (FileNotFoundException e) {
                 System.out.println("fichier " + args[i] + " inconnu ou illisible");
             } catch (DataFormatException e) {
