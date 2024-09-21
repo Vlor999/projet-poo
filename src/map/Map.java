@@ -8,10 +8,10 @@ import enumerator.*;
 import fire.*;
 
 public class Map {
-    // 2D array representing the current map made up of Case objects
     static String RED = "\u001B[31m";
     static String GREEN = "\u001B[32m";
     static String RESET = "\u001B[0m";
+    // 2D array representing the current map made up of Case objects
     static Box[][] currentMap;
     
     // Data object containing map metadata (e.g., number of rows and columns)
@@ -56,7 +56,6 @@ public class Map {
 
     /**
      * Return the String that represente the map at the begenning
-     * 
      * @return String of the map
      */
     public String toString()
@@ -116,4 +115,7 @@ public class Map {
         Map.dataMap = dataMap; 
         preSetMap();
     }
+
+
+
 }
