@@ -68,4 +68,14 @@ public enum TypeLand {
         }
     }
 
+    public static String infos()
+    {
+        String info = "";
+        for (TypeLand typeLand : TypeLand.values())
+        {
+            info += typeLand.toStringComplete() + "\n";
+        }
+        return info;
+    }
+
 }

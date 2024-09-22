@@ -50,7 +50,7 @@ public class LecteurDonnees {
         scanner.close();
         System.out.println("\n == Lecture terminee");
         System.out.println(Map.showMap());
-        System.out.println(Robot.showAllRobots());
+        System.out.println(TypeLand.infos());
     }
 
     // Tout le reste de la classe est prive!

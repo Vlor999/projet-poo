@@ -1,38 +1,25 @@
 package map;
 
-import enumerator.TypeLand;
+import enumerator.*;
+import Robot.*;
 
-/**
- * The {@code Case} class represents a specific cell or square in a grid, characterized by
- * its row, column, and the type of terrain it contains, which is represented by {@code TypeLand}.
- * This class is useful in map-based systems, games, or simulations where each case in a grid has distinct properties.
- */
 public class Box {
-    // The row and column where this Case is located
     private int row;
     private int column;
-    // The type of terrain for this Case
     private TypeLand typeLand;
 
-    /**
-     * Constructs a {@code Case} object with the specified row, column, and terrain type.
-     *
-     * @param row the row number where this Case is located
-     * @param column the column number where this Case is located
-     * @param typeLand the type of terrain associated with this Case
-     */
+    private Box parent;
+    private double gCost; // Cost from the start to this box
+    private double hCost; // Heuristic cost to the end box
+
     public Box(int row, int column, TypeLand typeLand) {
         this.row = row;
         this.column = column;
         this.typeLand = typeLand;
+        this.gCost = Double.MAX_VALUE; // Default to max value until calculated
+        this.hCost = 0;
     }
 
-    /**
-     * Returns a random case with random coordinates and a random terrain type. 
-     * Must be static to be called without creating an instance of the class.
-     * 
-     * @return a random Case object.
-     */
     public static Box randomCase() {
         int row = (int) (Math.random() * 10);
         int column = (int) (Math.random() * 10);
@@ -40,31 +27,55 @@ public class Box {
         return new Box(row, column, typeLand);
     }
 
-    public int getRow() {return this.row;}
+    public int getRow() { return this.row; }
+    public int getColumn() { return this.column; }
+    public TypeLand getNature() { return this.typeLand; }
+    
+    public double getGCost() { return gCost; }
+    public double getHCost() { return hCost; }
+    public double getFCost() { return gCost + hCost; }
+    public Box getParent() { return parent; }
 
-    public int getColumn() {return this.column;}
+    public void setParent(Box parent) { this.parent = parent; }
 
-    public TypeLand getNature() {return this.typeLand;}
+    public void calculateCosts(Box start, Box end, Robot robot) {
+        int caseSize = Map.getDataMap().getCaseSize();
+        int speed = robot.getSpecialSpeed(this.getNature());
+        if (this == start) {
+            this.gCost = 0;
+        }
+        else {
+            // Equivalent as a time
+            this.gCost = parent.gCost + (int) (caseSize / speed);
+        }
+        // must be equivalent as a time
+        this.hCost = (Math.abs(end.getRow() - this.getRow()) + Math.abs(end.getColumn() - this.getColumn())) / speed;
+    }
+
+    public void resetCosts() {
+        this.gCost = Double.MAX_VALUE;
+        this.hCost = 0;
+        this.parent = null;
+    }
+
+    public int[] compareBox(Box other) {
+        return new int[] { this.row - other.row, this.column - other.column };
+    }
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Box)) 
-        {
+        if (!(obj instanceof Box)) {
             return false;
         }
         Box other = (Box) obj;
         return this.row == other.row && this.column == other.column;
     }
-    
-    /**
-     * Returns a string representation of this Case object.
-     * 
-     * @return a string representation of this object.
-     */
-    public String toString() 
-    {
-        return this.toString(0);
+
+    @Override
+    public String toString() {
+        return "* Position: (" + this.row + ", " + this.column + ") \n* Terrain type: " + this.typeLand;
     }
+
     public String toString(int t)
     {
         String tab = "";
@@ -74,5 +85,15 @@ public class Box {
         }
         return   tab + "* Position : (" + this.row + ", " + this.column + ")"
         + "\n" + tab + "* Terrain type: " + this.typeLand;
+    }
+
+    public boolean equals(Box obj) {
+        return this.row == obj.row && this.column == obj.column && this.typeLand == obj.typeLand;
+    }
+
+    public double distanceTo(Box other) {
+        double dx = this.row - other.row;
+        double dy = this.column - other.column;
+        return dx * dx + dy * dy;
     }
 }

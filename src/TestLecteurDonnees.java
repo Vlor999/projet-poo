@@ -22,29 +22,31 @@ public class TestLecteurDonnees {
         {
             try {
                 LecteurDonnees.lire(args[i]);
-                System.out.println(Fire.showListFires());
-                System.out.println(Map.showListWater());
 
-                AStarAlgorithm aStar = new AStarAlgorithm();
-
-                Box endBox = Map.getListWater().get(0);
-                
-                List<Robot> l1 = Robot.getListRobots();
-                Robot r1 = l1.get(0);
-
-                List<Node> path = aStar.aStarSearch(Map.getCurrentMap(), r1, endBox);
-
-                if (path.isEmpty()) {
-                    System.out.println("No path found.");
-                } else {
-                    System.out.println("Path found:" + AStarAlgorithm.getListDirection());
-                    for (Node node : path) {
-                        System.out.println("(" + node.x + ", " + node.y + ")");
+                AStar aStar = new AStar();
+                List<Robot> listRobots = Robot.getListRobots();
+                List<Box> listWater = Map.getListWater();
+                for (Box endBox : listWater)
+                {
+                    for (Robot robot : listRobots)
+                    {
+                        if (robot.getType().equals("LeggedRobot"))
+                        {
+                            System.out.println("No need to putt water");
+                        }
+                        else
+                        {
+                            System.out.println("Robot: " + robot.getType() + "\n" + robot.getPositionRobot());
+                            System.out.println("End box: \n" + endBox);
+                            List<Box> path = aStar.aStarSearch(Map.getCurrentMap(), robot, endBox);
+                            System.out.println(AStar.showInfo(path) + "\n");
+                        }
                     }
                 }
-
+                
                 Robot.clearRobots();
                 Fire.resetListFires();
+
             } catch (FileNotFoundException e) {
                 System.out.println("fichier " + args[i] + " inconnu ou illisible");
             } catch (DataFormatException e) {

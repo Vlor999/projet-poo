@@ -15,8 +15,9 @@ Develop a Java application to simulate autonomous firefighting robots in a natur
 
 ## To Do
 - ![Static Badge](https://img.shields.io/badge/Fire-SUCCES-green) Fire class: Implement the Fire class to represent fires on the map. Each fire has a position and an intensity (quantity of water needed).
-- ![Static Badge](https://img.shields.io/badge/Robot-FAILED-red) Robot class: Implement the Robot class to represent robots on the map. We hav to make the movement of the robot class. (Optional: Implement a subclass for flying robots and others.)
-- ![Static Badge](https://img.shields.io/badge/Map-FAILED-red) Map class: Implement the Map class to represent the environment. The map contains a grid of cells. We also have to make a foundPath method to find the path between two points. And finaly a method to know the next case knowing the direction.
+- ![Static Badge](https://img.shields.io/badge/Robot-FAILED-red) Robot class: Implement the Robot class to represent robots on the map. We have to make the movement of the robot class. (Optional: Implement a subclass for flying robots and others.)
+- ![Static Badge](https://img.shields.io/badge/Map-NotYet-yellow) Map class: Implement the Map class to represent the environment. The map contains a grid of cells. We also have to make a foundPath method to find the path between two points. And finaly a method to know the next case knowing the direction.
+- ![Static Badge](https://img.shields.io/badge/Pathfinding-SUCCES-green) Pathfinding: Implement the A* algorithm to find the shortest path between two points on the map. This works for all robots on the map.
 
 ## Javadoc
 - To generate the Javadoc, use the following command:
