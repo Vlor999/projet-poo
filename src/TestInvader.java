@@ -7,6 +7,9 @@ import gui.GUISimulator;
 import gui.Rectangle;
 import gui.Simulable;
 import gui.Text;
+import io.Data;
+import map.Box;
+import map.Map;
 
 
 public class TestInvader {
@@ -136,6 +139,7 @@ class Invader implements Simulable {
      */
     private void draw() {
         gui.reset();	// clear the window
+        drawMap();
 
         gui.addGraphicalElement(new Rectangle(x + 30, y     , invaderColor, invaderColor, 10));
         gui.addGraphicalElement(new Rectangle(x + 40, y     , invaderColor, invaderColor, 10));
@@ -205,5 +209,26 @@ class Invader implements Simulable {
         gui.addGraphicalElement(new Rectangle(x + 80, y + 90, invaderColor, invaderColor, 10));
 
         gui.addGraphicalElement(new Text(x + 40, y + 120, invaderColor, "INVADER"));
+    }
+
+    private void drawMap()
+    {
+        Data dataMap = Map.getDataMap();
+        int rows = dataMap.getRows();
+        int columns = dataMap.getColumns();
+        Box[][] currentMap = Map.getCurrentMap();
+        int width = gui.getWidth();
+        int height = (int) (gui.getHeight() * 0.8);
+
+        int widthLength = width / columns;
+        int heightLength = height / rows;
+        for (int l = 0; l < rows; l +=1)
+        {
+            for (int c = 0; c < columns; c +=1)
+            {
+                Color color = currentMap[l][c].getNature().getColor();
+                gui.addGraphicalElement(new Rectangle(c * widthLength, l * heightLength, color, color, widthLength, heightLength));
+            }
+        }
     }
 }

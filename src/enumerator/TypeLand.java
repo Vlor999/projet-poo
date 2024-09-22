@@ -3,7 +3,7 @@ package enumerator;
 import java.awt.Color;
 
 /**
- * The {@code TypeLand} enum represents different types of terrain (WATER, FOREST, STONE, FIELD, HABITATION).
+ * The {@code TypeLand} enum represents different types of terrain (WATER, FOREST, STONE, FIELD and HABITATION).
  * Each terrain type has an associated integer value and a descriptive name.
  * This enum can be useful in map generation, categorizing different land types, or any system that uses various terrain features.
  */
@@ -67,4 +67,5 @@ public enum TypeLand {
                 throw new IllegalArgumentException("Unknown terrain type: " + chaineNature);
         }
     }
+
 }

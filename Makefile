@@ -52,3 +52,8 @@ exeLectureAll:
 clean:
 	rm -rf bin/*
 
+cleanDocs:
+	rm -rf docs/* docs
+
+docs:
+	javadoc -d docs src/*/*.java

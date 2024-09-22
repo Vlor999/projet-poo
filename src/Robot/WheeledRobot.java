@@ -1,4 +1,5 @@
 package Robot;
+import enumerator.TypeLand;
 import io.Data;
 import map.Box;
 
@@ -17,6 +18,20 @@ public class WheeledRobot extends Robot
     public String getType()
     {
         return "WheeledRobot";
+    }
+    @Override
+    public int getSpecialSpeed(TypeLand type) {
+        int normalSpeed = this.getTravelSpeed();
+        switch (type) {
+            case STONE:
+                return 0;
+            case WATER:
+                return 0;
+            case FOREST:
+                return 0;
+            default:
+                return normalSpeed;
+        }
     }
 
 }

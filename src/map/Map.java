@@ -2,6 +2,8 @@ package map;
 
 import io.*;
 
+import java.util.ArrayList;
+import java.util.List;
 
 import Robot.Robot;
 import enumerator.*;
@@ -11,17 +13,17 @@ public class Map {
     static String RED = "\u001B[31m";
     static String GREEN = "\u001B[32m";
     static String RESET = "\u001B[0m";
+    static String BLUE = "\u001B[34m";
     // 2D array representing the current map made up of Case objects
     static Box[][] currentMap;
     
     // Data object containing map metadata (e.g., number of rows and columns)
     static Data dataMap;
 
+    static List<Box> listWater = new ArrayList<>();
+
     /**
      * Set a specific case on the map at the given row and column.
-     * 
-     * @param row The row index where the case should be placed.
-     * @param column The column index where the case should be placed.
      * @param currentCase The Case object to place on the map.
      */
     public static void setMapValue(Box currentCase) {
@@ -32,6 +34,10 @@ public class Map {
             throw new IllegalArgumentException("Invalid row or column index. Must be within the map bounds.");
         }
         currentMap[row][column] = currentCase;
+        if (currentCase.getNature() == TypeLand.WATER)
+        {
+            listWater.add(currentCase);
+        }
     }
     public static void preSetMap()
     {
@@ -95,14 +101,18 @@ public class Map {
         String txt = "|";
         boolean fire = Fire.isFire(row,column);
         boolean robot = Robot.isRobot(row,column);
+        boolean water = Map.isWater(row,column);
         if (fire){
             txt += RED;
         }
         else if (robot){
             txt += GREEN;
         }
+        else if (water){
+            txt += BLUE;
+        }
         txt += getTypeLand(row, column);
-        if (fire || robot){
+        if (fire || robot || water){
             txt += RESET;
         }
         txt += "";
@@ -113,10 +123,34 @@ public class Map {
     {
         return new Map().toString();
     }
+
+    public static String showListWater()
+    {
+        String txt = "List of water : \n";
+        for (Box box : listWater)
+        {
+            txt += "Water at : \n" + box.toString(1) + "\n";
+        }
+        return txt;
+    }
+
+    public static boolean isWater(int row, int column)
+    {
+        for (Box box : listWater)
+        {
+            if (box.getRow() == row && box.getColumn() == column)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     
     public static Data getDataMap() { return dataMap; }
     public static Box[][] getCurrentMap() { return currentMap; }
     public static TypeLand getTypeLand(int row, int column){
         return currentMap[row][column].getNature();
     }
+    public static List<Box> getListWater() { return listWater; }
+    public static List<Fire> getListFire() { return Fire.getListFires(); }
 }

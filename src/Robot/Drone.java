@@ -1,5 +1,6 @@
 package Robot;
 
+import enumerator.TypeLand;
 import io.Data;
 import map.Box;
 
@@ -17,8 +18,15 @@ public class Drone extends Robot
     }
 
     @Override
+    public int getSpecialSpeed(TypeLand type)
+    {
+        return this.getTravelSpeed();
+    }
+
+    @Override
     public String getType()
     {
         return "Drone";
     }
+
 }

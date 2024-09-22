@@ -46,6 +46,15 @@ public class Box {
 
     public TypeLand getNature() {return this.typeLand;}
 
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Box)) 
+        {
+            return false;
+        }
+        Box other = (Box) obj;
+        return this.row == other.row && this.column == other.column;
+    }
     
     /**
      * Returns a string representation of this Case object.
@@ -63,8 +72,7 @@ public class Box {
         {
             tab += "\t";
         }
-        return   tab + "* Row: "           + this.row 
-        + "\n" + tab + "* Column: "       + this.column 
+        return   tab + "* Position : (" + this.row + ", " + this.column + ")"
         + "\n" + tab + "* Terrain type: " + this.typeLand;
     }
 }

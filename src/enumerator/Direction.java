@@ -16,8 +16,6 @@ public enum Direction {
     private final String name;
 
     /**
-     * Constructor for the Direction enum.
-     * Initializes the direction with given x and y values.
      * @param x the x-coordinate representing horizontal movement
      * @param y the y-coordinate representing vertical movement
      * @param name the name of the direction
@@ -41,4 +39,18 @@ public enum Direction {
     public int getX() {return x;}
 
     public int getY() {return y;}
+
+
+    public static Direction foundTypeFromDiff(int[] diff) {
+        if (diff[0] == 1 && diff[1] == 0) {
+            return Direction.EAST;
+        } else if (diff[0] == -1 && diff[1] == 0) {
+            return Direction.WEST;
+        } else if (diff[0] == 0 && diff[1] == 1) {
+            return Direction.NORTH;
+        } else if (diff[0] == 0 && diff[1] == -1) {
+            return Direction.SOUTH;
+        }
+        return null;
+    }
 }

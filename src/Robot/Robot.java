@@ -3,6 +3,9 @@ package Robot;
 import io.Data;
 import map.Box;
 import java.util.List;
+
+import enumerator.TypeLand;
+
 import java.util.ArrayList;
 
 public abstract class Robot {
@@ -123,6 +126,8 @@ public abstract class Robot {
     public int getSpillVolumePerTimes() { return spillVolumePerTimes; }
     
     public int getTravelSpeed() { return travelSpeed; }
+
+    public abstract int getSpecialSpeed(TypeLand type);
     
     public int getFillingType() { return fillingType; }
     

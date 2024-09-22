@@ -52,10 +52,21 @@ public class Fire
         }
     }
     
-    public List<Fire> getListFires(){return listFires;}
+    /**
+     * Get the list of fires
+     * @return List<Fire>
+     */
+    public static List<Fire> getListFires(){return listFires;}
 
+    /**
+     * Reset the list of fires for an other simulation
+     */
     public static void resetListFires(){listFires.clear();}
 
+    /**
+     * Remove a fire from the list
+     * @param fire
+     */
     public void removeFire(Fire fire){listFires.remove(fire);}
 
     /**
@@ -66,7 +77,7 @@ public class Fire
         String listFiresString = "Number of fires : " + numberFire + "\n";
         for (Fire fire : listFires)
         {
-            listFiresString += "" + fire + "\n";
+            listFiresString += "Fire at position :\n" + fire.toString() + "\n"; 
         }
         return listFiresString;
     }
@@ -76,7 +87,7 @@ public class Fire
      * @return String
      */
     public String toString(){
-        return "Fire at position (" + this.currentPosition.getRow() + "," + this.currentPosition.getColumn() + ") with intensity " + this.intensity;
+        return this.currentPosition.toString(1) + "\n\t* Intensity : " + this.intensity;
     }
 
     /**
