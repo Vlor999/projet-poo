@@ -116,4 +116,9 @@ public class AStar {
         }
         return info;
     }
+
+    public AStar()
+    {
+        clearListDirection();
+    }
 }

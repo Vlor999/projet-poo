@@ -1,12 +1,14 @@
 
 import io.LecteurDonnees;
 import Robot.*;
+import enumerator.*;
 import fire.Fire;
 import map.*;
 
 import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.zip.DataFormatException;
+import java.util.ArrayList;
 
 
 
@@ -26,22 +28,29 @@ public class TestLecteurDonnees {
                 AStar aStar = new AStar();
                 List<Robot> listRobots = Robot.getListRobots();
                 List<Box> listWater = Map.getListWater();
-                for (Box endBox : listWater)
+                for (Robot robot : listRobots)
                 {
-                    for (Robot robot : listRobots)
+                    System.out.println("Robot: " + robot.getType() + "\n" + robot.getPositionRobot());
+                    double minVal = -1;
+                    List<Box> bestPath = new ArrayList<>();
+                    for (Box endBox : listWater)
                     {
                         if (robot.getType().equals("LeggedRobot"))
                         {
-                            System.out.println("No need to putt water");
+                            continue;
                         }
                         else
                         {
-                            System.out.println("Robot: " + robot.getType() + "\n" + robot.getPositionRobot());
-                            System.out.println("End box: \n" + endBox);
                             List<Box> path = aStar.aStarSearch(Map.getCurrentMap(), robot, endBox);
-                            System.out.println(AStar.showInfo(path) + "\n");
+                            double currentVal = path.get(path.size() - 1).getFCost();
+                            if (currentVal < minVal || minVal == -1)
+                            {
+                                minVal = currentVal;
+                                bestPath = path;
+                            }
                         }
                     }
+                    System.out.println(AStar.showInfo(bestPath));
                 }
                 
                 Robot.clearRobots();
