@@ -8,7 +8,7 @@ import enumerator.*;
 public class AStar {
     private static final Direction[] DIRECTIONS = {Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH}; 
     public static List<Direction> listDirection = new ArrayList<>();
-    
+    private List<Direction> finalListDirection = new ArrayList<>();
     /**
      * A* search algorithm to find the shortest path from the robot to the end box
      * @param grid that represents the map using Box objects
@@ -100,13 +100,20 @@ public class AStar {
         listDirection.clear();
     }
 
-    public static String showInfo(List<Box> path)
+    public void setFinalListDirection(List<Direction> d){
+        List <Direction> res =new ArrayList<>();
+        for (Direction elem : d){
+            res.add(elem);
+        }
+        this.finalListDirection = res;
+    }
+    public String showInfo(List<Box> path)
     {
         String info = "";
         if (path.isEmpty()) {
             info += "No path found.";
         } else {
-            info += "Path found:" + AStar.getListDirection() + "\n\t* ";
+            info += "Path found:" + this.finalListDirection + "\n\t* ";
             double finalCost = path.get(path.size() - 1).getFCost();
             for (Box node : path) {
                 info += "(" + node.getRow() + ", " + node.getColumn() + ") -> ";

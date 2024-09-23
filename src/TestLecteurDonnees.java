@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 
 public class TestLecteurDonnees {
-
+    
     public static void main(String[] args) {
         if (args.length < 1) {
             System.out.println("Syntaxe: java TestLecteurDonnees <nomDeFichier>");
@@ -45,12 +45,14 @@ public class TestLecteurDonnees {
                             double currentVal = path.get(path.size() - 1).getFCost();
                             if (currentVal < minVal || minVal == -1)
                             {
+                                aStar.setFinalListDirection(aStar.getListDirection());
                                 minVal = currentVal;
                                 bestPath = path;
                             }
                         }
+                        
                     }
-                    System.out.println(AStar.showInfo(bestPath));
+                    System.out.println(aStar.showInfo(bestPath));
                 }
                 
                 Robot.clearRobots();

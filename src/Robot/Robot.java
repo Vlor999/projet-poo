@@ -1,7 +1,10 @@
 package Robot;
 
 import io.Data;
+import map.AStar;
 import map.Box;
+import map.Map;
+
 import java.util.List;
 
 import enumerator.TypeLand;
@@ -33,7 +36,8 @@ public abstract class Robot {
     private static List<Robot> listRobots = new ArrayList<>();
 
     /**
-     * Constructor to initialize a Robot object.
+     * Constructor   
+     * to initialize a Robot object.
      * 
      * @param mapData                    Data object containing map metadata
      * @param tankCapacity               Tank capacity in liters
@@ -181,4 +185,19 @@ public abstract class Robot {
         }
         return false;
     }
+
+
+    /**
+     * Will make the movement of the robot 
+     * @param TargetCase the box he aims 
+     */
+    public void MoveRobot(Box TargetCase){
+
+        AStar astar = new AStar();
+        List<Box> trajet = astar.aStarSearch(Map.getCurrentMap(),this,TargetCase);
+        for (Box elem : trajet){
+            this.setPositionRobot(elem);
+        }
+    }
 }
+
