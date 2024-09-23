@@ -41,7 +41,7 @@ exeInvader:
 	java -classpath bin:lib/gui.jar TestInvader
 
 exeLecture: 
-	java -classpath bin TestLecteurDonnees cartes/carteSujet.map
+	java -classpath bin TestLecteurDonnees cartes/mushroomOfHell-20x20.map
 
 exeRobot:
 	java -classpath bin TestRobot

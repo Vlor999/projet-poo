@@ -7,7 +7,8 @@ import enumerator.*;
 
 public class AStar {
     private static final Direction[] DIRECTIONS = {Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH}; 
-    public static List<Direction> listDirection = new ArrayList<>();
+    public List<Direction> listDirection = new ArrayList<>();
+
     private List<Direction> finalListDirection = new ArrayList<>();
     /**
      * A* search algorithm to find the shortest path from the robot to the end box
@@ -29,8 +30,7 @@ public class AStar {
         Set<Box> closedList = new HashSet<>();
 
         Box startBox = currentRobot.getPositionRobot();
-
-        if (currentRobot.getSpecialSpeed(grid[0][0].getNature()) == 0) {
+        if (currentRobot.getSpecialSpeed(startBox.getNature()) == 0) {
             return Collections.emptyList();
         }
 
@@ -92,12 +92,12 @@ public class AStar {
         return x >= 0 && y >= 0 && x < grid.length && y < grid[0].length && robot.getSpecialSpeed(grid[x][y].getNature()) != 0;
     }
 
-    public static List<Direction> getListDirection() {
-        return listDirection;
+    public List<Direction> getListDirection() {
+        return this.listDirection;
     }
 
-    public static void clearListDirection() {
-        listDirection.clear();
+    public void clearListDirection() {
+        this.listDirection.clear();
     }
 
     public void setFinalListDirection(List<Direction> d){

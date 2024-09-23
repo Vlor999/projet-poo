@@ -1,7 +1,6 @@
 
 import io.LecteurDonnees;
 import Robot.*;
-import enumerator.*;
 import fire.Fire;
 import map.*;
 
@@ -42,12 +41,19 @@ public class TestLecteurDonnees {
                         else
                         {
                             List<Box> path = aStar.aStarSearch(Map.getCurrentMap(), robot, endBox);
-                            double currentVal = path.get(path.size() - 1).getFCost();
-                            if (currentVal < minVal || minVal == -1)
+                            if (path.size() > 0)
                             {
-                                aStar.setFinalListDirection(aStar.getListDirection());
-                                minVal = currentVal;
-                                bestPath = path;
+                                double currentVal = path.get(path.size() - 1).getFCost();
+                                if (currentVal < minVal || minVal == -1)
+                                {
+                                    aStar.setFinalListDirection(aStar.getListDirection());
+                                    minVal = currentVal;
+                                    bestPath = path;
+                                }
+                            }
+                            else
+                            {
+                                System.out.println("No path found");
                             }
                         }
                         

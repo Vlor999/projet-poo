@@ -87,26 +87,32 @@ public abstract class Robot {
         switch (type.toUpperCase()) {
             // toUpperCase to be sure that all the letters are in uppercase and that there is no miss match
             case "CHENILLES":
-                return new CaterpillarRobot(mapData, currentCase, validTravelSpeed(travelSpeed, 80));
+                if (travelSpeed < 0)
+                {
+                    travelSpeed = 80;
+                }
+                return new CaterpillarRobot(mapData, currentCase, travelSpeed);
             case "DRONE":
-                return new Drone(mapData, currentCase, validTravelSpeed(travelSpeed, 150));
+                if (travelSpeed < 0)
+                {
+                    travelSpeed = 150;
+                }
+                return new Drone(mapData, currentCase, travelSpeed);
             case "PATTES":
-                return new LeggedRobot(mapData, currentCase, 30);
+                if (travelSpeed < 0)
+                {
+                    travelSpeed = 30;
+                }
+                return new LeggedRobot(mapData, currentCase, travelSpeed);
             case "ROUES":
-                return new WheeledRobot(mapData, currentCase, travelSpeed > 0 ? travelSpeed : 50);
+                if (travelSpeed < 0)
+                {
+                    travelSpeed = 50;
+                }
+                return new WheeledRobot(mapData, currentCase, travelSpeed);
             default:
                 throw new IllegalArgumentException("Invalid type of robot.");
         }
-    }
-
-    /**
-     * Validates and caps the travel speed to ensure it does not exceed maximum speed.
-     * @param speed     The travel speed to validate
-     * @param maxSpeed  The maximum speed allowed
-     * @return The valid travel speed
-     */
-    private static int validTravelSpeed(int speed, int maxSpeed) {
-        return Math.min(Math.max(speed, 0), maxSpeed);
     }
 
     /**
@@ -125,21 +131,21 @@ public abstract class Robot {
     /**
      * Getters for various robot properties.
      */
-    public int getTankCapacity() { return tankCapacity; }
+    public int getTankCapacity() { return this.tankCapacity; }
     
-    public int getSpillVolumePerTimes() { return spillVolumePerTimes; }
+    public int getSpillVolumePerTimes() { return this.spillVolumePerTimes; }
     
-    public int getTravelSpeed() { return travelSpeed; }
+    public int getTravelSpeed() { return this.travelSpeed; }
 
     public abstract int getSpecialSpeed(TypeLand type);
     
-    public int getFillingType() { return fillingType; }
+    public int getFillingType() { return fillingType;}
     
-    public int getFillingTime() { return fillingTime; }
+    public int getFillingTime() { return this.fillingTime; }
 
-    public int getSpillTime() { return spillTime; }
+    public int getSpillTime() { return this.spillTime; }
     
-    public Box getPositionRobot() { return currentCase;}
+    public Box getPositionRobot() { return this.currentCase;}
     
     public static int getRobotCount() { return robotCount; }
 

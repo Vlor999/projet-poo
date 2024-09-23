@@ -77,8 +77,6 @@ public class LecteurDonnees {
             int nbLignes = scanner.nextInt();
             int nbColonnes = scanner.nextInt();
             int tailleCases = scanner.nextInt();	// en m
-            System.out.println("Carte " + nbLignes + "x" + nbColonnes
-                    + "; taille des cases = " + tailleCases);
             Data myData = new Data(nbLignes, nbColonnes, tailleCases);
             Map.setDataMap(myData);
             for (int lig = 0; lig < nbLignes; lig++) {
@@ -99,7 +97,6 @@ public class LecteurDonnees {
      */
     private TypeLand lireCase(int lig, int col) throws DataFormatException {
         ignorerCommentaires();
-        System.out.print("Case (" + lig + "," + col + "): ");
         String chaineNature = new String();
         //		NatureTerrain nature;
 
@@ -108,8 +105,6 @@ public class LecteurDonnees {
             // We are converting the string to the corresponding enum
 
             verifieLigneTerminee();
-
-            System.out.print("nature = " + chaineNature + "\n");
             TypeLand currentTypeLand = TypeLand.convertStringToTypeLand(chaineNature);
             return currentTypeLand;
 

@@ -41,6 +41,7 @@ public class Map {
     }
     public static void preSetMap()
     {
+        resetAll();
         currentMap = new Box[dataMap.getRows()][dataMap.getColumns()];
     }
 
@@ -84,9 +85,9 @@ public class Map {
         String myMap = "\nMap : \n";
         String lineOff = this.lineString();
         myMap += lineOff + '\n';
-        for (int l = 0; l < numberRows; l +=1)
-        {
-            for (int c = 0; c < numberColumns; c +=1){
+        for (int c = numberColumns - 1; c >= 0; c -=1){
+            for (int l = 0; l < numberRows; l +=1)
+            {
                 String txt = positionColored(l, c);
                 myMap += txt; 
             }
@@ -153,4 +154,9 @@ public class Map {
     }
     public static List<Box> getListWater() { return listWater; }
     public static List<Fire> getListFire() { return Fire.getListFires(); }
+
+    public static void resetAll()
+    {
+        listWater.clear();
+    }
 }
