@@ -7,6 +7,7 @@ import java.util.zip.DataFormatException;
 import java.awt.image.ImageObserver;
 
 import gui.GUISimulator;
+import gui.GraphicalElement;
 import gui.ImageElement;
 import gui.Rectangle;
 import gui.Simulable;
@@ -235,23 +236,10 @@ class Invader implements Simulable {
             {
                 Box currentBox = currentMap[c][l];
                 if (currentBox != null && currentBox.getNature() != null) {
+                    int flippedY = (rows - 1 - l) * heightLength;
                     String fileName = "images/base_grass_flat_E.png";
-                    ImageObserver obs;
-                    gui.addGraphicalElement();
-                    // Color color = currentBox.getNature().getColor();
-                    
-                    // // Flip the y-axis by subtracting l from rows - 1
-                    // int flippedY = (rows - 1 - l) * heightLength;
-
-                    // // Add the graphical element with the correct position and size
-                    // gui.addGraphicalElement(new Rectangle(
-                    //         c * widthLength,  // X position (same)
-                    //         flippedY,         // Y position (flipped)
-                    //         color,            // Fill color
-                    //         color,            // Border color
-                    //         widthLength,      // Width of the rectangle
-                    //         heightLength      // Height of the rectangle
-                    // ));
+                    ImageElement im = new ImageElement(c * widthLength, flippedY, fileName, widthLength, heightLength, gui);
+                    gui.addGraphicalElement(im);
                 }
             }
         }   
