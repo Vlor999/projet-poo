@@ -12,7 +12,7 @@ public enum TypeLand {
     FOREST(1, "forest", Color.GREEN),
     STONE(2, "stone", Color.GRAY),
     FIELD(3, "field", Color.YELLOW),
-    HABITATION(4, "habitation", Color.RED);
+    HABITATION(4, "habitation", Color.ORANGE);
 
     // Terrain value and name
     private final int valueTerrain;

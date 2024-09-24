@@ -1,27 +1,33 @@
 import java.awt.Color;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.zip.DataFormatException;
+import java.awt.image.ImageObserver;
 
 import gui.GUISimulator;
+import gui.ImageElement;
 import gui.Rectangle;
 import gui.Simulable;
 import gui.Text;
 import io.Data;
+import io.LecteurDonnees;
 import map.Box;
 import map.Map;
 
 
 public class TestInvader {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException, DataFormatException {
         // crée la fenêtre graphique dans laquelle dessiner
         GUISimulator gui = new GUISimulator(800, 600, Color.BLACK);
         // crée l'invader, en l'associant à la fenêtre graphique précédente
         // Invader invader = new Invader(gui, Color.decode("#f2ff28"));
+        String txt = "cartes/carteSujet.map";
+        LecteurDonnees.lire(txt);
         new Invader(gui, Color.decode("#f2ff28"));
     }
 }
-
 
 /**
  * Un mini-invader...
@@ -64,7 +70,7 @@ class Invader implements Simulable {
 
         planCoordinates();
         draw();
-        drawrect(0, 0, 50, 50, Color.BLUE);
+        drawMap();
     }
 
     /**
@@ -83,7 +89,7 @@ class Invader implements Simulable {
         // let's plan the invader displacement!
         List<Integer> xCoords = new ArrayList<Integer>();
         List<Integer> yCoords = new ArrayList<Integer>();
-        // going right
+        // going rightimport java.awt.image.ImageObserver;
         for (int x = xMin + 10; x <= xMax; x += 10) {
             xCoords.add(x);
             yCoords.add(yMin);
@@ -113,7 +119,6 @@ class Invader implements Simulable {
         if (this.yIterator.hasNext())
             this.y = this.yIterator.next();		
         draw();
-        drawrect(0, 0, 50, 50, Color.BLUE);
     }
 
     @Override
@@ -211,24 +216,45 @@ class Invader implements Simulable {
         gui.addGraphicalElement(new Text(x + 40, y + 120, invaderColor, "INVADER"));
     }
 
-    private void drawMap()
+    private void drawMap() 
     {
         Data dataMap = Map.getDataMap();
         int rows = dataMap.getRows();
         int columns = dataMap.getColumns();
         Box[][] currentMap = Map.getCurrentMap();
         int width = gui.getWidth();
-        int height = (int) (gui.getHeight() * 0.8);
+        int height = gui.getHeight();
 
+        // Calculate the width and height of each cell
         int widthLength = width / columns;
         int heightLength = height / rows;
-        for (int l = 0; l < rows; l +=1)
-        {
-            for (int c = 0; c < columns; c +=1)
+
+        // Iterate over each row and column to draw the boxes
+        for (int c = 0; c < columns; c++) {
+            for (int l = 0; l < rows; l++) 
             {
-                Color color = currentMap[l][c].getNature().getColor();
-                gui.addGraphicalElement(new Rectangle(c * widthLength, l * heightLength, color, color, widthLength, heightLength));
+                Box currentBox = currentMap[c][l];
+                if (currentBox != null && currentBox.getNature() != null) {
+                    String fileName = "images/base_grass_flat_E.png";
+                    ImageObserver obs;
+                    gui.addGraphicalElement();
+                    // Color color = currentBox.getNature().getColor();
+                    
+                    // // Flip the y-axis by subtracting l from rows - 1
+                    // int flippedY = (rows - 1 - l) * heightLength;
+
+                    // // Add the graphical element with the correct position and size
+                    // gui.addGraphicalElement(new Rectangle(
+                    //         c * widthLength,  // X position (same)
+                    //         flippedY,         // Y position (flipped)
+                    //         color,            // Fill color
+                    //         color,            // Border color
+                    //         widthLength,      // Width of the rectangle
+                    //         heightLength      // Height of the rectangle
+                    // ));
+                }
             }
-        }
+        }   
     }
+
 }
