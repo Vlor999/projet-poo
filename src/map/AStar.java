@@ -9,6 +9,44 @@ public class AStar {
     private static final Direction[] DIRECTIONS = {Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH}; 
     public List<Direction> listDirection = new ArrayList<>();
 
+
+    public static List<Box> findBestWayToWater(AStar aStar, Robot robot,List<Box> listWater)
+    {
+        
+
+        System.out.println("Robot: " + robot.getType() + "\n" + robot.getPositionRobot());
+        double minVal = -1;
+        List<Box> bestPath = new ArrayList<>();
+        for (Box endBox : listWater)
+        {
+            if (robot.getType().equals("LeggedRobot"))
+            {
+                continue;
+            }
+            else
+            {
+                List<Box> path = aStar.aStarSearch(Map.getCurrentMap(), robot, endBox);
+                if (path.size() > 0)
+                {
+                    double currentVal = path.get(path.size() - 1).getGCost();
+                    if (currentVal < minVal || minVal == -1)
+                    {
+                        aStar.setFinalListDirection(aStar.getListDirection());
+                        minVal = currentVal;
+                        bestPath = path;
+                    }
+                }
+                else
+                {
+                    System.out.println("No path found");
+                }
+            }
+        
+        }
+
+    return bestPath;
+    }
+
     private List<Direction> finalListDirection = new ArrayList<>();
     /**
      * A* search algorithm to find the shortest path from the robot to the end box
@@ -110,7 +148,7 @@ public class AStar {
     public String showInfo(List<Box> path)
     {
         String info = "";
-        if (path.isEmpty()) {
+        if (path.size() <= 1) {
             info += "No path found.";
         } else {
             info += "Path found:" + this.finalListDirection + "\n\t* ";
