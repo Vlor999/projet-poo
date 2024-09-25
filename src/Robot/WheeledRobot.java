@@ -5,6 +5,9 @@ import map.Box;
 
 public class WheeledRobot extends Robot
 {
+
+    private String file = "Images/p2.png";
+
     public WheeledRobot(Data mapData, Box currentCase, int travelSpeed)
     {
         super(mapData, currentCase, 100, 5, 1, 10, 5000, travelSpeed);
@@ -32,6 +35,11 @@ public class WheeledRobot extends Robot
             default:
                 return normalSpeed;
         }
+    }
+
+    public String getFile()
+    {
+        return this.file;
     }
 
 }

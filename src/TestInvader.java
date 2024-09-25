@@ -8,7 +8,6 @@ import java.util.zip.DataFormatException;
 import enumerator.TypeLand;
 import fire.Fire;
 
-import java.awt.image.ImageObserver;
 
 import gui.GUISimulator;
 import gui.GraphicalElement;
@@ -16,10 +15,7 @@ import gui.ImageElement;
 import gui.Rectangle;
 import gui.Simulable;
 import gui.Text;
-import io.Data;
-import io.LecteurDonnees;
-import map.Box;
-import map.Map;
+import io.*;
 
 
 public class TestInvader {
@@ -75,7 +71,7 @@ class Invader implements Simulable {
 
         planCoordinates();
         draw();
-        drawMap();
+        Draw.drawMap(gui);
     }
 
     /**
@@ -130,7 +126,6 @@ class Invader implements Simulable {
     public void restart() {
         planCoordinates();
         draw();
-        drawrect(0, 0, 50, 50, Color.BLUE);
     }
 
     /**
@@ -149,7 +144,7 @@ class Invader implements Simulable {
      */
     private void draw() {
         gui.reset();	// clear the window
-        drawMap();
+        Draw.drawMap(gui);
 
         gui.addGraphicalElement(new Rectangle(x + 30, y     , invaderColor, invaderColor, 10));
         gui.addGraphicalElement(new Rectangle(x + 40, y     , invaderColor, invaderColor, 10));
@@ -219,47 +214,6 @@ class Invader implements Simulable {
         gui.addGraphicalElement(new Rectangle(x + 80, y + 90, invaderColor, invaderColor, 10));
 
         gui.addGraphicalElement(new Text(x + 40, y + 120, invaderColor, "INVADER"));
-    }
-
-    private void drawMap() 
-    {
-        Data dataMap = Map.getDataMap();
-        int rows = dataMap.getRows();
-        int columns = dataMap.getColumns();
-        Box[][] currentMap = Map.getCurrentMap();
-        int width = gui.getWidth();
-        int height =(int) (gui.getHeight() * 0.8);
-
-        // Calculate the width and height of each cell
-        int widthLength = width / columns;
-        int heightLength = height / rows;
-
-        // Iterate over each row and column to draw the boxes
-        for (int c = 0; c < columns; c +=1) {
-            for (int l = 0; l < rows; l += 1) 
-            {
-                Box currentBox = currentMap[c][l];
-                if (currentBox != null && currentBox.getNature() != null) {
-                    int flippedY = (rows - 1 - l) * heightLength;
-                    String[] filesName = currentBox.getNature().getFiles();
-                    if (currentBox.getNature().equals(TypeLand.FOREST))
-                    {
-                        gui.addGraphicalElement(new ImageElement(c * widthLength, flippedY, "images/d1.png", widthLength, heightLength, gui));
-                    }
-                    ImageElement im = new ImageElement(c * widthLength, flippedY, filesName[0], widthLength, heightLength, gui);
-                    boolean isFire  = Fire.isFire(c, l);
-                    gui.addGraphicalElement(im);
-                    if (currentBox.getNature().equals(TypeLand.HABITATION))
-                    {
-                        gui.addGraphicalElement(new ImageElement(c*widthLength, flippedY, "images/d8.png", widthLength, heightLength, gui));
-                    }
-                    if (isFire)
-                    {
-                        gui.addGraphicalElement(new ImageElement(c * widthLength, flippedY, "images/f3.png", widthLength, heightLength, gui));   
-                    }
-                }
-            }
-        }   
     }
 
 }

@@ -5,6 +5,7 @@ import map.Box;
 
 public class LeggedRobot extends Robot
 {
+    private String file = "Images/p3.png";
     public LeggedRobot(Data mapData, Box currentCase, int travelSpeed)
     {
         super(mapData, currentCase, 10, 1, -1, 0, -1, travelSpeed);
@@ -30,6 +31,10 @@ public class LeggedRobot extends Robot
             default:
                 return normalSpeed;
         }
+    }
+    public String getFile()
+    {
+        return this.file;
     }
 
 }

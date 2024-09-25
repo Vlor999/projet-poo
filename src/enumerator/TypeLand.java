@@ -9,7 +9,7 @@ import java.awt.Color;
  */
 public enum TypeLand {
     WATER(0, "water", Color.BLUE, new String[] {"images/d2.png"}),
-    FOREST(1, "forest", Color.GREEN, new String[] {"images/d4.png"}),
+    FOREST(1, "forest", Color.GREEN, new String[] {"images/dd1.png"}),
     STONE(2, "stone", Color.GRAY, new String[] {"images/d7.png"}),
     FIELD(3, "field", Color.YELLOW, new String[] {"images/d1.png"}),
     HABITATION(4, "habitation", Color.ORANGE, new String[] {"images/d3.png"});

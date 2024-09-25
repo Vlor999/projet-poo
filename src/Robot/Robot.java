@@ -205,5 +205,19 @@ public abstract class Robot {
             this.setPositionRobot(elem);
         }
     }
+
+    public static Robot getRobotPostion(int row, int col)
+    {
+        for (Robot robot : listRobots)
+        {
+            if (robot.getPositionRobot().getRow() == row && robot.getPositionRobot().getColumn() == col)
+            {
+                return robot;
+            }
+        }
+        return null;
+    }
+
+    public abstract String getFile();
 }
 
