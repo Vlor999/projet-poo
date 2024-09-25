@@ -5,9 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.zip.DataFormatException;
 
-import enumerator.TypeLand;
-import fire.Fire;
-
 
 import gui.GUISimulator;
 import gui.GraphicalElement;

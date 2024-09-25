@@ -6,7 +6,7 @@ import map.Box;
 
 public class Drone extends Robot
 {
-    private String file = "Images/p1.png";
+    private String file = "images/p3.png";
 
     public Drone(Data mapData, Box currentCase, int travelSpeed)
     {

@@ -6,7 +6,7 @@ import map.Box;
 public class WheeledRobot extends Robot
 {
 
-    private String file = "Images/p2.png";
+    private String file = "images/p6.png";
 
     public WheeledRobot(Data mapData, Box currentCase, int travelSpeed)
     {

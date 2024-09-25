@@ -6,7 +6,7 @@ import map.Box;
 
 public class CaterpillarRobot extends Robot
 {
-    private String file = "Images/p4.png";
+    private String file = "images/p4.png";
     public CaterpillarRobot(Data mapData, Box currentCase, int travelSpeed)
     {
         super(mapData, currentCase, 100, 8, 1, 5, 2000, travelSpeed);

@@ -19,6 +19,33 @@ Develop a Java application to simulate autonomous firefighting robots in a natur
 - ![Static Badge](https://img.shields.io/badge/Map-NotYet-yellow) Map class: Implement the Map class to represent the environment. The map contains a grid of cells. We also have to make a foundPath method to find the path between two points. And finaly a method to know the next case knowing the direction.
 - ![Static Badge](https://img.shields.io/badge/Pathfinding-SUCCES-green) Pathfinding: Implement the A* algorithm to find the shortest path between two points on the map. This works for all robots on the map.
 
+- ![Static Badge](https://img.shields.io/badge/ControlledMovement-FAILED-red) Controlled Movement: We have to do the hardest part but also the most exciting one because it is the movement. I've well look onto the TestInvader.java file and I think I understand how it works. We do have to evolve our robot class making it 'Simulable'. We have to write : 
+```java
+class Robot implements Simulable
+{
+  ...
+}
+```
+But we also have to implement the following methods : 
+```java
+public void next()
+{
+  ...
+}
+public void restart()
+{
+  ...
+}
+```
+With the coordinates of the robot, we have to make it move. We have to make it move with the following attributes : 
+```java
+private Iterator<Integer> xIterator;
+private Iterator<Integer> yIterator;
+```
+I'm not sure ate 100% of this part but we can try to do it.
+
+
+
 ## Javadoc
 - To generate the Javadoc, use the following command:
 ```bash
@@ -55,6 +82,11 @@ We are going to avoid merge commits issues. So we are going to use rebase.
 ```bash
 git pull --rebase
 ```
+It may also be set with the following command : 
+```bash
+git config --global pull.rebase true
+```
+
 if it is not possible, you can use 
 ```bash
 git pull
@@ -73,6 +105,13 @@ But we can also use the makefile to do it.
 make
 make exeLecture
 ```
+
+For the graphical interface, we can use the following command : 
+```bash
+make && make exeInvader
+```
+It will only launch the graphical interface if it compiles successfully.
+
 If you want to see more things about the makefile you can open it and see the features.
 
 ## Useful Unix Command

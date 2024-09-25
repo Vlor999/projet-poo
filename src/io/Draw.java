@@ -17,6 +17,7 @@ public class Draw {
 
     public static void drawMap(GUISimulator gui) 
     {
+        gui.reset(); // clear the window
         Data dataMap = Map.getDataMap();
 
         int rows = dataMap.getRows();
@@ -53,11 +54,11 @@ public class Draw {
                     {
                         gui.addGraphicalElement(new ImageElement(c * widthLength, flippedY, "images/f3.png", widthLength, heightLength, gui));   
                     }
-                    // if (Robot.isRobot(l, c))
-                    // {
-                    //     String f = Robot.getRobotPostion(l, c).getFile();
-                    //     gui.addGraphicalElement(new ImageElement(c * widthLength, flippedY, f, widthLength, heightLength, gui));
-                    // }
+                    if (Robot.isRobot(l, c))
+                    {
+                        String f = Robot.getRobotPostion(l, c).getFile();
+                        gui.addGraphicalElement(new ImageElement(c * widthLength, flippedY, f, widthLength, heightLength, gui));
+                    }
                 }
             }
         }   
