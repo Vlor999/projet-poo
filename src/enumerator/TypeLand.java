@@ -8,16 +8,17 @@ import java.awt.Color;
  * This enum can be useful in map generation, categorizing different land types, or any system that uses various terrain features.
  */
 public enum TypeLand {
-    WATER(0, "water", Color.BLUE),
-    FOREST(1, "forest", Color.GREEN),
-    STONE(2, "stone", Color.GRAY),
-    FIELD(3, "field", Color.YELLOW),
-    HABITATION(4, "habitation", Color.ORANGE);
+    WATER(0, "water", Color.BLUE, new String[] {"images/d2.png"}),
+    FOREST(1, "forest", Color.GREEN, new String[] {"images/d4.png"}),
+    STONE(2, "stone", Color.GRAY, new String[] {"images/d7.png"}),
+    FIELD(3, "field", Color.YELLOW, new String[] {"images/d1.png"}),
+    HABITATION(4, "habitation", Color.ORANGE, new String[] {"images/d3.png"});
 
     // Terrain value and name
     private final int valueTerrain;
     private final String name;
     private final Color color;
+    private final String[] listLand;
 
     /**
      * Constructor for the TypeLand enum.
@@ -26,10 +27,11 @@ public enum TypeLand {
      * @param valueTerrain the integer value representing the terrain type
      * @param name the name of the terrain type
      */
-    TypeLand(int valueTerrain, String name, Color color) {
+    TypeLand(int valueTerrain, String name, Color color, String[] listLand) {
         this.valueTerrain = valueTerrain;
         this.name = name;
         this.color = color;
+        this.listLand = listLand;
     }
 
     public int getValueTerrain() {return this.valueTerrain;}
@@ -76,6 +78,11 @@ public enum TypeLand {
             info += typeLand.toStringComplete() + "\n";
         }
         return info;
+    }
+
+    public String[] getFiles()
+    {
+        return this.listLand;
     }
 
 }

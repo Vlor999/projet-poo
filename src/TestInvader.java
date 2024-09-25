@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.zip.DataFormatException;
+
+import enumerator.TypeLand;
+import fire.Fire;
+
 import java.awt.image.ImageObserver;
 
 import gui.GUISimulator;
@@ -224,22 +228,35 @@ class Invader implements Simulable {
         int columns = dataMap.getColumns();
         Box[][] currentMap = Map.getCurrentMap();
         int width = gui.getWidth();
-        int height = gui.getHeight();
+        int height =(int) (gui.getHeight() * 0.8);
 
         // Calculate the width and height of each cell
         int widthLength = width / columns;
         int heightLength = height / rows;
 
         // Iterate over each row and column to draw the boxes
-        for (int c = 0; c < columns; c++) {
-            for (int l = 0; l < rows; l++) 
+        for (int c = 0; c < columns; c +=1) {
+            for (int l = 0; l < rows; l += 1) 
             {
                 Box currentBox = currentMap[c][l];
                 if (currentBox != null && currentBox.getNature() != null) {
                     int flippedY = (rows - 1 - l) * heightLength;
-                    String fileName = "images/base_grass_flat_E.png";
-                    ImageElement im = new ImageElement(c * widthLength, flippedY, fileName, widthLength, heightLength, gui);
+                    String[] filesName = currentBox.getNature().getFiles();
+                    if (currentBox.getNature().equals(TypeLand.FOREST))
+                    {
+                        gui.addGraphicalElement(new ImageElement(c * widthLength, flippedY, "images/d1.png", widthLength, heightLength, gui));
+                    }
+                    ImageElement im = new ImageElement(c * widthLength, flippedY, filesName[0], widthLength, heightLength, gui);
+                    boolean isFire  = Fire.isFire(c, l);
                     gui.addGraphicalElement(im);
+                    if (currentBox.getNature().equals(TypeLand.HABITATION))
+                    {
+                        gui.addGraphicalElement(new ImageElement(c*widthLength, flippedY, "images/d8.png", widthLength, heightLength, gui));
+                    }
+                    if (isFire)
+                    {
+                        gui.addGraphicalElement(new ImageElement(c * widthLength, flippedY, "images/f3.png", widthLength, heightLength, gui));   
+                    }
                 }
             }
         }   

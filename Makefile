@@ -38,7 +38,7 @@ testRobot:
 # ou bien lancer l'execution en passant par ce Makefile:
 #   > make exeInvader
 exeInvader: 
-	java -classpath bin:lib/gui.jar TestInvader
+	java -classpath bin:lib/gui.jar TestInvader 
 
 exeLecture: 
 	java -classpath bin TestLecteurDonnees cartes/mushroomOfHell-20x20.map
