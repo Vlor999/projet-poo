@@ -32,36 +32,35 @@ public class Draw {
         int heightLength = height / rows;
 
         // Iterate over each row and column to draw the boxes
-
         for (int c = 0; c < columns; c +=1) {
             for (int l = 0; l < rows; l += 1) 
             {
                 Box currentBox = currentMap[c][l];
-                int flippedY = (rows - 1 - l) * heightLength; // To have a well oriented image
+                int flippedY = (rows - 1 - l); // To have a well oriented image
+                int fY = flippedY * heightLength;
                 TypeLand currentNatureTypeLand = currentBox.getNature();
 
                 if (currentBox != null && currentNatureTypeLand != null) {
                     String[] filesName = currentNatureTypeLand.getFiles();
 
-                    gui.addGraphicalElement(new ImageElement(c * widthLength, flippedY, filesName[0], widthLength, heightLength, gui));
+                    gui.addGraphicalElement(new ImageElement(c * widthLength, fY, filesName[0], widthLength, heightLength, gui));
 
                     if (currentNatureTypeLand.equals(TypeLand.HABITATION))
                     {
-                        gui.addGraphicalElement(new ImageElement(c * widthLength, flippedY, "images/d8.png", widthLength, heightLength, gui));
+                        gui.addGraphicalElement(new ImageElement(c * widthLength, fY, "images/d8.png", widthLength, heightLength, gui));
                     }
                     boolean isFire  = Fire.isFire(c, l);
                     if (isFire)
                     {
-                        gui.addGraphicalElement(new ImageElement(c * widthLength, flippedY, "images/f3.png", widthLength, heightLength, gui));   
+                        gui.addGraphicalElement(new ImageElement(c * widthLength, fY, "images/f3.png", widthLength, heightLength, gui));   
                     }
-                    if (Robot.isRobot(l, c))
+                    if (Robot.isRobot(c, l))
                     {
-                        String f = Robot.getRobotPostion(l, c).getFile();
-                        gui.addGraphicalElement(new ImageElement(c * widthLength, flippedY, f, widthLength, heightLength, gui));
+                        String f = Robot.getRobotPostion(c, l).getFile();
+                        gui.addGraphicalElement(new ImageElement(c * widthLength, fY, f, widthLength, heightLength, gui));
                     }
                 }
             }
         }   
     }
-    
 }

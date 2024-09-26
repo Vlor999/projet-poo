@@ -31,12 +31,11 @@ public class TestLecteurDonnees {
                 List<Box> listWater = Map.getListWater();
                 List<Box> listFire = Map.getListBoxFire();
                 for (Robot robot : listRobots){
-                    List<Box> bestPath = aStar.findBestWayTo(robot,listFire);
+                    List<Box> bestPath = aStar.findBestWayTo(robot,listWater);
                     System.out.println(aStar.showInfo(bestPath));
                 }
                 Draw.drawMap(gui);
-                Robot.clearRobots();
-                Fire.resetListFires();
+
             }
             catch (FileNotFoundException e) 
             {
@@ -47,7 +46,6 @@ public class TestLecteurDonnees {
                 System.out.println("\n\t**format du fichier " + args[i] + " invalide: " + e.getMessage());
             }
         }
-
     }
 }
 
