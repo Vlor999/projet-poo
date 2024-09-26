@@ -1,6 +1,7 @@
 package Robot;
 
 import io.Data;
+import io.Draw;
 import map.AStar;
 import map.Box;
 import map.Map;
@@ -8,11 +9,18 @@ import map.Map;
 import java.util.List;
 
 import enumerator.TypeLand;
+import gui.GUISimulator;
+import gui.Simulable;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
-public abstract class Robot {
+public abstract class Robot implements Simulable{
     
+    private Iterator<Box> boxIterator;
+    private GUISimulator gui;
+    private boolean guiSet;
+
     // Water tank capacity and volume already spilled (in liters)
     private int tankCapacity;
     private int spillVolumePerTimes;
@@ -30,6 +38,7 @@ public abstract class Robot {
     
     // Current terrain type robot is on
     private Box currentCase;
+    private Box initBox;
     
     // The number of robots created
     private static int robotCount = 0;
@@ -60,8 +69,26 @@ public abstract class Robot {
         this.spillTime = spillTime;
         this.travelSpeed = travelSpeed;
         this.currentCase = currentCase;
+        this.initBox = currentCase;
         robotCount++;
         listRobots.add(this);
+        this.guiSet = false;
+    }
+
+    public void setGui(GUISimulator gui)
+    {
+        this.gui = gui;
+        this.guiSet = true;
+    }
+
+    public static void setGuiRobots(GUISimulator gui)
+    {
+        for(Robot r: listRobots)
+        {
+            r.setGui(gui);
+            gui.setSimulable(r);	
+            r.setIterator();
+        }
     }
 
     /**
@@ -219,5 +246,38 @@ public abstract class Robot {
     }
 
     public abstract String getFile();
+
+    public void setIterator()
+    {
+        List<Box> listWater = Map.getListWater();
+        AStar aStar = new AStar();
+        List<Box> bestWay = aStar.findBestWayTo(this, listWater);
+        this.boxIterator = bestWay.iterator();
+        System.out.println(this.boxIterator);
+    }
+
+    @Override
+    public void next()
+    {
+        if (this.boxIterator.hasNext())
+        {
+            this.currentCase = boxIterator.next(); 
+            if (this.guiSet)
+            {
+                Draw.drawMap(gui);
+            }
+        }
+    }
+
+    @Override
+    public void restart()
+    {
+        this.currentCase = initBox;
+        if (this.guiSet)
+        {
+            Draw.drawMap(gui);
+        }
+    }
+
 }
 

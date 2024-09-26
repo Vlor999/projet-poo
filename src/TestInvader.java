@@ -13,6 +13,7 @@ import gui.Rectangle;
 import gui.Simulable;
 import gui.Text;
 import io.*;
+import Robot.*;
 
 
 public class TestInvader {
@@ -21,8 +22,9 @@ public class TestInvader {
         GUISimulator gui = new GUISimulator(800, 600, Color.BLACK);
         // crée l'invader, en l'associant à la fenêtre graphique précédente
         // Invader invader = new Invader(gui, Color.decode("#f2ff28"));
-        String txt = "cartes/carteSujet.map";
+        String txt = "cartes/spiralOfMadness-50x50.map";
         LecteurDonnees.lire(txt);
+        Robot.setGuiRobots(gui);
         new Invader(gui, Color.decode("#f2ff28"));
     }
 }

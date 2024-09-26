@@ -1,14 +1,16 @@
 
+import io.Draw;
 import io.LecteurDonnees;
 import Robot.*;
 import fire.Fire;
+import gui.GUISimulator;
 import map.*;
 
 import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.zip.DataFormatException;
 import java.util.ArrayList;
-
+import java.awt.Color;
 
 
 public class TestLecteurDonnees {
@@ -18,17 +20,21 @@ public class TestLecteurDonnees {
             System.out.println("Syntaxe: java TestLecteurDonnees <nomDeFichier>");
             System.exit(1);
         }
+        GUISimulator gui = new GUISimulator(800, 600, Color.BLACK);
         for (int i = 0; i < args.length; i++)
         {
             try{
                 LecteurDonnees.lire(args[i]);
+                Robot.setGuiRobots(gui);
                 AStar aStar = new AStar();
                 List<Robot> listRobots = Robot.getListRobots();
                 List<Box> listWater = Map.getListWater();
+                List<Box> listFire = Map.getListBoxFire();
                 for (Robot robot : listRobots){
-                    List<Box> bestPath = AStar.findBestWayToWater(aStar,robot,listWater);
+                    List<Box> bestPath = aStar.findBestWayTo(robot,listFire);
                     System.out.println(aStar.showInfo(bestPath));
                 }
+                Draw.drawMap(gui);
                 Robot.clearRobots();
                 Fire.resetListFires();
             }

@@ -10,14 +10,13 @@ public class AStar {
     public List<Direction> listDirection = new ArrayList<>();
 
 
-    public static List<Box> findBestWayToWater(AStar aStar, Robot robot,List<Box> listWater)
+    public List<Box> findBestWayTo( Robot robot, List<Box> list)
     {
         
-
         System.out.println("Robot: " + robot.getType() + "\n" + robot.getPositionRobot());
         double minVal = -1;
         List<Box> bestPath = new ArrayList<>();
-        for (Box endBox : listWater)
+        for (Box endBox : list)
         {
             if (robot.getType().equals("LeggedRobot"))
             {
@@ -25,13 +24,13 @@ public class AStar {
             }
             else
             {
-                List<Box> path = aStar.aStarSearch(Map.getCurrentMap(), robot, endBox);
+                List<Box> path = this.aStarSearch(Map.getCurrentMap(), robot, endBox);
                 if (path.size() > 0)
                 {
                     double currentVal = path.get(path.size() - 1).getGCost();
                     if (currentVal < minVal || minVal == -1)
                     {
-                        aStar.setFinalListDirection(aStar.getListDirection());
+                        this.setFinalListDirection(this.getListDirection());
                         minVal = currentVal;
                         bestPath = path;
                     }

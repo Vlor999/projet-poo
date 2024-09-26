@@ -154,6 +154,16 @@ public class Map {
     }
     public static List<Box> getListWater() { return listWater; }
     public static List<Fire> getListFire() { return Fire.getListFires(); }
+    public static List<Box> getListBoxFire()
+    {
+        List<Box> listBoxFire = new ArrayList<>();
+        List<Fire> listFire = getListFire();
+        for (Fire currentFire: listFire)
+        {
+            listBoxFire.add(currentFire.getCurrentPosition());
+        }
+        return listBoxFire;
+    }
 
     public static void resetAll()
     {
