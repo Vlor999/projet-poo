@@ -27,7 +27,6 @@ public class TestLecteurDonnees {
                 LecteurDonnees.lire(args[i]);
                 Robot.setGuiRobots(gui);
                 Draw.drawMap(gui);
-
             }
             catch (FileNotFoundException e) 
             {

@@ -79,6 +79,7 @@ public class AStar {
             Box current = openList.poll();
 
             if (current.equals(endBox) || (!currentRobot.getType().equals("Drone") && current.distanceTo(endBox) == 1)) {
+                
                 return reconstructPath(current);
             }
 

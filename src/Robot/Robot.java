@@ -267,10 +267,13 @@ public abstract class Robot implements Simulable{
     public void setIterator(List<Box> list) {
         AStar aStar = new AStar();
         List<Box> bestWay = aStar.findBestWayTo(this, list);
-        System.out.println("Best way : ");
-        for(Box b:bestWay)
+        if (this.getType().equals("Drone"))
         {
-            System.out.println(b.toString(1));
+            System.out.println("Best way : ");
+            for(Box b:bestWay)
+            {
+                System.out.println(b.toString(1));
+            }
         }
         this.boxIterator = bestWay.iterator();
     }

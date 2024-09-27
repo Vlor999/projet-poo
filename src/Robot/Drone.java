@@ -21,7 +21,8 @@ public class Drone extends Robot
     @Override
     public int getSpecialSpeed(TypeLand type)
     {
-        return this.getTravelSpeed();
+        int normalSpeed = this.getTravelSpeed();
+        return normalSpeed;
     }
 
     @Override
@@ -32,7 +33,7 @@ public class Drone extends Robot
 
     public String getFile()
     {
-        return file;
+        return this.file;
     }
 
 }
