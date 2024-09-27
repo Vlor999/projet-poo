@@ -9,6 +9,7 @@ import map.Map;
 import java.util.List;
 
 import enumerator.TypeLand;
+import fire.Fire;
 import gui.GUISimulator;
 import gui.Simulable;
 
@@ -25,6 +26,7 @@ public abstract class Robot implements Simulable{
     // Water tank capacity and volume already spilled (in liters)
     private int tankCapacity;
     private int spillVolumePerTimes;
+    private int currentVolume;
     
     // Travel speed (in km/h)
     private int travelSpeed;
@@ -71,6 +73,7 @@ public abstract class Robot implements Simulable{
         this.travelSpeed = travelSpeed;
         this.currentCase = currentCase;
         this.initBox = new Box(currentCase.getRow(), currentCase.getColumn(), currentCase.getNature());
+        this.currentVolume = 0;
         robotCount++;
         listRobots.add(this);
         this.guiSet = false;
@@ -89,11 +92,19 @@ public abstract class Robot implements Simulable{
 
     public static void setGuiRobots(GUISimulator gui)
     {
-        for(Robot r: listRobots)
+        for(Robot robot: listRobots)
         {
-            r.setGui(gui);
-            gui.setSimulable(r);	
-            r.setIterator();
+            robot.setGui(gui);
+            gui.setSimulable(robot);	
+            if (robot.getType().equals("LeggedRobot") || robot.currentVolume > 0 )
+            {
+                System.out.println("LeggedRobot");
+                robot.setIterator(Fire.getListFireBox());
+            }
+            else
+            {
+                robot.setIterator(Map.getListWater());
+            }
         }
     }
 
@@ -253,13 +264,22 @@ public abstract class Robot implements Simulable{
 
     public abstract String getFile();
 
-    public void setIterator() {
-        List<Box> listWater = Map.getListWater();
+    public void setIterator(List<Box> list) {
         AStar aStar = new AStar();
-        List<Box> bestWay = aStar.findBestWayTo(this, listWater);
+        List<Box> bestWay = aStar.findBestWayTo(this, list);
+        System.out.println("Best way : ");
+        for(Box b:bestWay)
+        {
+            System.out.println(b.toString(1));
+        }
         this.boxIterator = bestWay.iterator();
     }
     
+    public void setCurrentVolume(int volume)
+    {
+        this.currentVolume -= volume;
+    }
+
     @Override
     public void next()
     {
@@ -268,6 +288,28 @@ public abstract class Robot implements Simulable{
             if (robot.boxIterator.hasNext())
             {
                 robot.setPositionRobot(robot.boxIterator.next());
+            }
+            else
+            {
+                System.out.println(robot.getType() + " : the robot has reached the water source");
+                if (robot.getType().equals("LeggedRobot") || robot.currentVolume > 0 )
+                {
+                    robot.setIterator(Fire.getListFireBox());
+                    Fire f = Fire.getClosestFire(robot.getPositionRobot());
+                    try
+                    {
+                        f.decreaseIntensity(robot.spillVolumePerTimes, robot);
+                    }
+                    catch (NullPointerException e)
+                    {
+                        System.out.println("No more fires");
+                    }
+                }
+                else
+                {
+                    robot.setIterator(Map.getListWater());
+                    robot.currentVolume = robot.tankCapacity;
+                }
             }
             Draw.drawMap(gui);
         }
@@ -279,8 +321,20 @@ public abstract class Robot implements Simulable{
         for(Robot robot : listRobots)
         {
             robot.currentCase = robot.initBox;
-            robot.setIterator();
+            if (robot.getType().equals("LeggedRobot") || robot.currentVolume > 0 )
+            {
+                robot.setIterator(Fire.getListFireBox());
+                
+            }
+            else
+            {
+                robot.setIterator(Map.getListWater());
+            }
         }
+        
+        Fire.setListFires();
+        System.out.println("Liste mémoire des feux : " + Fire.getListFiresMemory().size());
+        System.out.println("Liste des feux : " + Fire.getListFires().size());
         Draw.drawMap(gui);
     }   
 }

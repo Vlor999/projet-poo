@@ -26,14 +26,6 @@ public class TestLecteurDonnees {
             try{
                 LecteurDonnees.lire(args[i]);
                 Robot.setGuiRobots(gui);
-                AStar aStar = new AStar();
-                List<Robot> listRobots = Robot.getListRobots();
-                List<Box> listWater = Map.getListWater();
-                List<Box> listFire = Map.getListBoxFire();
-                for (Robot robot : listRobots){
-                    List<Box> bestPath = aStar.findBestWayTo(robot,listWater);
-                    System.out.println(aStar.showInfo(bestPath));
-                }
                 Draw.drawMap(gui);
 
             }

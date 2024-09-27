@@ -18,7 +18,7 @@ public class AStar {
         List<Box> bestPath = new ArrayList<>();
         for (Box endBox : list)
         {
-            if (robot.getType().equals("LeggedRobot"))
+            if (robot.getType().equals("bite"))
             {
                 continue;
             }

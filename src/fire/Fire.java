@@ -3,6 +3,7 @@ package fire;
 import java.util.ArrayList;
 import java.util.List;
 
+import Robot.Robot;
 import map.*;
 
 public class Fire 
@@ -10,31 +11,46 @@ public class Fire
     private Box currentPosition;
     private int intensity;
     private static List<Fire> listFires = new ArrayList<>();
+    private static List<Fire> listFiresMemory = new ArrayList<>();
+    private int initValues;
     static int numberFire = 0;
 
     public Fire(Box currentPosition, int intensity){
+        this.initValues = intensity;
         this.currentPosition = currentPosition;
         this.intensity = intensity;
         listFires.add(this);
+        listFiresMemory.add(this);
         numberFire++;
     }
 
     public Box getCurrentPosition(){ return this.currentPosition; }
 
-    public void decreaseIntensity(int intensity){
+    public void decreaseIntensity(int intensity, Robot r){
         if (this.intensity - intensity < 0){
-            this.intensity = 0;
+            this.intensity = this.initValues;
             listFires.remove(this);
             numberFire--;
         }
         else{
             this.intensity -= intensity;
         }
+        r.setCurrentVolume(intensity);
     }
 
-    /**
-     * I do not have to do this function but for the fun, I wanted to creat it
-     */
+    public static Fire getClosestFire(Box box){
+        int minDistance = Integer.MAX_VALUE;
+        Fire closestFire = null;
+        for (Fire fire : listFires){
+            int distance = Math.abs(fire.getCurrentPosition().getRow() - box.getRow()) + Math.abs(fire.getCurrentPosition().getColumn() - box.getColumn());
+            if (distance < minDistance){
+                minDistance = distance;
+                closestFire = fire;
+            }
+        }
+        return closestFire;
+    }
+
     public void splitFire(){
         int row = this.currentPosition.getRow();
         int column = this.currentPosition.getColumn();
@@ -57,6 +73,16 @@ public class Fire
      * @return List<Fire>
      */
     public static List<Fire> getListFires(){return listFires;}
+
+    public static void setListFires()
+    {
+        listFires = new ArrayList<>();
+        for (Fire f : listFiresMemory)
+        {
+            listFires.add(f);
+        }
+    }
+    public static List<Fire> getListFiresMemory(){return listFiresMemory;}
 
     /**
      * Reset the list of fires for an other simulation
@@ -103,5 +129,15 @@ public class Fire
             }
         }
         return false;
+    }
+
+    public static List<Box> getListFireBox()
+    {
+        List<Box> listFireBox = new ArrayList<>();
+        for (Fire fire : listFires)
+        {
+            listFireBox.add(fire.getCurrentPosition());
+        }
+        return listFireBox;
     }
 }

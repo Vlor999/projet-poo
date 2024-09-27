@@ -96,4 +96,5 @@ public class Box {
         double dy = this.column - other.column;
         return dx * dx + dy * dy;
     }
+ 
 }
