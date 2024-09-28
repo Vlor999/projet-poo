@@ -10,7 +10,7 @@ public class Drone extends Robot
 
     public Drone(Data mapData, Box currentCase, int travelSpeed)
     {
-        super(mapData, currentCase, 1000, 30, 0, 30, 10000, travelSpeed);
+        super(mapData, currentCase, 333, 30, 0, 30, 10000, travelSpeed);
     }
     
     public Drone(Data mapData, Box currentCase)

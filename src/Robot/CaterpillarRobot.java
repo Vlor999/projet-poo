@@ -9,7 +9,7 @@ public class CaterpillarRobot extends Robot
     private String file = "images/p4.png";
     public CaterpillarRobot(Data mapData, Box currentCase, int travelSpeed)
     {
-        super(mapData, currentCase, 100, 8, 1, 5, 2000, travelSpeed);
+        super(mapData, currentCase, 12.5, 8, 1, 5, 2000, travelSpeed);
     }
     public CaterpillarRobot(Data mapData, Box currentCase)
     {this(mapData, currentCase, 60);}

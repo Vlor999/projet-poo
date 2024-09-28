@@ -10,7 +10,7 @@ public class WheeledRobot extends Robot
 
     public WheeledRobot(Data mapData, Box currentCase, int travelSpeed)
     {
-        super(mapData, currentCase, 100, 5, 1, 10, 5000, travelSpeed);
+        super(mapData, currentCase, 20, 5, 1, 10, 5000, travelSpeed);
     }
     public WheeledRobot(Data mapData, Box currentCase)
     {

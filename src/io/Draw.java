@@ -5,6 +5,7 @@ import gui.ImageElement;
 import gui.Text;
 
 import java.awt.Color;
+import java.util.List;
 
 import Robot.Robot;
 import enumerator.TypeLand;
@@ -60,13 +61,38 @@ public class Draw {
                     boolean isFire  = Fire.isFire(c, l);
                     if (isFire)
                     {
-                        gui.addGraphicalElement(new ImageElement(c * widthLength, flippedY * heightLength, "images/f3.png", widthLength, heightLength, gui));   
+                        String randomfile = "images/f" + (int)(Math.random() * 4 + 0.9) + ".png";
+                        gui.addGraphicalElement(new ImageElement(c * widthLength, flippedY * heightLength, randomfile, widthLength, heightLength, gui));   
                     }
-                    if (Robot.isRobot(c, l))
+                    List<Robot> robots = Robot.getListRobotsBox(currentBox);
+                    int number = robots.size();
+                    if (number > 0)
                     {
-                        String f = Robot.getRobotPostion(c, l).getFile();
-                        gui.addGraphicalElement(new ImageElement(c * widthLength, flippedY * heightLength, f, widthLength, heightLength, gui));
+                        int cols = (int)Math.ceil(Math.sqrt(number));
+                        int r = (int)Math.ceil((double)number / cols);
+
+                        int imageWidth = widthLength / cols;
+                        int imageHeight = heightLength / r;
+
+                        for (int i = 0; i < number; i++)
+                        {
+                            int row = i / cols;
+                            int col = i % cols;
+
+                            int xOffset = col * imageWidth;
+                            int yOffset = row * imageHeight;
+
+                            gui.addGraphicalElement(new ImageElement(
+                                c * widthLength + xOffset, 
+                                flippedY * heightLength + yOffset, 
+                                robots.get(i).getFile(), 
+                                imageWidth, 
+                                imageHeight, 
+                                gui
+                            ));
+                        }
                     }
+
                 }
             }
         }   

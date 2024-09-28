@@ -88,14 +88,11 @@ public class Box {
         + "\n" + tab + "* Terrain type: " + this.typeLand;
     }
 
-    public boolean equals(Box obj) {
-        return this.row == obj.row && this.column == obj.column && this.typeLand == obj.typeLand;
-    }
-
     public double distanceTo(Box other) {
         double dx = this.row - other.row;
         double dy = this.column - other.column;
         return dx * dx + dy * dy;
     }
+
  
 }

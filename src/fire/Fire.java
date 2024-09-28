@@ -13,6 +13,7 @@ public class Fire
     private static List<Fire> listFires = new ArrayList<>();
     private static List<Fire> listFiresMemory = new ArrayList<>();
     private int initValues;
+    public static String[] files = {"images/f1.png", "images/f2.png", "images/f3.png",  "images/f4.png"};
     static int numberFire = 0;
 
     public Fire(Box currentPosition, int intensity){
@@ -27,9 +28,13 @@ public class Fire
     public Box getCurrentPosition(){ return this.currentPosition; }
 
     public void decreaseIntensity(Robot r){
-        if (r.getPositionRobot().distanceTo(this.currentPosition) <= Integer.min(r.getFillingType(), 1))
+        if (r.getPositionRobot().distanceTo(this.currentPosition) <= Integer.min(r.getFillingType(), 1) && (r.getCurrentVolume() > 0 || r.getType().equals("LeggedRobot")))
         {
-            int vol = r.getSpillVolumePerTimes();
+            double vol = Double.min(r.getSpillVolumePerTimes(), r.getCurrentVolume());
+            if (r.getType().equals("LeggedRobot"))
+            {
+                vol = 10;
+            }
             if (this.intensity - vol < 0){
                 this.intensity = this.initValues;
                 listFires.remove(this);
@@ -38,7 +43,7 @@ public class Fire
             else{
                 this.intensity -= vol;
             }
-            r.setCurrentVolume(intensity);
+            r.setCurrentVolume(vol);
         }
     }
 

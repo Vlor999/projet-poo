@@ -10,10 +10,16 @@ public class AStar {
     public List<Direction> listDirection = new ArrayList<>();
 
 
-    public List<Box> findBestWayTo( Robot robot, List<Box> list)
+    public List<Box> findBestWayTo(Robot robot, List<Box> list)
     {
+        if (robot.getIsUseless())
+        {
+            return new ArrayList<>();
+        }
+
         double minVal = Double.MAX_VALUE;
         List<Box> bestPath = new ArrayList<>();
+
         for (Box endBox : list)
         {
             List<Box> path = this.aStarSearch(Map.getCurrentMap(), robot, endBox, minVal);
@@ -31,9 +37,32 @@ public class AStar {
         }
         if (bestPath.isEmpty())
         {
-            System.out.println("No path for this robot");
+            System.out.println("No path for the robot :  : " + robot.getType());
+            robot.setIsUseless(true);
+            return new ArrayList<>();
         }
-        return bestPath;
+        else
+        {
+            return listPonderatedPath(robot, bestPath);
+        }
+    }
+
+    public static List<Box> listPonderatedPath(Robot robot, List<Box> path)
+    {
+        List<Box> res = new ArrayList<>();
+        Box current;
+        double caseSize = (double)Map.getDataMap().getCaseSize();
+        for (int i = 0; i < path.size(); i+=1)
+        {
+            current = path.get(i);
+            double currentSpeed = robot.getSpecialSpeed(current.getNature());
+            double time = 1 * (caseSize / currentSpeed);
+            for (int j = 0; j <= (int)time; j++)
+            {
+                res.add(current);
+            }
+        }
+        return res;
     }
 
     private List<Direction> finalListDirection = new ArrayList<>();

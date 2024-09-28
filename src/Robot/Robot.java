@@ -23,7 +23,7 @@ public abstract class Robot implements Simulable{
 
     // Water tank capacity and volume already spilled (in liters)
     private int tankCapacity;
-    private int spillVolumePerTimes;
+    private double spillVolumePerTimes;
     private int currentVolume;
     
     // Travel speed (in km/h)
@@ -44,6 +44,7 @@ public abstract class Robot implements Simulable{
     // The number of robots created
     private static int robotCount = 0;
     private static List<Robot> listRobots = new ArrayList<>();
+    private boolean isUseless = false;
 
     public static boolean endNext = false;
 
@@ -60,7 +61,7 @@ public abstract class Robot implements Simulable{
      * @param travelSpeed                Speed of the robot in km/h
      * @param currentCase                Terrain type on which the robot starts
      */
-    public Robot(Data mapData, Box currentCase, int spillVolumePerTimes, int spillTime, 
+    public Robot(Data mapData, Box currentCase, double spillVolumePerTimes, int spillTime, 
                 int fillingType, int fillingTime, int tankCapacity,int travelSpeed) 
     {
         validatePosition(currentCase, mapData);
@@ -76,6 +77,16 @@ public abstract class Robot implements Simulable{
         this.currentVolume = 0;
         robotCount++;
         listRobots.add(this);
+    }
+
+    public boolean setIsUseless(boolean isUseless)
+    {
+        return this.isUseless = isUseless;
+    }
+
+    public boolean getIsUseless()
+    {
+        return this.isUseless;
     }
 
     public void setGui(GUISimulator gui)
@@ -96,7 +107,6 @@ public abstract class Robot implements Simulable{
             gui.setSimulable(robot);	
             if (robot.getType().equals("LeggedRobot") || robot.currentVolume > 0 )
             {
-                System.out.println("LeggedRobot");
                 robot.setIterator(Fire.getListFireBox());
             }
             else
@@ -175,7 +185,7 @@ public abstract class Robot implements Simulable{
      */
     public int getTankCapacity() { return this.tankCapacity; }
     
-    public int getSpillVolumePerTimes() { return this.spillVolumePerTimes; }
+    public double getSpillVolumePerTimes() { return this.spillVolumePerTimes; }
     
     public int getTravelSpeed() { return this.travelSpeed; }
 
@@ -265,13 +275,18 @@ public abstract class Robot implements Simulable{
 
     public void setIterator(List<Box> list) {
         AStar aStar = new AStar();
-        List<Box> bestWay = aStar.findBestWayTo(this, list);
-        this.boxIterator = bestWay.iterator();
+        List<Box> l = aStar.findBestWayTo(this, list);
+        this.boxIterator = l.iterator();
     }
     
-    public void setCurrentVolume(int volume)
+    public void setCurrentVolume(double volume)
     {
         this.currentVolume -= volume;
+    }
+
+    public int getCurrentVolume()
+    {
+        return this.currentVolume;
     }
 
     @Override
@@ -321,6 +336,7 @@ public abstract class Robot implements Simulable{
         endNext = false;
         for(Robot robot : listRobots)
         {
+            isUseless = true;
             robot.currentCase = robot.initBox;
             if (robot.getType().equals("LeggedRobot") || robot.currentVolume > 0 )
             {
@@ -331,9 +347,20 @@ public abstract class Robot implements Simulable{
                 robot.setIterator(Map.getListWater());
             }
         }
-        
         Fire.setListFires();
         Draw.drawMap(gui);
     }   
+    public static List<Robot> getListRobotsBox(Box box)
+    {
+        List<Robot> list = new ArrayList<>();
+        for (Robot robot : listRobots)
+        {
+            if (robot.getPositionRobot().equals(box))
+            {
+                list.add(robot);
+            }
+        }
+        return list;
+    }
 }
 
