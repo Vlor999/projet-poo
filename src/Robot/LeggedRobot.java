@@ -8,7 +8,7 @@ public class LeggedRobot extends Robot
     private String file = "images/p5.png";
     public LeggedRobot(Data mapData, Box currentCase, int travelSpeed)
     {
-        super(mapData, currentCase, 10, 1, -1, 0, -1, travelSpeed);
+        super(mapData, currentCase, 10, 1, Integer.MAX_VALUE, 0, -1, travelSpeed);
     }
     public LeggedRobot(Data mapData, Box currentCase)
     {

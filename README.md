@@ -19,30 +19,9 @@ Develop a Java application to simulate autonomous firefighting robots in a natur
 - ![Static Badge](https://img.shields.io/badge/Map-NotYet-yellow) Map class: Implement the Map class to represent the environment. The map contains a grid of cells. We also have to make a foundPath method to find the path between two points. And finaly a method to know the next case knowing the direction.
 - ![Static Badge](https://img.shields.io/badge/Pathfinding-SUCCES-green) Pathfinding: Implement the A* algorithm to find the shortest path between two points on the map. This works for all robots on the map.
 
-- ![Static Badge](https://img.shields.io/badge/ControlledMovement-FAILED-red) Controlled Movement: We have to do the hardest part but also the most exciting one because it is the movement. I've well look onto the TestInvader.java file and I think I understand how it works. We do have to evolve our robot class making it 'Simulable'. We have to write : 
-```java
-class Robot implements Simulable
-{
-  ...
-}
-```
-But we also have to implement the following methods : 
-```java
-public void next()
-{
-  ...
-}
-public void restart()
-{
-  ...
-}
-```
-With the coordinates of the robot, we have to make it move. We have to make it move with the following attributes : 
-```java
-private Iterator<Integer> xIterator;
-private Iterator<Integer> yIterator;
-```
-I'm not sure ate 100% of this part but we can try to do it.
+- ![Static Badge](https://img.shields.io/badge/ControlledMovement-SUCCES-green) Controlled Movement: We have to do the hardest part but also the most exciting one because it is the movement. I've well look onto the TestInvader.java file and I think I understand how it works. We do have to evolve our robot class making it 'Simulable'. It works but we have to make the robots have a "brain" to know where to go. 
+
+- ![Static Badge](https://img.shields.io/badge/FillUp-FAILED-red) FillUp: We have to make the robot fill up the water tank when it is empty. We have to make the robot go to the nearest water source and fill up the tank.
 
 
 

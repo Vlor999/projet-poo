@@ -19,9 +19,7 @@ import java.util.Iterator;
 public abstract class Robot implements Simulable{
     
     private Iterator<Box> boxIterator;
-    private List<Box> boxList;
     private GUISimulator gui;
-    private boolean guiSet;
 
     // Water tank capacity and volume already spilled (in liters)
     private int tankCapacity;
@@ -32,7 +30,7 @@ public abstract class Robot implements Simulable{
     private int travelSpeed;
 
     
-    // Filling type and time (0: on case, 1: adjacent, -1: not required)
+    // Filling type and time (0: on case, 1: adjacent, Integer.MAX_VALUE: not required)
     private int fillingType;
     private int fillingTime; // in minutes
     
@@ -46,6 +44,8 @@ public abstract class Robot implements Simulable{
     // The number of robots created
     private static int robotCount = 0;
     private static List<Robot> listRobots = new ArrayList<>();
+
+    public static boolean endNext = false;
 
     /**
      * Constructor   
@@ -76,13 +76,11 @@ public abstract class Robot implements Simulable{
         this.currentVolume = 0;
         robotCount++;
         listRobots.add(this);
-        this.guiSet = false;
     }
 
     public void setGui(GUISimulator gui)
     {
         this.gui = gui;
-        this.guiSet = true;
     }
 
     public Iterator<Box> getBoxIterator()
@@ -194,6 +192,7 @@ public abstract class Robot implements Simulable{
     public static int getRobotCount() { return robotCount; }
 
     public static List<Robot> getListRobots() { return new ArrayList<>(listRobots); }
+
     
     public abstract String getType();
 
@@ -207,6 +206,7 @@ public abstract class Robot implements Simulable{
     }
 
     public static void removeRobot(Robot robot) { listRobots.remove(robot); }
+
 
     public static void clearRobots() { listRobots.clear(); }
 
@@ -242,9 +242,8 @@ public abstract class Robot implements Simulable{
      * @param TargetCase the box he aims 
      */
     public void MoveRobot(Box TargetCase){
-
         AStar astar = new AStar();
-        List<Box> trajet = astar.aStarSearch(Map.getCurrentMap(),this,TargetCase);
+        List<Box> trajet = astar.aStarSearch(Map.getCurrentMap(),this,TargetCase, Double.MAX_VALUE);
         for (Box elem : trajet){
             this.setPositionRobot(elem);
         }
@@ -267,14 +266,6 @@ public abstract class Robot implements Simulable{
     public void setIterator(List<Box> list) {
         AStar aStar = new AStar();
         List<Box> bestWay = aStar.findBestWayTo(this, list);
-        if (this.getType().equals("Drone"))
-        {
-            System.out.println("Best way : ");
-            for(Box b:bestWay)
-            {
-                System.out.println(b.toString(1));
-            }
-        }
         this.boxIterator = bestWay.iterator();
     }
     
@@ -286,6 +277,11 @@ public abstract class Robot implements Simulable{
     @Override
     public void next()
     {
+        if (endNext)
+        {
+            Draw.end(gui);
+            return;
+        }
         for (Robot robot : listRobots)
         {
             if (robot.boxIterator.hasNext())
@@ -294,18 +290,19 @@ public abstract class Robot implements Simulable{
             }
             else
             {
-                System.out.println(robot.getType() + " : the robot has reached the water source");
                 if (robot.getType().equals("LeggedRobot") || robot.currentVolume > 0 )
                 {
                     robot.setIterator(Fire.getListFireBox());
                     Fire f = Fire.getClosestFire(robot.getPositionRobot());
                     try
                     {
-                        f.decreaseIntensity(robot.spillVolumePerTimes, robot);
+                        f.decreaseIntensity(robot);
                     }
                     catch (NullPointerException e)
                     {
                         System.out.println("No more fires");
+                        endNext = true;
+                        break;
                     }
                 }
                 else
@@ -321,13 +318,13 @@ public abstract class Robot implements Simulable{
     @Override
     public void restart()
     {
+        endNext = false;
         for(Robot robot : listRobots)
         {
             robot.currentCase = robot.initBox;
             if (robot.getType().equals("LeggedRobot") || robot.currentVolume > 0 )
             {
                 robot.setIterator(Fire.getListFireBox());
-                
             }
             else
             {
@@ -336,8 +333,6 @@ public abstract class Robot implements Simulable{
         }
         
         Fire.setListFires();
-        System.out.println("Liste mémoire des feux : " + Fire.getListFiresMemory().size());
-        System.out.println("Liste des feux : " + Fire.getListFires().size());
         Draw.drawMap(gui);
     }   
 }

@@ -2,14 +2,10 @@
 import io.Draw;
 import io.LecteurDonnees;
 import Robot.*;
-import fire.Fire;
 import gui.GUISimulator;
-import map.*;
 
 import java.io.FileNotFoundException;
-import java.util.List;
 import java.util.zip.DataFormatException;
-import java.util.ArrayList;
 import java.awt.Color;
 
 

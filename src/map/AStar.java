@@ -12,38 +12,28 @@ public class AStar {
 
     public List<Box> findBestWayTo( Robot robot, List<Box> list)
     {
-        
-        System.out.println("Robot: " + robot.getType() + "\n" + robot.getPositionRobot());
-        double minVal = -1;
+        double minVal = Double.MAX_VALUE;
         List<Box> bestPath = new ArrayList<>();
         for (Box endBox : list)
         {
-            if (robot.getType().equals("bite"))
+            List<Box> path = this.aStarSearch(Map.getCurrentMap(), robot, endBox, minVal);
+            if (path.size() > 0)
             {
-                continue;
-            }
-            else
-            {
-                List<Box> path = this.aStarSearch(Map.getCurrentMap(), robot, endBox);
-                if (path.size() > 0)
-                {
-                    double currentVal = path.get(path.size() - 1).getGCost();
-                    if (currentVal < minVal || minVal == -1)
-                    {
-                        this.setFinalListDirection(this.getListDirection());
-                        minVal = currentVal;
-                        bestPath = path;
-                    }
-                }
-                else
-                {
-                    System.out.println("No path found");
-                }
-            }
-        
-        }
+                double currentVal = path.get(path.size() - 1).getGCost();
 
-    return bestPath;
+                if (currentVal < minVal)
+                {
+                    this.setFinalListDirection(this.getListDirection());
+                    minVal = currentVal;
+                    bestPath = path;
+                }
+            }
+        }
+        if (bestPath.isEmpty())
+        {
+            System.out.println("No path for this robot");
+        }
+        return bestPath;
     }
 
     private List<Direction> finalListDirection = new ArrayList<>();
@@ -54,7 +44,7 @@ public class AStar {
      * @param endBox the box that the robot wants to reach
      * @return a list of boxes that represents the path from the robot to the end box
      */
-    public List<Box> aStarSearch(Box[][] grid, Robot currentRobot, Box endBox) {
+    public List<Box> aStarSearch(Box[][] grid, Robot currentRobot, Box endBox, double maxValue) {
 
         for (Box[] boxes : grid) {
             for (Box box : boxes) {
@@ -78,8 +68,8 @@ public class AStar {
         while (!openList.isEmpty()) {
             Box current = openList.poll();
 
-            if (current.equals(endBox) || (!currentRobot.getType().equals("Drone") && current.distanceTo(endBox) == 1)) {
-                
+            if (current.equals(endBox) || (!currentRobot.getType().equals("Drone") && current.distanceTo(endBox) == 1)) 
+            {
                 return reconstructPath(current);
             }
 
@@ -104,8 +94,11 @@ public class AStar {
                     }
                 }
             }
+            if (current.getGCost() > maxValue)
+            {
+                Collections.emptyList();
+            }
         }
-        
         return Collections.emptyList(); // Return an empty list if no path is found
     }
 
@@ -148,11 +141,11 @@ public class AStar {
     public String showInfo(List<Box> path)
     {
         String info = "";
-        if (path.size() <= 1) {
+        if (path.size() < 1) {
             info += "No path found.";
         } else {
             info += "Path found:" + this.finalListDirection + "\n\t* ";
-            double finalCost = path.get(path.size() - 1).getFCost();
+            double finalCost = path.get(path.size() - 1).getGCost();
             for (Box node : path) {
                 info += "(" + node.getRow() + ", " + node.getColumn() + ") -> ";
             }

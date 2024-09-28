@@ -7,8 +7,6 @@ import java.util.zip.DataFormatException;
 
 
 import gui.GUISimulator;
-import gui.GraphicalElement;
-import gui.ImageElement;
 import gui.Rectangle;
 import gui.Simulable;
 import gui.Text;

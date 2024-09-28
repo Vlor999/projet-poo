@@ -8,7 +8,7 @@ public class Box {
     private int column;
     private TypeLand typeLand;
 
-    private Box parent;
+    private Box parent = null;
     private double gCost; // Cost from the start to this box
     private double hCost; // Heuristic cost to the end box
 
@@ -39,15 +39,16 @@ public class Box {
     public void setParent(Box parent) { this.parent = parent; }
 
     public void calculateCosts(Box start, Box end, Robot robot) {
-        int caseSize = Map.getDataMap().getCaseSize();
-        int speed = robot.getSpecialSpeed(this.getNature());
+        double caseSize = (double)Map.getDataMap().getCaseSize();
+        double speed = (double)robot.getSpecialSpeed(this.getNature());
         if (this == start) {
             this.gCost = 0;
         }
         else {
             // Equivalent as a time
-            this.gCost = parent.gCost + (int) (caseSize / speed);
+            this.gCost = parent.gCost + (caseSize / speed);
         }
+
         // must be equivalent as a time
         this.hCost = (Math.abs(end.getRow() - this.getRow()) + Math.abs(end.getColumn() - this.getColumn())) / speed;
     }

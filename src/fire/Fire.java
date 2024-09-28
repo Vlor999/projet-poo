@@ -26,16 +26,20 @@ public class Fire
 
     public Box getCurrentPosition(){ return this.currentPosition; }
 
-    public void decreaseIntensity(int intensity, Robot r){
-        if (this.intensity - intensity < 0){
-            this.intensity = this.initValues;
-            listFires.remove(this);
-            numberFire--;
+    public void decreaseIntensity(Robot r){
+        if (r.getPositionRobot().distanceTo(this.currentPosition) <= Integer.min(r.getFillingType(), 1))
+        {
+            int vol = r.getSpillVolumePerTimes();
+            if (this.intensity - vol < 0){
+                this.intensity = this.initValues;
+                listFires.remove(this);
+                numberFire--;
+            }
+            else{
+                this.intensity -= vol;
+            }
+            r.setCurrentVolume(intensity);
         }
-        else{
-            this.intensity -= intensity;
-        }
-        r.setCurrentVolume(intensity);
     }
 
     public static Fire getClosestFire(Box box){
