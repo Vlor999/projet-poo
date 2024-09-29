@@ -6,13 +6,13 @@ import map.Box;
 public class LeggedRobot extends Robot
 {
     private String file = "images/p5.png";
-    public LeggedRobot(Data mapData, Box currentCase, int travelSpeed)
+    public LeggedRobot(Data mapData, Box currentCase, double travelSpeed)
     {
         super(mapData, currentCase, 10, 1, Integer.MAX_VALUE, 0, -1, travelSpeed);
     }
     public LeggedRobot(Data mapData, Box currentCase)
     {
-        this(mapData, currentCase, 30);
+        this(mapData, currentCase, 30 / 3.6);
     }
 
     @Override
@@ -21,8 +21,8 @@ public class LeggedRobot extends Robot
         return "LeggedRobot";
     }
     @Override
-    public int getSpecialSpeed(TypeLand type) {
-        int normalSpeed = this.getTravelSpeed();
+    public double getSpecialSpeed(TypeLand type) {
+        double normalSpeed = this.getTravelSpeed();
         switch (type) {
             case STONE:
                 return 10;

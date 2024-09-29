@@ -8,20 +8,20 @@ public class Drone extends Robot
 {
     private String file = "images/p3.png";
 
-    public Drone(Data mapData, Box currentCase, int travelSpeed)
+    public Drone(Data mapData, Box currentCase, double travelSpeed)
     {
         super(mapData, currentCase, 333, 30, 0, 30, 10000, travelSpeed);
     }
     
     public Drone(Data mapData, Box currentCase)
     {
-        this(mapData, currentCase, 100);
+        this(mapData, currentCase, 100 / 3.6);
     }
 
     @Override
-    public int getSpecialSpeed(TypeLand type)
+    public double getSpecialSpeed(TypeLand type)
     {
-        int normalSpeed = this.getTravelSpeed();
+        double normalSpeed = this.getTravelSpeed();
         return normalSpeed;
     }
 

@@ -35,15 +35,19 @@ public class Fire
             {
                 vol = 10;
             }
-            if (this.intensity - vol < 0){
+            if (this.intensity - vol <= 0){
                 this.intensity = this.initValues;
                 listFires.remove(this);
                 numberFire--;
+                if (r.getType().equals("Drone"))
+                {
+                    r.setCurrentVolume(-r.getCurrentVolume()); // spend everything in one round for the drone
+                }
             }
             else{
                 this.intensity -= vol;
             }
-            r.setCurrentVolume(vol);
+            r.setCurrentVolume(-vol);
         }
     }
 
@@ -85,11 +89,16 @@ public class Fire
 
     public static void setListFires()
     {
-        listFires = new ArrayList<>();
+        List<Fire> listFiresToAdd = new ArrayList<>();
+        int compteur = 0;
         for (Fire f : listFiresMemory)
         {
-            listFires.add(f);
+            listFiresToAdd.add(f);
+            f.intensity = f.initValues; 
+            compteur += 1;
         }
+        listFires = listFiresToAdd;
+        numberFire = compteur;
     }
     public static List<Fire> getListFiresMemory(){return listFiresMemory;}
 

@@ -14,6 +14,7 @@ import gui.GUISimulator;
 import gui.Simulable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 
 public abstract class Robot implements Simulable{
@@ -26,13 +27,14 @@ public abstract class Robot implements Simulable{
     private double spillVolumePerTimes;
     private int currentVolume;
     
-    // Travel speed (in km/h)
-    private int travelSpeed;
+    // Travel speed (in m/s)
+    private double travelSpeed;
 
     
     // Filling type and time (0: on case, 1: adjacent, Integer.MAX_VALUE: not required)
     private int fillingType;
-    private int fillingTime; // in minutes
+    private int fillingTime; // in seconds
+    private boolean endFill = false;
     
     // Time to spill the tank (in seconds)
     private int spillTime;
@@ -48,6 +50,7 @@ public abstract class Robot implements Simulable{
 
     public static boolean endNext = false;
 
+
     /**
      * Constructor   
      * to initialize a Robot object.
@@ -62,14 +65,14 @@ public abstract class Robot implements Simulable{
      * @param currentCase                Terrain type on which the robot starts
      */
     public Robot(Data mapData, Box currentCase, double spillVolumePerTimes, int spillTime, 
-                int fillingType, int fillingTime, int tankCapacity,int travelSpeed) 
+                int fillingType, int fillingTime, int tankCapacity,double travelSpeed) 
     {
         validatePosition(currentCase, mapData);
 
         this.tankCapacity = tankCapacity;
         this.spillVolumePerTimes = spillVolumePerTimes;
         this.fillingType = fillingType;
-        this.fillingTime = fillingTime;
+        this.fillingTime = fillingTime * 60;
         this.spillTime = spillTime;
         this.travelSpeed = travelSpeed;
         this.currentCase = currentCase;
@@ -105,14 +108,7 @@ public abstract class Robot implements Simulable{
         {
             robot.setGui(gui);
             gui.setSimulable(robot);	
-            if (robot.getType().equals("LeggedRobot") || robot.currentVolume > 0 )
-            {
-                robot.setIterator(Fire.getListFireBox());
-            }
-            else
-            {
-                robot.setIterator(Map.getListWater());
-            }
+            robot.boxIterator = Collections.emptyIterator();
         }
     }
 
@@ -135,32 +131,37 @@ public abstract class Robot implements Simulable{
      * @param travelSpeed Speed of the robot
      * @return Robot instance
      */
-    public static Robot stringToRobot(String type, Data mapData, Box currentCase, int travelSpeed) {
+    public static Robot stringToRobot(String type, Data mapData, Box currentCase, double travelSpeed) {
         switch (type.toUpperCase()) {
             // toUpperCase to be sure that all the letters are in uppercase and that there is no miss match
+            // Convert km/h -> m/s
             case "CHENILLES":
-                if (travelSpeed < 0)
+                if (travelSpeed <= 0 || travelSpeed > 80)
                 {
-                    travelSpeed = 80;
+                    travelSpeed = 60;
                 }
+                travelSpeed = travelSpeed * 1000 / 3600;
                 return new CaterpillarRobot(mapData, currentCase, travelSpeed);
             case "DRONE":
-                if (travelSpeed < 0)
+                if (travelSpeed <= 0 || travelSpeed > 150)
                 {
-                    travelSpeed = 150;
+                    travelSpeed = 100;
                 }
+                travelSpeed = travelSpeed * 1000 / 3600;
                 return new Drone(mapData, currentCase, travelSpeed);
-            case "PATTES":
-                if (travelSpeed < 0)
+            case "PATTES": // the speed must be 30 and can't be changed 
+                if (travelSpeed != 30)
                 {
                     travelSpeed = 30;
                 }
+                travelSpeed = travelSpeed * 1000 / 3600;
                 return new LeggedRobot(mapData, currentCase, travelSpeed);
             case "ROUES":
-                if (travelSpeed < 0)
+                if (travelSpeed <= 0)
                 {
-                    travelSpeed = 50;
+                    travelSpeed = 80;
                 }
+                travelSpeed = travelSpeed * 1000 / 3600;
                 return new WheeledRobot(mapData, currentCase, travelSpeed);
             default:
                 throw new IllegalArgumentException("Invalid type of robot.");
@@ -187,9 +188,9 @@ public abstract class Robot implements Simulable{
     
     public double getSpillVolumePerTimes() { return this.spillVolumePerTimes; }
     
-    public int getTravelSpeed() { return this.travelSpeed; }
+    public double getTravelSpeed() { return this.travelSpeed; }
 
-    public abstract int getSpecialSpeed(TypeLand type);
+    public abstract double getSpecialSpeed(TypeLand type);
     
     public int getFillingType() { return fillingType;}
     
@@ -281,12 +282,65 @@ public abstract class Robot implements Simulable{
     
     public void setCurrentVolume(double volume)
     {
-        this.currentVolume -= volume;
+        if (this.currentVolume + volume <= 0)
+        {
+            this.currentVolume = 0;
+        }
+        else
+        {
+            this.currentVolume += volume;
+        }
     }
 
     public int getCurrentVolume()
     {
         return this.currentVolume;
+    }
+
+    public void fillUp()
+    {
+        // le temps de remplissage est vraiment très lent donc un peu relou. On va donc augmenter la vitesse de remplissage.
+        double increaseSpeed = (double)(tankCapacity)/2;
+        this.currentVolume += (this.tankCapacity+increaseSpeed) / this.fillingTime;
+        if (this.currentVolume >= this.tankCapacity)
+        {
+            this.currentVolume = this.tankCapacity;
+            this.endFill = true;
+        }
+        else
+        {
+            this.endFill = false;
+        }
+    }
+
+    private boolean waterAround() {
+        int row = this.getPositionRobot().getRow();
+        int col = this.getPositionRobot().getColumn();
+    
+        // Get map dimensions
+        int maxRows = Map.getDataMap().getRows();
+        int maxCols = Map.getDataMap().getColumns();
+    
+        // Check if the robot is a Drone
+        if (this.getType().equals("Drone")) {
+            return Map.getTypeLand(row, col).getValueTerrain() == TypeLand.WATER.getValueTerrain();
+        } else {
+            // Check surrounding positions with boundary validation
+            if (row + 1 < maxRows && Map.getTypeLand(row + 1, col).getValueTerrain() == TypeLand.WATER.getValueTerrain()) {
+                return true;
+            } 
+            if (row - 1 >= 0 && Map.getTypeLand(row - 1, col).getValueTerrain() == TypeLand.WATER.getValueTerrain()) {
+                return true;
+            } 
+            if (col + 1 < maxCols && Map.getTypeLand(row, col + 1).getValueTerrain() == TypeLand.WATER.getValueTerrain()) {
+                return true;
+            } 
+            if (col - 1 >= 0 && Map.getTypeLand(row, col - 1).getValueTerrain() == TypeLand.WATER.getValueTerrain()) {
+                return true;
+            }
+    
+            return false;
+        }
     }
 
     @Override
@@ -299,13 +353,13 @@ public abstract class Robot implements Simulable{
         }
         for (Robot robot : listRobots)
         {
-            if (robot.boxIterator.hasNext())
+            if (robot.boxIterator.hasNext()) // Ne fais pas attention si le feu est éteint ou pas 
             {
                 robot.setPositionRobot(robot.boxIterator.next());
             }
             else
             {
-                if (robot.getType().equals("LeggedRobot") || robot.currentVolume > 0 )
+                if (robot.getType().equals("LeggedRobot") || (robot.currentVolume > 0 && robot.endFill))
                 {
                     robot.setIterator(Fire.getListFireBox());
                     Fire f = Fire.getClosestFire(robot.getPositionRobot());
@@ -322,8 +376,14 @@ public abstract class Robot implements Simulable{
                 }
                 else
                 {
-                    robot.setIterator(Map.getListWater());
-                    robot.currentVolume = robot.tankCapacity;
+                    if (robot.waterAround())
+                    {
+                        robot.fillUp();
+                    }
+                    else
+                    {
+                        robot.setIterator(Map.getListWater());
+                    }
                 }
             }
             Draw.drawMap(gui);
@@ -334,22 +394,17 @@ public abstract class Robot implements Simulable{
     public void restart()
     {
         endNext = false;
+        Fire.setListFires();
         for(Robot robot : listRobots)
         {
-            isUseless = true;
+            robot.isUseless = false;
             robot.currentCase = robot.initBox;
-            if (robot.getType().equals("LeggedRobot") || robot.currentVolume > 0 )
-            {
-                robot.setIterator(Fire.getListFireBox());
-            }
-            else
-            {
-                robot.setIterator(Map.getListWater());
-            }
+            robot.currentVolume = 0;
+            robot.boxIterator = Collections.emptyIterator();
         }
-        Fire.setListFires();
         Draw.drawMap(gui);
     }   
+
     public static List<Robot> getListRobotsBox(Box box)
     {
         List<Robot> list = new ArrayList<>();
@@ -363,4 +418,3 @@ public abstract class Robot implements Simulable{
         return list;
     }
 }
-

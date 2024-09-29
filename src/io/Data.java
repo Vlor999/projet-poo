@@ -8,7 +8,7 @@ public class Data {
     private int numberOfColumns;
     
     // Size of each case (in meters)
-    private int caseSize;
+    private double caseSize;
 
     /**
      * Constructor for the Data class.
@@ -17,7 +17,7 @@ public class Data {
      * @param columns     The number of columns in the map.
      * @param caseSize    The size of each case in meters.
      */
-    public Data(int rows, int columns, int caseSize) {
+    public Data(int rows, int columns, double caseSize) {
         this.numberOfRows = rows;
         this.numberOfColumns = columns;
         this.caseSize = caseSize;
@@ -46,7 +46,7 @@ public class Data {
      * 
      * @return The size of each case.
      */
-    public int getCaseSize() {
+    public double getCaseSize() {
         return this.caseSize;
     }
 

@@ -7,26 +7,28 @@ import map.Box;
 public class CaterpillarRobot extends Robot
 {
     private String file = "images/p4.png";
-    public CaterpillarRobot(Data mapData, Box currentCase, int travelSpeed)
+    public CaterpillarRobot(Data mapData, Box currentCase, double travelSpeed)
     {
         super(mapData, currentCase, 12.5, 8, 1, 5, 2000, travelSpeed);
     }
     public CaterpillarRobot(Data mapData, Box currentCase)
-    {this(mapData, currentCase, 60);}
+    {
+        this(mapData, currentCase, 60 / 3.6);
+    }
 
     @Override
     public String getType()
     { return "CaterpillarRobot";}
     @Override
-    public int getSpecialSpeed(TypeLand type) {
-        int normalSpeed = this.getTravelSpeed();
+    public double getSpecialSpeed(TypeLand type) {
+        double normalSpeed = (double)this.getTravelSpeed();
         switch (type) {
             case STONE:
                 return 0;
             case WATER:
                 return 0;
             case FOREST:
-                return (int) (normalSpeed * 0.5);
+                return (normalSpeed * 0.5);
             default:
                 return normalSpeed;
         }

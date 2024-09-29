@@ -8,13 +8,13 @@ public class WheeledRobot extends Robot
 
     private String file = "images/p6.png";
 
-    public WheeledRobot(Data mapData, Box currentCase, int travelSpeed)
+    public WheeledRobot(Data mapData, Box currentCase, double travelSpeed)
     {
         super(mapData, currentCase, 20, 5, 1, 10, 5000, travelSpeed);
     }
     public WheeledRobot(Data mapData, Box currentCase)
     {
-        this(mapData, currentCase, 80);
+        this(mapData, currentCase, 80 / 3.6);
     }
 
     @Override
@@ -23,8 +23,8 @@ public class WheeledRobot extends Robot
         return "WheeledRobot";
     }
     @Override
-    public int getSpecialSpeed(TypeLand type) {
-        int normalSpeed = this.getTravelSpeed();
+    public double getSpecialSpeed(TypeLand type) {
+        double normalSpeed = this.getTravelSpeed();
         switch (type) {
             case STONE:
                 return 0;

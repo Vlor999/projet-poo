@@ -16,6 +16,10 @@ public class TestLecteurDonnees {
             System.out.println("Syntaxe: java TestLecteurDonnees <nomDeFichier>");
             System.exit(1);
         }
+        else
+        {
+            LecteurDonnees.analyse(args);
+        }
         GUISimulator gui = new GUISimulator(800, 600, Color.BLACK);
         for (int i = 0; i < args.length; i++)
         {

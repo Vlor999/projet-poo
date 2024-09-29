@@ -39,8 +39,8 @@ public class Box {
     public void setParent(Box parent) { this.parent = parent; }
 
     public void calculateCosts(Box start, Box end, Robot robot) {
-        double caseSize = (double)Map.getDataMap().getCaseSize();
-        double speed = (double)robot.getSpecialSpeed(this.getNature());
+        double caseSize = Map.getDataMap().getCaseSize();
+        double speed = robot.getSpecialSpeed(this.getNature());
         if (this == start) {
             this.gCost = 0;
         }

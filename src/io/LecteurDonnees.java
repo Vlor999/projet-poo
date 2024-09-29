@@ -32,7 +32,7 @@ import map.Map;
  */
 public class LecteurDonnees {
 
-
+    private static boolean isVerbose = false;
     /**
      * Lit et affiche le contenu d'un fichier de donnees (cases,
      * robots et incendies).
@@ -42,15 +42,22 @@ public class LecteurDonnees {
      */
     public static void lire(String fichierDonnees)
         throws FileNotFoundException, DataFormatException {
-        System.out.println("\n == Lecture du fichier" + fichierDonnees);
+        if (fichierDonnees.equals("-v"))
+        {
+            return;
+        }
+        System.out.println("\n == Lecture du fichier : " + fichierDonnees);
         LecteurDonnees lecteur = new LecteurDonnees(fichierDonnees);
         lecteur.lireCarte();
         lecteur.lireIncendies();
         lecteur.lireRobots();
         scanner.close();
         System.out.println("\n == Lecture terminee");
-        System.out.println(Map.showMap());
-        System.out.println(TypeLand.infos());
+        if (isVerbose)
+        {
+            System.out.println(Map.showMap());
+            System.out.println(TypeLand.infos());
+        }
     }
 
     // Tout le reste de la classe est prive!
@@ -76,13 +83,23 @@ public class LecteurDonnees {
         try {
             int nbLignes = scanner.nextInt();
             int nbColonnes = scanner.nextInt();
-            int tailleCases = scanner.nextInt();	// en m
+            double tailleCases = scanner.nextInt();	// en m
+            if (isVerbose)
+            {
+                System.out.println("Carte " + nbLignes + "x" + nbColonnes
+                        + "; taille des cases = " + tailleCases + "m");
+            }
             Data myData = new Data(nbLignes, nbColonnes, tailleCases);
             Map.setDataMap(myData);
             for (int lig = 0; lig < nbLignes; lig++) {
                 for (int col = 0; col < nbColonnes; col++) {
                     TypeLand currentTypeLand = lireCase(lig, col);
                     Map.setMapValue(new Box(lig, col, currentTypeLand));
+                    if (isVerbose)
+                    {
+                        System.out.println("Case (" + lig + "," + col + ") = "
+                                + currentTypeLand);
+                    }
                 }
             }
         } catch (NoSuchElementException e) {
@@ -99,11 +116,8 @@ public class LecteurDonnees {
         ignorerCommentaires();
         String chaineNature = new String();
         //		NatureTerrain nature;
-
         try {
             chaineNature = scanner.next();
-            // We are converting the string to the corresponding enum
-
             verifieLigneTerminee();
             TypeLand currentTypeLand = TypeLand.convertStringToTypeLand(chaineNature);
             return currentTypeLand;
@@ -114,7 +128,6 @@ public class LecteurDonnees {
         }
     }
 
-
     /**
      * Lit et affiche les donnees des incendies.
      */
@@ -122,7 +135,10 @@ public class LecteurDonnees {
         ignorerCommentaires();
         try {
             int nbIncendies = scanner.nextInt();
-            System.out.println("Nb d'incendies = " + nbIncendies);
+            if (isVerbose)
+            {
+                System.out.println("Nb d'incendies = " + nbIncendies);
+            }
             for (int i = 0; i < nbIncendies; i++) {
                 lireIncendie(i);
             }
@@ -140,8 +156,10 @@ public class LecteurDonnees {
      */
     private void lireIncendie(int i) throws DataFormatException {
         ignorerCommentaires();
-        System.out.print("Incendie " + i + ": ");
-
+        if (isVerbose)
+        {
+            System.out.print("Incendie " + i + ": ");
+        }
         try {
             int lig = scanner.nextInt();
             int col = scanner.nextInt();
@@ -152,8 +170,10 @@ public class LecteurDonnees {
             }
             verifieLigneTerminee();
 
-            System.out.println("position = (" + lig + "," + col
-                    + ");\t intensite = " + intensite);
+            if (isVerbose)
+            {
+                System.out.println("position = (" + lig + "," + col + ");\t intensite = " + intensite);
+            }
             Map.setFire(lig, col, intensite);
 
         } catch (NoSuchElementException e) {
@@ -170,7 +190,10 @@ public class LecteurDonnees {
         ignorerCommentaires();
         try {
             int nbRobots = scanner.nextInt();
-            System.out.println("Nb de robots = " + nbRobots);
+            if (isVerbose)
+            {
+                System.out.println("Nb de robots = " + nbRobots);
+            }
             for (int i = 0; i < nbRobots; i++) {
                 lireRobot(i);
             }
@@ -188,43 +211,44 @@ public class LecteurDonnees {
      */
     private void lireRobot(int i) throws DataFormatException {
         ignorerCommentaires();
-        System.out.print("Robot " + i + ": ");
+        if (isVerbose)
+        {
+            System.out.println("Robot " + i + ": ");
+        }
 
         try {
             int lig = scanner.nextInt();
             int col = scanner.nextInt();
-            System.out.print("position = (" + lig + "," + col + ");");
             String type = scanner.next();
-
-            System.out.print("\t type = " + type);
+            
             Box currentBox = new Box(lig, col, Map.getTypeLand(lig, col));
-
+            
             // lecture eventuelle d'une vitesse du robot (entier)
-            System.out.print("; \t vitesse = ");
-            String s = scanner.findInLine("(\\d+)");	// 1 or more digit(s) ?
-            // pour lire un flottant:    ("(\\d+(\\.\\d+)?)");
-
-            int vitesse = -1;
-            if (s == null) {
-                System.out.print("valeur par defaut");
-            } else {
-                vitesse = Integer.parseInt(s);
-                System.out.print(vitesse);
+            String s = scanner.findInLine("(\\d+(\\.\\d+)?)");	// float : km/h -> m/s ?
+            // pour lire un flottant:    ("(\\d+)");
+            
+            double vitesse = -1;
+            if (s != null) {
+                vitesse = Double.parseDouble(s);
             }
+            
+            if (isVerbose)
+            {
+                System.out.println("\tposition = (" + lig + "," + col + ");");
+                System.out.println("\t type = " + type);
+                System.out.println("\t vitesse = " + vitesse);
+            }
+
             // Creation of the robot based on the type, the map and the box
             Robot.stringToRobot(type, Map.getDataMap(), currentBox, vitesse);
             
             verifieLigneTerminee();
-            System.out.println();
 
         } catch (NoSuchElementException e) {
             throw new DataFormatException("format de robot invalide. "
                     + "Attendu: ligne colonne type [valeur_specifique]");
         }
     }
-
-
-
 
     /** Ignore toute (fin de) ligne commencant par '#' */
     private void ignorerCommentaires() {
@@ -240,6 +264,17 @@ public class LecteurDonnees {
     private void verifieLigneTerminee() throws DataFormatException {
         if (scanner.findInLine("(\\d+)") != null) {
             throw new DataFormatException("format invalide, donnees en trop.");
+        }
+    }
+
+    public static void analyse(String[] args)
+    {
+        for (String arg : args)
+        {
+            if (arg.equals("-v"))
+            {
+                isVerbose = true;
+            }
         }
     }
 }

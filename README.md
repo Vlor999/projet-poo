@@ -91,6 +91,12 @@ make && make exeInvader
 ```
 It will only launch the graphical interface if it compiles successfully.
 
+Or if you want to launch with specific files you can use the following command : 
+```bash
+javac -d bin -classpath lib/gui.jar -sourcepath src src/TestLecteurDonnees.java && \
+java -classpath bin:lib/gui.jar TestLecteurDonnees [cartes/name-of-the-map] [-v/nothing (for verbose)]
+```
+
 If you want to see more things about the makefile you can open it and see the features.
 
 ## Useful Unix Command

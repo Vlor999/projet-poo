@@ -34,7 +34,7 @@ public class Draw {
         int columns = dataMap.getColumns();
 
         Box[][] currentMap = Map.getCurrentMap();
-        int width = gui.getWidth();
+        int width = gui.getWidth() - 50;
         int height =(int) (gui.getHeight() - 150);
 
         // Calculate the width and height of each cell
@@ -61,7 +61,8 @@ public class Draw {
                     boolean isFire  = Fire.isFire(c, l);
                     if (isFire)
                     {
-                        String randomfile = "images/f" + (int)(Math.random() * 4 + 0.9) + ".png";
+                        int number = (int)(Math.random() * 4 + 0.9);
+                        String randomfile = "images/f" + number + ".png";
                         gui.addGraphicalElement(new ImageElement(c * widthLength, flippedY * heightLength, randomfile, widthLength, heightLength, gui));   
                     }
                     List<Robot> robots = Robot.getListRobotsBox(currentBox);
