@@ -346,6 +346,7 @@ public abstract class Robot implements Simulable{
     @Override
     public void next()
     {
+        boolean resultfire;
         if (endNext)
         {
             Draw.end(gui);
@@ -365,7 +366,12 @@ public abstract class Robot implements Simulable{
                     Fire f = Fire.getClosestFire(robot.getPositionRobot());
                     try
                     {
-                        f.decreaseIntensity(robot);
+                        resultfire = f.decreaseIntensity(robot);
+                        if (resultfire){ // on doit changer leurs directions
+                            for (Robot r : listRobots){
+                                robot.setIterator(Fire.getListFireBox());
+                            }
+                        }
                     }
                     catch (NullPointerException e)
                     {

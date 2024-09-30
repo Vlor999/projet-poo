@@ -27,7 +27,8 @@ public class Fire
 
     public Box getCurrentPosition(){ return this.currentPosition; }
 
-    public void decreaseIntensity(Robot r){
+    public boolean decreaseIntensity(Robot r){
+        boolean result = false;
         if (r.getPositionRobot().distanceTo(this.currentPosition) <= Integer.min(r.getFillingType(), 1) && (r.getCurrentVolume() > 0 || r.getType().equals("LeggedRobot")))
         {
             double vol = Double.min(r.getSpillVolumePerTimes(), r.getCurrentVolume());
@@ -36,6 +37,7 @@ public class Fire
                 vol = 10;
             }
             if (this.intensity - vol <= 0){
+                result = true;
                 this.intensity = this.initValues;
                 listFires.remove(this);
                 numberFire--;
@@ -49,6 +51,7 @@ public class Fire
             }
             r.setCurrentVolume(-vol);
         }
+        return result;
     }
 
     public static Fire getClosestFire(Box box){
