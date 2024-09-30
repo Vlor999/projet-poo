@@ -12,6 +12,7 @@ public class WheeledRobot extends Robot
     {
         super(mapData, currentCase, 20, 5, 1, 10, 5000, travelSpeed);
     }
+
     public WheeledRobot(Data mapData, Box currentCase)
     {
         this(mapData, currentCase, 80 / 3.6);
@@ -22,6 +23,7 @@ public class WheeledRobot extends Robot
     {
         return "WheeledRobot";
     }
+
     @Override
     public double getSpecialSpeed(TypeLand type) {
         double normalSpeed = this.getTravelSpeed();
@@ -37,11 +39,11 @@ public class WheeledRobot extends Robot
         }
     }
 
+    @Override
     public String getFile()
     {
         return this.file;
     }
-
 }
 
 

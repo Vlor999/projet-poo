@@ -8,7 +8,6 @@ import java.io.FileNotFoundException;
 import java.util.zip.DataFormatException;
 import java.awt.Color;
 
-
 public class TestLecteurDonnees {
     
     public static void main(String[] args) {

@@ -8,25 +8,25 @@ import enumerator.*;
 public class AStar {
     private static final Direction[] DIRECTIONS = {Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH}; 
     public List<Direction> listDirection = new ArrayList<>();
-
+    private static final List<Box> EMPTY_LIST = Collections.emptyList();
+    private List<Direction> finalListDirection = new ArrayList<>();
 
     public List<Box> findBestWayTo(Robot robot, List<Box> list)
     {
         if (robot.getIsUseless())
         {
-            return new ArrayList<>();
+            return EMPTY_LIST;
         }
 
         double minVal = Double.MAX_VALUE;
-        List<Box> bestPath = new ArrayList<>();
+        List<Box> bestPath = EMPTY_LIST;
 
         for (Box endBox : list)
         {
             List<Box> path = this.aStarSearch(Map.getCurrentMap(), robot, endBox, minVal);
-            if (path.size() > 0)
+            if (!path.isEmpty())
             {
                 double currentVal = path.get(path.size() - 1).getGCost();
-
                 if (currentVal < minVal)
                 {
                     this.setFinalListDirection(this.getListDirection());
@@ -39,7 +39,7 @@ public class AStar {
         {
             System.out.println("No path for the robot :  : " + robot.getType());
             robot.setIsUseless(true);
-            return new ArrayList<>();
+            return EMPTY_LIST;
         }
         else
         {
@@ -51,7 +51,7 @@ public class AStar {
     {
         List<Box> res = new ArrayList<>();
         Box current;
-        double caseSize = (double)Map.getDataMap().getCaseSize();
+        double caseSize = Map.getDataMap().getCaseSize();
         for (int i = 0; i < path.size(); i+=1)
         {
             current = path.get(i);
@@ -65,7 +65,6 @@ public class AStar {
         return res;
     }
 
-    private List<Direction> finalListDirection = new ArrayList<>();
     /**
      * A* search algorithm to find the shortest path from the robot to the end box
      * @param grid that represents the map using Box objects
@@ -87,7 +86,7 @@ public class AStar {
 
         Box startBox = currentRobot.getPositionRobot();
         if (currentRobot.getSpecialSpeed(startBox.getNature()) == 0) {
-            return Collections.emptyList();
+            return EMPTY_LIST;
         }
 
         // Set up start and end boxes
@@ -125,10 +124,10 @@ public class AStar {
             }
             if (current.getGCost() > maxValue)
             {
-                Collections.emptyList();
+                return EMPTY_LIST;
             }
         }
-        return Collections.emptyList(); // Return an empty list if no path is found
+        return EMPTY_LIST; // Return an empty list if no path is found
     }
 
     private List<Box> reconstructPath(Box end) {
@@ -167,21 +166,23 @@ public class AStar {
         }
         this.finalListDirection = res;
     }
-    public String showInfo(List<Box> path)
-    {
-        String info = "";
-        if (path.size() < 1) {
-            info += "No path found.";
-        } else {
-            info += "Path found:" + this.finalListDirection + "\n\t* ";
-            double finalCost = path.get(path.size() - 1).getGCost();
-            for (Box node : path) {
-                info += "(" + node.getRow() + ", " + node.getColumn() + ") -> ";
-            }
-            info = info.substring(0, info.length() - 4) + "\n";
-            info += "Final cost: " + finalCost;
+
+    public String showInfo(List<Box> path) {
+        if (path.isEmpty()) {
+            return "No path found.";
         }
-        return info;
+
+        StringBuilder info = new StringBuilder("Path found: " + finalListDirection + "\n\t* ");
+        double finalCost = path.get(path.size() - 1).getGCost(); // The final cost is the G cost of the last box in the path
+        
+        for (Box node : path) {
+            info.append("(").append(node.getRow()).append(", ").append(node.getColumn()).append(") -> ");
+        }
+
+        info.setLength(info.length() - 4); // Remove the last " -> "
+        info.append("\nFinal cost: ").append(finalCost);
+
+        return info.toString();
     }
 
     public AStar()

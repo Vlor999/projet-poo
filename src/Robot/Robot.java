@@ -204,8 +204,9 @@ public abstract class Robot implements Simulable{
 
     public static List<Robot> getListRobots() { return new ArrayList<>(listRobots); }
 
-    
     public abstract String getType();
+
+    public abstract String getFile();
 
     /**
      * Sets the robot's position to a new case with a deep copy.
@@ -271,8 +272,6 @@ public abstract class Robot implements Simulable{
         }
         return null;
     }
-
-    public abstract String getFile();
 
     public void setIterator(List<Box> list) {
         AStar aStar = new AStar();
@@ -346,7 +345,7 @@ public abstract class Robot implements Simulable{
     @Override
     public void next()
     {
-        boolean resultfire;
+        boolean resultFire;
         if (endNext)
         {
             Draw.end(gui);
@@ -366,10 +365,10 @@ public abstract class Robot implements Simulable{
                     Fire f = Fire.getClosestFire(robot.getPositionRobot());
                     try
                     {
-                        resultfire = f.decreaseIntensity(robot);
-                        if (resultfire){ // on doit changer leurs directions
+                        resultFire = f.decreaseIntensity(robot);
+                        if (resultFire){ // on doit changer leurs directions
                             for (Robot r : listRobots){
-                                robot.setIterator(Fire.getListFireBox());
+                                r.setIterator(Fire.getListFireBox());
                             }
                         }
                     }

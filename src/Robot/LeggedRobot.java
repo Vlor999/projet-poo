@@ -32,6 +32,8 @@ public class LeggedRobot extends Robot
                 return normalSpeed;
         }
     }
+
+    @Override
     public String getFile()
     {
         return this.file;

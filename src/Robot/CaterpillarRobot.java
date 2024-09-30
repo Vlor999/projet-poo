@@ -19,6 +19,7 @@ public class CaterpillarRobot extends Robot
     @Override
     public String getType()
     { return "CaterpillarRobot";}
+
     @Override
     public double getSpecialSpeed(TypeLand type) {
         double normalSpeed = (double)this.getTravelSpeed();
@@ -33,6 +34,8 @@ public class CaterpillarRobot extends Robot
                 return normalSpeed;
         }
     }
+    
+    @Override
     public String getFile()
     {
         return this.file;
