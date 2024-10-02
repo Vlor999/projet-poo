@@ -1,13 +1,12 @@
 package map;
-
+import Robot.Robot;
+import enumerator.*;
+import fire.*;
 import io.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import Robot.Robot;
-import enumerator.*;
-import fire.*;
 
 public class Map {
     static String RED = "\u001B[31m";
@@ -17,7 +16,7 @@ public class Map {
     // 2D array representing the current map made up of Case objects
     static Box[][] currentMap;
     
-    // Data object containing map metadata (e.g., number of rows and columns)
+    // Data object containing map metadata
     static Data dataMap;
 
     static List<Box> listWater = new ArrayList<>();

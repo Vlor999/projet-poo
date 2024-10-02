@@ -42,8 +42,6 @@ public enum TypeLand {
         return "The terrain value is : " + this.valueTerrain + " and the name is : " + this.name;
     }
 
-    public String toString() {return "" + this.valueTerrain;}
-
     public static TypeLand randomTypeLand() {
         return TypeLand.values()[(int) (Math.random() * TypeLand.values().length)];
     }
@@ -84,6 +82,5 @@ public enum TypeLand {
     {
         return this.listLand;
     }
-
 
 }

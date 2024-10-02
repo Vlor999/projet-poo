@@ -1,6 +1,5 @@
 
-import io.Draw;
-import io.LecteurDonnees;
+import io.*;
 import Robot.*;
 import gui.GUISimulator;
 

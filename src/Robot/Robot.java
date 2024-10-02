@@ -8,7 +8,7 @@ import map.Map;
 
 import java.util.List;
 
-import enumerator.TypeLand;
+import enumerator.*;
 import fire.Fire;
 import gui.GUISimulator;
 import gui.Simulable;
@@ -28,7 +28,7 @@ public abstract class Robot implements Simulable{
     private int currentVolume;
     
     // Travel speed (in m/s)
-    private double travelSpeed;
+    protected double travelSpeed;
 
     
     // Filling type and time (0: on case, 1: adjacent, Integer.MAX_VALUE: not required)
@@ -95,11 +95,6 @@ public abstract class Robot implements Simulable{
     public void setGui(GUISimulator gui)
     {
         this.gui = gui;
-    }
-
-    public Iterator<Box> getBoxIterator()
-    {
-        return this.boxIterator;
     }
 
     public static void setGuiRobots(GUISimulator gui)
@@ -176,37 +171,30 @@ public abstract class Robot implements Simulable{
     {
         return  this.getType() + " info:" 
         + "\n\t * Current Position: \n" + this.getPositionRobot().toString(2)
-        + "\n\t * Spill volume per times: " + this.getSpillVolumePerTimes()
-        + "\n\t * Tank capacity: " + this.getTankCapacity()
-        + "\n\t * Travel speed: " + this.getTravelSpeed();
+        + "\n\t * Spill volume per times: " + this.spillVolumePerTimes + " L/s"
+        + "\n\t * Tank capacity: " + this.tankCapacity + " L"
+        + "\n\t * Travel speed: " + this.travelSpeed + " m/s";
     }
     
     /**
      * Getters for various robot properties.
      */
-    public int getTankCapacity() { return this.tankCapacity; }
     
-    public double getSpillVolumePerTimes() { return this.spillVolumePerTimes; }
-    
-    public double getTravelSpeed() { return this.travelSpeed; }
-
     public abstract double getSpecialSpeed(TypeLand type);
+    
+    public abstract String getType();
+
+    public abstract String getFile();
     
     public int getFillingType() { return fillingType;}
     
     public int getFillingTime() { return this.fillingTime; }
-
-    public int getSpillTime() { return this.spillTime; }
     
     public Box getPositionRobot() { return this.currentCase;}
     
-    public static int getRobotCount() { return robotCount; }
-
+    public double getSpillVolumePerTimes() { return this.spillVolumePerTimes; }
+    
     public static List<Robot> getListRobots() { return new ArrayList<>(listRobots); }
-
-    public abstract String getType();
-
-    public abstract String getFile();
 
     /**
      * Sets the robot's position to a new case with a deep copy.
@@ -217,12 +205,10 @@ public abstract class Robot implements Simulable{
         this.currentCase = new Box(newCase.getRow(), newCase.getColumn(), newCase.getNature());
     }
 
-    public static void removeRobot(Robot robot) { listRobots.remove(robot); }
-
-
-    public static void clearRobots() { listRobots.clear(); }
+    public static void clearRobots() { listRobots.clear(); } // Not used but may be usefull
 
     public static String showAllRobots() {
+        // Not used but may be usefull with the verbose mode
         String result = "Number of robots: " + robotCount + "\n";
         for (Robot robot : listRobots) {
             result += robot.toString() + "\n";
@@ -246,31 +232,6 @@ public abstract class Robot implements Simulable{
             }
         }
         return false;
-    }
-
-
-    /**
-     * Will make the movement of the robot 
-     * @param TargetCase the box he aims 
-     */
-    public void MoveRobot(Box TargetCase){
-        AStar astar = new AStar();
-        List<Box> trajet = astar.aStarSearch(Map.getCurrentMap(),this,TargetCase, Double.MAX_VALUE);
-        for (Box elem : trajet){
-            this.setPositionRobot(elem);
-        }
-    }
-
-    public static Robot getRobotPostion(int row, int col)
-    {
-        for (Robot robot : listRobots)
-        {
-            if (robot.getPositionRobot().getRow() == row && robot.getPositionRobot().getColumn() == col)
-            {
-                return robot;
-            }
-        }
-        return null;
     }
 
     public void setIterator(List<Box> list) {
@@ -298,7 +259,7 @@ public abstract class Robot implements Simulable{
 
     public void fillUp()
     {
-        // le temps de remplissage est vraiment très lent donc un peu relou. On va donc augmenter la vitesse de remplissage.
+        // The time to fill the tank is really slow so we incresed it. But if we want the real speed put 0 to increseSpeed.
         double increaseSpeed = (double)(tankCapacity)/2;
         this.currentVolume += (this.tankCapacity+increaseSpeed) / this.fillingTime;
         if (this.currentVolume >= this.tankCapacity)
@@ -315,32 +276,36 @@ public abstract class Robot implements Simulable{
     private boolean waterAround() {
         int row = this.getPositionRobot().getRow();
         int col = this.getPositionRobot().getColumn();
-    
+        
         // Get map dimensions
         int maxRows = Map.getDataMap().getRows();
         int maxCols = Map.getDataMap().getColumns();
-    
+        
         // Check if the robot is a Drone
         if (this.getType().equals("Drone")) {
             return Map.getTypeLand(row, col).getValueTerrain() == TypeLand.WATER.getValueTerrain();
         } else {
-            // Check surrounding positions with boundary validation
-            if (row + 1 < maxRows && Map.getTypeLand(row + 1, col).getValueTerrain() == TypeLand.WATER.getValueTerrain()) {
-                return true;
-            } 
-            if (row - 1 >= 0 && Map.getTypeLand(row - 1, col).getValueTerrain() == TypeLand.WATER.getValueTerrain()) {
-                return true;
-            } 
-            if (col + 1 < maxCols && Map.getTypeLand(row, col + 1).getValueTerrain() == TypeLand.WATER.getValueTerrain()) {
-                return true;
-            } 
-            if (col - 1 >= 0 && Map.getTypeLand(row, col - 1).getValueTerrain() == TypeLand.WATER.getValueTerrain()) {
-                return true;
+            // Define the relative positions to check (down, up, right, left)
+            int[][] directions = {
+                Direction.SOUTH.getDirection(),  // down
+                Direction.NORTH.getDirection(),  // up
+                Direction.EAST.getDirection(),   // right
+                Direction.WEST.getDirection()    // left
+            };
+
+            for (int[] dir : directions) {
+                int newRow = row + dir[0];
+                int newCol = col + dir[1];
+                // Check boundaries and water terrain
+                if (newRow >= 0 && newRow < maxRows && newCol >= 0 && newCol < maxCols &&
+                    Map.getTypeLand(newRow, newCol).getValueTerrain() == TypeLand.WATER.getValueTerrain()) {
+                    return true;
+                }
             }
-    
             return false;
         }
     }
+    
 
     @Override
     public void next()
@@ -368,7 +333,10 @@ public abstract class Robot implements Simulable{
                         resultFire = f.decreaseIntensity(robot);
                         if (resultFire){ // on doit changer leurs directions
                             for (Robot r : listRobots){
-                                r.setIterator(Fire.getListFireBox());
+                                if (robot.currentVolume > 0)
+                                {
+                                    r.setIterator(Fire.getListFireBox());
+                                }
                             }
                         }
                     }

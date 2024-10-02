@@ -22,7 +22,7 @@ public class LeggedRobot extends Robot
     }
     @Override
     public double getSpecialSpeed(TypeLand type) {
-        double normalSpeed = this.getTravelSpeed();
+        double normalSpeed = this.travelSpeed;
         switch (type) {
             case STONE:
                 return 10;
