@@ -20,6 +20,10 @@ public class Box {
         this.hCost = 0;
     }
 
+    /**
+     * Generate a random case usefull for testing
+     * @return a random Box
+     */
     public static Box randomCase() {
         int row = (int) (Math.random() * 10);
         int column = (int) (Math.random() * 10);
@@ -27,10 +31,10 @@ public class Box {
         return new Box(row, column, typeLand);
     }
 
+    // Getters 
     public int getRow() { return this.row; }
     public int getColumn() { return this.column; }
     public TypeLand getNature() { return this.typeLand; }
-    
     public double getGCost() { return gCost; }
     public double getHCost() { return hCost; }
     public double getFCost() { return gCost + hCost; }
@@ -38,6 +42,12 @@ public class Box {
 
     public void setParent(Box parent) { this.parent = parent; }
 
+    /**
+     * Calculate the costs of the box depending on the robot that you are using
+     * @param start
+     * @param end
+     * @param robot
+     */
     public void calculateCosts(Box start, Box end, Robot robot) {
         double caseSize = Map.getDataMap().getCaseSize();
         double speed = robot.getSpecialSpeed(this.getNature());
@@ -53,12 +63,20 @@ public class Box {
         this.hCost = (Math.abs(end.getRow() - this.getRow()) + Math.abs(end.getColumn() - this.getColumn())) / speed;
     }
 
+    /**
+     * Reset the costs of the box. To be sure that the box is not already used.
+     */
     public void resetCosts() {
         this.gCost = Double.MAX_VALUE;
         this.hCost = 0;
         this.parent = null;
     }
 
+    /**
+     * Compare the box with another box. It will be usefull onto Direction enum
+     * @param other
+     * @return
+     */
     public int[] compareBox(Box other) {
         return new int[] { this.row - other.row, this.column - other.column };
     }
@@ -77,6 +95,11 @@ public class Box {
         return "* Position: (" + this.row + ", " + this.column + ") \n* Terrain type: " + this.typeLand;
     }
 
+    /**
+     * Return the string of the box with a tabulation
+     * @param t
+     * @return
+     */
     public String toString(int t)
     {
         String tab = "";
@@ -88,11 +111,14 @@ public class Box {
         + "\n" + tab + "* Terrain type: " + this.typeLand;
     }
 
-    public double distanceTo(Box other) {
-        double dx = this.row - other.row;
-        double dy = this.column - other.column;
+    /**
+     * Calculate the distance between two boxes
+     * @param otherBox 
+     * @return the distance between the two boxes squared
+     */
+    public double distanceTo(Box otherBox) {
+        double dx = this.row - otherBox.row;
+        double dy = this.column - otherBox.column;
         return dx * dx + dy * dy;
     }
-
- 
 }

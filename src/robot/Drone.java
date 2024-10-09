@@ -6,19 +6,22 @@ import map.Box;
 
 public class Drone extends Robot
 {
-    private String file = "images/Robot_Drone.png";
-
     public Drone(Data mapData, Box currentCase, double travelSpeed)
     {
         super(mapData, currentCase, 333, 30, 0, 30, 10000, travelSpeed);
+        this.file = "images/Robot_Drone.png";
     }
     
     public Drone(Data mapData, Box currentCase)
     {
-        this(mapData, currentCase, 100 / 3.6);
+        this(mapData, currentCase, 100 / 3.6); // Conversion from km/h to m/s
     }
 
     @Override
+    /**
+     * Get the special speed of the robot depending on the type of land but for the drone no need to change the speed
+     * @param type the type of land
+     */
     public double getSpecialSpeed(TypeLand type)
     {
         double normalSpeed = this.travelSpeed;
@@ -31,10 +34,5 @@ public class Drone extends Robot
         return "Drone";
     }
 
-    @Override
-    public String getFile()
-    {
-        return this.file;
-    }
 
 }

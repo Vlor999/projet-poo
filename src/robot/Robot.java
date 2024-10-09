@@ -30,6 +30,8 @@ public abstract class Robot implements Simulable{
     // Travel speed (in m/s)
     protected double travelSpeed;
 
+    // the file to display the robot
+    protected String file;
     
     // Filling type and time (0: on case, 1: adjacent, Integer.MAX_VALUE: not required)
     private int fillingType;
@@ -184,8 +186,6 @@ public abstract class Robot implements Simulable{
     
     public abstract String getType();
 
-    public abstract String getFile();
-    
     public int getFillingType() { return fillingType;}
     
     public int getFillingTime() { return this.fillingTime; }
@@ -195,6 +195,8 @@ public abstract class Robot implements Simulable{
     public double getSpillVolumePerTimes() { return this.spillVolumePerTimes; }
     
     public static List<Robot> getListRobots() { return new ArrayList<>(listRobots); }
+
+    public String getFile(){return this.file;} 
 
     /**
      * Sets the robot's position to a new case with a deep copy.

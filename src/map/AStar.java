@@ -11,22 +11,31 @@ public class AStar {
     private static final List<Box> EMPTY_LIST = Collections.emptyList();
     private List<Direction> finalListDirection = new ArrayList<>();
 
+    /**
+     * Find the closest box from the robot in the list
+     * @param robot
+     * @param list
+     * @return the closest box from the robot and the path
+     */
     public List<Box> findBestWayTo(Robot robot, List<Box> list)
     {
+        // There is some useless robot that can't move so no need to find a path
         if (robot.getIsUseless())
         {
             return EMPTY_LIST;
         }
 
+        // We are going to look path for each bow and found the best one
         double minVal = Double.MAX_VALUE;
         List<Box> bestPath = EMPTY_LIST;
 
         for (Box endBox : list)
         {
+            // minVal is the minimum value of the path. There is no need to found a path if the cost is higher than the minimum value
             List<Box> path = this.aStarSearch(Map.getCurrentMap(), robot, endBox, minVal);
             if (!path.isEmpty())
             {
-                double currentVal = path.get(path.size() - 1).getGCost();
+                double currentVal = path.get(path.size() - 1).getGCost(); // The final cost is the G cost of the last box in the path
                 if (currentVal < minVal)
                 {
                     this.setFinalListDirection(this.getListDirection());
@@ -35,6 +44,7 @@ public class AStar {
                 }
             }
         }
+        // If the best path is empty, the robot can't move then we set the robot as useless. No more path will be found for this robot
         if (bestPath.isEmpty())
         {
             System.out.println("No path for the robot :  : " + robot.getType());
@@ -43,10 +53,17 @@ public class AStar {
         }
         else
         {
-            return listPonderatedPath(robot, bestPath);
+            return listPonderatedPath(robot, bestPath); // We return the ponderated path
         }
     }
 
+    /**
+     * Ponderate the path to have a better view of the path. This represent the time that the robot will take to go to the end box
+     * We are copying the box as many time as the robot will take to go to the next box
+     * @param robot
+     * @param path
+     * @return
+     */
     public static List<Box> listPonderatedPath(Robot robot, List<Box> path)
     {
         List<Box> res = new ArrayList<>();
@@ -59,7 +76,7 @@ public class AStar {
             double time = 1 * (caseSize / currentSpeed);
             for (int j = 0; j <= (int)time; j++)
             {
-                res.add(current);
+                res.add(current); // We add the box as many time as the robot will take to go to the next box
             }
         }
         return res;
@@ -79,9 +96,9 @@ public class AStar {
                 box.resetCosts();
             }
         }
-        clearListDirection();
+        clearListDirection(); // Clear the list of directions before starting the search. To be sure that the list is empty.
 
-        PriorityQueue<Box> openList = new PriorityQueue<>(Comparator.comparingDouble(box -> box.getFCost()));
+        PriorityQueue<Box> openList = new PriorityQueue<>(Comparator.comparingDouble(box -> box.getFCost())); // Priority about the F cost
         Set<Box> closedList = new HashSet<>();
 
         Box startBox = currentRobot.getPositionRobot();
@@ -122,7 +139,7 @@ public class AStar {
                     }
                 }
             }
-            if (current.getGCost() > maxValue)
+            if (current.getGCost() > maxValue) // If the cost is higher than the maximum value, we stop the search
             {
                 return EMPTY_LIST;
             }
@@ -130,6 +147,7 @@ public class AStar {
         return EMPTY_LIST; // Return an empty list if no path is found
     }
 
+    // Reconstruct the path from the end box to the start box
     private List<Box> reconstructPath(Box end) {
         List<Box> path = new ArrayList<>();
         Box current = end;
@@ -147,6 +165,7 @@ public class AStar {
         return path;
     }
 
+    // Check if the move is valid and the robot can move to the box
     private boolean isValidMove(Box[][] grid, int x, int y, Robot robot) {
         return x >= 0 && y >= 0 && x < grid.length && y < grid[0].length && robot.getSpecialSpeed(grid[x][y].getNature()) != 0;
     }
@@ -185,6 +204,7 @@ public class AStar {
         return info.toString();
     }
 
+    // Constructor that clear the list of directions
     public AStar()
     {
         clearListDirection();

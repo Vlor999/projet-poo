@@ -5,17 +5,15 @@ import map.Box;
 
 public class WheeledRobot extends Robot
 {
-
-    private String file = "images/Robot_Wheeled.png";
-
     public WheeledRobot(Data mapData, Box currentCase, double travelSpeed)
     {
         super(mapData, currentCase, 20, 5, 1, 10, 5000, travelSpeed);
+        this.file = "images/Robot_Wheeled.png";
     }
 
     public WheeledRobot(Data mapData, Box currentCase)
     {
-        this(mapData, currentCase, 80 / 3.6);
+        this(mapData, currentCase, 80 / 3.6); // Conversion from km/h to m/s
     }
 
     @Override
@@ -25,6 +23,10 @@ public class WheeledRobot extends Robot
     }
 
     @Override
+    /**
+     * Get the special speed of the robot depending on the type of land. If 0 the robot can't move
+     * @param type the type of land
+     */
     public double getSpecialSpeed(TypeLand type) {
         double normalSpeed = this.travelSpeed;
         switch (type) {
@@ -37,12 +39,6 @@ public class WheeledRobot extends Robot
             default:
                 return normalSpeed;
         }
-    }
-
-    @Override
-    public String getFile()
-    {
-        return this.file;
     }
 }
 

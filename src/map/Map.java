@@ -13,12 +13,9 @@ public class Map {
     static String GREEN = "\u001B[32m";
     static String RESET = "\u001B[0m";
     static String BLUE = "\u001B[34m";
-    // 2D array representing the current map made up of Case objects
-    static Box[][] currentMap;
-    
-    // Data object containing map metadata
-    static Data dataMap;
 
+    static Box[][] currentMap;
+    static Data dataMap;
     static List<Box> listWater = new ArrayList<>();
 
     /**
@@ -38,12 +35,20 @@ public class Map {
             listWater.add(currentCase);
         }
     }
+
+    /**
+     * Create a map with the given dimensions and set the default values for each case.
+     */
     public static void preSetMap()
     {
-        resetAll();
+        resetAll(); // Reset the list of water
         currentMap = new Box[dataMap.getRows()][dataMap.getColumns()];
     }
 
+    /**
+     * Set the data map
+     * @param dataMap
+     */
     public static void setDataMap(Data dataMap) 
     { 
         Map.dataMap = dataMap; 
@@ -51,8 +56,7 @@ public class Map {
     }
 
     /**
-     * Set the fire on the map
-     * 
+     * Set the fires on the map
      * @param row
      * @param column
      * @param intensity
@@ -61,6 +65,10 @@ public class Map {
         new Fire(currentMap[row][column], intensity);
     }
 
+    /**
+     * Will show a line of the map as a terminal image. Could be useful for debugging and tu use less energy.
+     * @return
+     */
     public String lineString()
     {
         String line = "";
@@ -96,6 +104,12 @@ public class Map {
         return myData + myMap;
     }
     
+    /**
+     * Print some datas on the terminal about the map and add some colors to the terminal
+     * @param row
+     * @param column
+     * @return
+     */
     private final static String positionColored(int row, int column)
     {
         String txt = "|";
@@ -146,11 +160,10 @@ public class Map {
         return false;
     }
     
+    // Getters
     public static Data getDataMap() { return dataMap; }
     public static Box[][] getCurrentMap() { return currentMap; }
-    public static TypeLand getTypeLand(int row, int column){
-        return currentMap[row][column].getNature();
-    }
+    public static TypeLand getTypeLand(int row, int column){ return currentMap[row][column].getNature();}
     public static List<Box> getListWater() { return listWater; }
     public static List<Fire> getListFire() { return Fire.getListFires(); }
     public static List<Box> getListBoxFire()
@@ -163,7 +176,6 @@ public class Map {
         }
         return listBoxFire;
     }
-
     public static void resetAll()
     {
         listWater.clear();
