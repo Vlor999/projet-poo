@@ -12,7 +12,6 @@ public class Data {
 
     /**
      * Constructor for the Data class.
-     * 
      * @param rows        The number of rows in the map.
      * @param columns     The number of columns in the map.
      * @param caseSize    The size of each case in meters.
@@ -25,7 +24,6 @@ public class Data {
 
     /**
      * Get the number of columns in the map.
-     * 
      * @return The number of columns.
      */
     public int getColumns() {
@@ -34,7 +32,6 @@ public class Data {
 
     /**
      * Get the number of rows in the map.
-     * 
      * @return The number of rows.
      */
     public int getRows() {
@@ -43,7 +40,6 @@ public class Data {
 
     /**
      * Get the size of each case in meters.
-     * 
      * @return The size of each case.
      */
     public double getCaseSize() {
@@ -52,7 +48,6 @@ public class Data {
 
     /**
      * Return the datas as a String
-     * 
      * @return String values of the datas
      */
     public String toString()

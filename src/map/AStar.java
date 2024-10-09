@@ -1,9 +1,9 @@
 package map;
 
-import Robot.*;
 import java.util.*;
 
 import enumerator.*;
+import robot.*;
 
 public class AStar {
     private static final Direction[] DIRECTIONS = {Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH}; 

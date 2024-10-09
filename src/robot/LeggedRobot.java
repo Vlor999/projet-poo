@@ -1,38 +1,32 @@
-package Robot;
+package robot;
 import enumerator.TypeLand;
 import io.Data;
 import map.Box;
 
-public class WheeledRobot extends Robot
+public class LeggedRobot extends Robot
 {
-
-    private String file = "images/p6.png";
-
-    public WheeledRobot(Data mapData, Box currentCase, double travelSpeed)
+    private String file = "images/Robot_Legged.png";
+    public LeggedRobot(Data mapData, Box currentCase, double travelSpeed)
     {
-        super(mapData, currentCase, 20, 5, 1, 10, 5000, travelSpeed);
+        super(mapData, currentCase, 10, 1, Integer.MAX_VALUE, 0, -1, travelSpeed);
     }
-
-    public WheeledRobot(Data mapData, Box currentCase)
+    public LeggedRobot(Data mapData, Box currentCase)
     {
-        this(mapData, currentCase, 80 / 3.6);
+        this(mapData, currentCase, 30 / 3.6);
     }
 
     @Override
     public String getType()
     {
-        return "WheeledRobot";
+        return "LeggedRobot";
     }
-
     @Override
     public double getSpecialSpeed(TypeLand type) {
         double normalSpeed = this.travelSpeed;
         switch (type) {
             case STONE:
-                return 0;
+                return 10;
             case WATER:
-                return 0;
-            case FOREST:
                 return 0;
             default:
                 return normalSpeed;
@@ -44,8 +38,5 @@ public class WheeledRobot extends Robot
     {
         return this.file;
     }
+
 }
-
-
-
-    

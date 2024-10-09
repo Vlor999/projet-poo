@@ -27,6 +27,10 @@ public enum Direction {
         this.name = name;
     }
 
+    /**
+     * Get the x and y coordinates of the direction. Using deep copy to prevent modification of the original values.
+     * @return int[] containing the x and y coordinates of the direction
+     */
     public int[] getDirection() {
         return new int[]{this.x, this.y};
     }
@@ -41,6 +45,11 @@ public enum Direction {
     public int getY() {return y;}
 
 
+    /**
+     * Get the direction from the difference of 2 positions. 
+     * @param diff
+     * @return Direction (NORTH, SOUTH, WEST, EAST) or null if the difference is not a valid direction.
+     */
     public static Direction foundTypeFromDiff(int[] diff) {
         if (diff[0] == 1 && diff[1] == 0) {
             return Direction.EAST;

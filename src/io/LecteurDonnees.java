@@ -5,10 +5,10 @@ import java.io.*;
 import java.util.*;
 import java.util.zip.DataFormatException;
 
-import Robot.Robot;
 import enumerator.TypeLand;
 import map.Box;
 import map.Map;
+import robot.Robot;
 
 /**
  * Lecteur de cartes au format spectifié dans le sujet.

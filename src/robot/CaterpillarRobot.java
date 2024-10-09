@@ -1,4 +1,4 @@
-package Robot;
+package robot;
 
 import enumerator.TypeLand;
 import io.Data;
@@ -6,7 +6,7 @@ import map.Box;
 
 public class CaterpillarRobot extends Robot
 {
-    private String file = "images/p4.png";
+    private String file = "images/Robot_Caterpillar.png";
     public CaterpillarRobot(Data mapData, Box currentCase, double travelSpeed)
     {
         super(mapData, currentCase, 12.5, 8, 1, 5, 2000, travelSpeed);

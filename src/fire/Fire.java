@@ -3,57 +3,68 @@ package fire;
 import java.util.ArrayList;
 import java.util.List;
 
-import Robot.Robot;
 import map.*;
+import robot.Robot;
 
 public class Fire 
 {
     private Box currentPosition;
-    private int intensity;
+    private int intensity; // Represent the quantityy of water needed to extinguish the fire
     private static List<Fire> listFires = new ArrayList<>();
-    private static List<Fire> listFiresMemory = new ArrayList<>();
-    private int initValues;
-    public static String[] files = {"images/f1.png", "images/f2.png", "images/f3.png",  "images/f4.png"};
+    private static List<Fire> listFiresMemory = new ArrayList<>(); // to keep the initial values of the fires
+    private int initValues; // to keep the initial values of the fires
     static int numberFire = 0;
+    public static String[] files = {"images/fire1.png", "images/fire2.png", "images/fire3.png",  "images/fire4.png"};
 
     public Fire(Box currentPosition, int intensity){
         this.initValues = intensity;
         this.currentPosition = currentPosition;
         this.intensity = intensity;
         listFires.add(this);
-        listFiresMemory.add(this);
+        listFiresMemory.add(this); // to keep the initial values of the fires
         numberFire++;
     }
 
     public Box getCurrentPosition(){ return this.currentPosition; }
 
+    /**
+     * Increase the intensity of the fire if the robot is close enough and has enough water
+     * @param r the robot
+     * @return result boolean if the fire is extinguished
+     */
     public boolean decreaseIntensity(Robot r){
         boolean result = false;
         if (r.getPositionRobot().distanceTo(this.currentPosition) <= Integer.min(r.getFillingType(), 1) && (r.getCurrentVolume() > 0 || r.getType().equals("LeggedRobot")))
         {
-            double vol = Double.min(r.getSpillVolumePerTimes(), r.getCurrentVolume());
+            //if the volume is under the spillVolumePerTimes, we spill everything
+            double vol = Double.min(r.getSpillVolumePerTimes(), r.getCurrentVolume()); // the volume of water that the robot can spill
             if (r.getType().equals("LeggedRobot"))
             {
                 vol = 10;
             }
             if (this.intensity - vol <= 0){
                 result = true;
-                this.intensity = this.initValues;
-                listFires.remove(this);
-                numberFire--;
+                this.intensity = this.initValues; // reset the intensity
+                listFires.remove(this); // remove the fire from the list
+                numberFire--; // decrease the number of fires
                 if (r.getType().equals("Drone"))
                 {
                     r.setCurrentVolume(-r.getCurrentVolume()); // spend everything in one round for the drone
                 }
             }
             else{
-                this.intensity -= vol;
+                this.intensity -= vol; // decrease the intensity of the fire if not enough water
             }
-            r.setCurrentVolume(-vol);
+            r.setCurrentVolume(-vol); // decrease the volume of water of the robot
         }
         return result;
     }
 
+    /**
+     * Get the closest fire from a box
+     * @param box
+     * @return Fire
+     */
     public static Fire getClosestFire(Box box){
         int minDistance = Integer.MAX_VALUE;
         Fire closestFire = null;
@@ -67,6 +78,9 @@ public class Fire
         return closestFire;
     }
 
+    /**
+     * Split the fire to the adjacent boxes if possible but not introduced onto the subject
+     */
     public void splitFire(){
         int row = this.currentPosition.getRow();
         int column = this.currentPosition.getColumn();
@@ -90,6 +104,9 @@ public class Fire
      */
     public static List<Fire> getListFires(){return listFires;}
 
+    /**
+     * Set the list of fires to know where to fires are
+     */
     public static void setListFires()
     {
         List<Fire> listFiresToAdd = new ArrayList<>();
@@ -103,6 +120,7 @@ public class Fire
         listFires = listFiresToAdd;
         numberFire = compteur;
     }
+    
     public static List<Fire> getListFiresMemory(){return listFiresMemory;}
 
     /**

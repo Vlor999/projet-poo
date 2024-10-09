@@ -1,7 +1,7 @@
 package map;
 
 import enumerator.*;
-import Robot.*;
+import robot.*;
 
 public class Box {
     private int row;

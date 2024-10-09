@@ -1,8 +1,8 @@
 package map;
-import Robot.Robot;
 import enumerator.*;
 import fire.*;
 import io.*;
+import robot.Robot;
 
 import java.util.ArrayList;
 import java.util.List;

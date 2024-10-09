@@ -1,4 +1,4 @@
-package Robot;
+package robot;
 
 import enumerator.TypeLand;
 import io.Data;
@@ -6,7 +6,7 @@ import map.Box;
 
 public class Drone extends Robot
 {
-    private String file = "images/p3.png";
+    private String file = "images/Robot_Drone.png";
 
     public Drone(Data mapData, Box currentCase, double travelSpeed)
     {

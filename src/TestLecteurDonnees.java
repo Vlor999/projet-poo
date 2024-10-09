@@ -1,6 +1,6 @@
 
 import io.*;
-import Robot.*;
+import robot.*;
 import gui.GUISimulator;
 
 import java.io.FileNotFoundException;

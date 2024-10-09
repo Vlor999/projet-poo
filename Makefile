@@ -34,7 +34,7 @@ testLecture:
 #   > make exeInvader
 
 exeLecture: 
-	java -classpath bin:lib/gui.jar TestLecteurDonnees cartes/mushroomOfHell-20x20.map
+	java -classpath bin:lib/gui.jar TestLecteurDonnees cartes/carteSujet.map
 
 exeLectureAll:
 	clear && java -classpath bin TestLecteurDonnees cartes/*.map

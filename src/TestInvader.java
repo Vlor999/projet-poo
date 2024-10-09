@@ -11,7 +11,7 @@ import gui.Rectangle;
 import gui.Simulable;
 import gui.Text;
 import io.*;
-import Robot.*;
+import robot.*;
 
 
 public class TestInvader {

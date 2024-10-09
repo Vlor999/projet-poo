@@ -8,11 +8,11 @@ import java.awt.Color;
  * This enum can be useful in map generation, categorizing different land types, or any system that uses various terrain features.
  */
 public enum TypeLand {
-    WATER(0, "water", Color.BLUE, new String[] {"images/d2.png"}),
-    FOREST(1, "forest", Color.GREEN, new String[] {"images/dd1.png"}),
-    STONE(2, "stone", Color.GRAY, new String[] {"images/d7.png"}),
-    FIELD(3, "field", Color.YELLOW, new String[] {"images/d1.png"}),
-    HABITATION(4, "habitation", Color.ORANGE, new String[] {"images/d3.png"});
+    WATER(0, "water", Color.BLUE, new String[] {"images/Pokemon_water.png"}),
+    FOREST(1, "forest", Color.GREEN, new String[] {"images/Pokemon_forest.png"}),
+    STONE(2, "stone", Color.GRAY, new String[] {"images/Pokemon_stone.png"}),
+    FIELD(3, "field", Color.YELLOW, new String[] {"images/Pokemon_field.png"}),
+    HABITATION(4, "habitation", Color.ORANGE, new String[] {"images/Pokemon_habitation.png"});
 
     // Terrain value and name
     private final int valueTerrain;
@@ -38,7 +38,12 @@ public enum TypeLand {
 
     public Color getColor() {return this.color;}
 
-    public String toStringComplete() {
+    /**
+     * Get the name of the terrain type and its value.
+     * The toString method does not exists for enum, so we have to create it.
+     * @return
+     */
+    public String toString() {
         return "The terrain value is : " + this.valueTerrain + " and the name is : " + this.name;
     }
 
@@ -73,7 +78,7 @@ public enum TypeLand {
         String info = "";
         for (TypeLand typeLand : TypeLand.values())
         {
-            info += typeLand.toStringComplete() + "\n";
+            info += typeLand.toString() + "\n";
         }
         return info;
     }
