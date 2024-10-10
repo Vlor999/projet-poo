@@ -19,6 +19,7 @@ import java.util.Iterator;
 
 public abstract class Robot implements Simulable{
     
+    // This is the iterator that will allow the robot to move and gui is the graphical interface
     private Iterator<Box> boxIterator;
     private GUISimulator gui;
 
@@ -43,7 +44,7 @@ public abstract class Robot implements Simulable{
     
     // Current terrain type robot is on
     private Box currentCase;
-    public Box initBox;
+    public final Box initBox;
     
     // The number of robots created
     private static int robotCount = 0;
@@ -59,39 +60,41 @@ public abstract class Robot implements Simulable{
      * 
      * @param mapData                    Data object containing map metadata
      * @param tankCapacity               Tank capacity in liters
-     * @param spillVolumePerTimes        Volume spilled per times in liters
+     * @param quantityPerTimes           Volume spilled per times in liters
      * @param fillingType                Filling type (0: on case, 1: adjacent, -1: not required)
      * @param fillingTime                Time to fill the tank in minutes
      * @param spillTime                  Time to spill the tank in seconds
      * @param travelSpeed                Speed of the robot in km/h
      * @param currentCase                Terrain type on which the robot starts
      */
-    public Robot(Data mapData, Box currentCase, double spillVolumePerTimes, int spillTime, 
+    public Robot(Data mapData, Box currentCase, double quantityPerTimes, int spillTime, 
                 int fillingType, int fillingTime, int tankCapacity,double travelSpeed) 
     {
         validatePosition(currentCase, mapData);
 
         this.tankCapacity = tankCapacity;
-        this.spillVolumePerTimes = spillVolumePerTimes;
         this.fillingType = fillingType;
-        this.fillingTime = fillingTime * 60;
+        this.fillingTime = fillingTime * 60; // Convert minutes to seconds
         this.spillTime = spillTime;
         this.travelSpeed = travelSpeed;
         this.currentCase = currentCase;
         this.initBox = new Box(currentCase.getRow(), currentCase.getColumn(), currentCase.getNature());
         this.currentVolume = 0;
+        // We are currently using the second as the time unit so we have to know the time needed to spill the tank
+        this.spillVolumePerTimes = quantityPerTimes / this.spillTime;
         robotCount++;
         listRobots.add(this);
     }
 
+    /**
+     * Set the robot as useless if there is no need to look for the closest fire or water. The robot is blocked.
+     * @param isUseless
+     * @return
+     */
     public boolean setIsUseless(boolean isUseless)
     {
-        return this.isUseless = isUseless;
-    }
-
-    public boolean getIsUseless()
-    {
-        return this.isUseless;
+        this.isUseless = isUseless;
+        return this.isUseless; 
     }
 
     public void setGui(GUISimulator gui)
@@ -99,6 +102,9 @@ public abstract class Robot implements Simulable{
         this.gui = gui;
     }
 
+    /**
+     * Set all the robots with the same gui and set the simulable
+     */
     public static void setGuiRobots(GUISimulator gui)
     {
         for(Robot robot: listRobots)
@@ -135,33 +141,33 @@ public abstract class Robot implements Simulable{
             case "CHENILLES":
                 if (travelSpeed <= 0 || travelSpeed > 80)
                 {
-                    travelSpeed = 60;
+                    travelSpeed = 60; // Default speed if over the limit
                 }
-                travelSpeed = travelSpeed * 1000 / 3600;
+                travelSpeed = travelSpeed / 3.6; // Conversion from km/h to m/s
                 return new CaterpillarRobot(mapData, currentCase, travelSpeed);
             case "DRONE":
                 if (travelSpeed <= 0 || travelSpeed > 150)
                 {
                     travelSpeed = 100;
                 }
-                travelSpeed = travelSpeed * 1000 / 3600;
+                travelSpeed = travelSpeed / 3.6;
                 return new Drone(mapData, currentCase, travelSpeed);
             case "PATTES": // the speed must be 30 and can't be changed 
                 if (travelSpeed != 30)
                 {
                     travelSpeed = 30;
                 }
-                travelSpeed = travelSpeed * 1000 / 3600;
+                travelSpeed = travelSpeed / 3.6;
                 return new LeggedRobot(mapData, currentCase, travelSpeed);
             case "ROUES":
                 if (travelSpeed <= 0)
                 {
-                    travelSpeed = 80;
+                    travelSpeed = 80; // no max value for the speed
                 }
-                travelSpeed = travelSpeed * 1000 / 3600;
+                travelSpeed = travelSpeed / 3.6;
                 return new WheeledRobot(mapData, currentCase, travelSpeed);
             default:
-                throw new IllegalArgumentException("Invalid type of robot.");
+                throw new IllegalArgumentException("Invalid type of robot."); // If the type is not recognized
         }
     }
 
@@ -175,28 +181,26 @@ public abstract class Robot implements Simulable{
         + "\n\t * Current Position: \n" + this.getPositionRobot().toString(2)
         + "\n\t * Spill volume per times: " + this.spillVolumePerTimes + " L/s"
         + "\n\t * Tank capacity: " + this.tankCapacity + " L"
-        + "\n\t * Travel speed: " + this.travelSpeed + " m/s";
+        + "\n\t * Travel speed: " + this.travelSpeed + " m/s"
+        + "\n\t * Current Tank Capacity: " + this.currentVolume + "L : witch represent  : " + 100 * this.currentVolume/this.tankCapacity + "%";
     }
     
     /**
      * Getters for various robot properties.
      */
-    
     public abstract double getSpecialSpeed(TypeLand type);
     
     public abstract String getType();
 
     public int getFillingType() { return fillingType;}
     
-    public int getFillingTime() { return this.fillingTime; }
-    
     public Box getPositionRobot() { return this.currentCase;}
     
     public double getSpillVolumePerTimes() { return this.spillVolumePerTimes; }
     
-    public static List<Robot> getListRobots() { return new ArrayList<>(listRobots); }
-
     public String getFile(){return this.file;} 
+
+    public int getCurrentVolume(){return this.currentVolume;}
 
     /**
      * Sets the robot's position to a new case with a deep copy.
@@ -209,6 +213,10 @@ public abstract class Robot implements Simulable{
 
     public static void clearRobots() { listRobots.clear(); } // Not used but may be usefull
 
+    /**
+     * Show all the robots
+     * @return
+     */
     public static String showAllRobots() {
         // Not used but may be usefull with the verbose mode
         String result = "Number of robots: " + robotCount + "\n";
@@ -236,14 +244,35 @@ public abstract class Robot implements Simulable{
         return false;
     }
 
+    /**
+     * Set the iterator for the robot if the robot is not useless
+     * @param list
+     */
     public void setIterator(List<Box> list) {
-        AStar aStar = new AStar();
-        List<Box> l = aStar.findBestWayTo(this, list);
-        this.boxIterator = l.iterator();
+        if (this.isUseless)
+        {
+            // If the robot is useless we don't need to look for the closest fire or water
+            this.boxIterator = Collections.emptyIterator();
+        }
+        else
+        {
+            AStar aStar = new AStar();
+            List<Box> l = aStar.findBestWayTo(this, list); //Find the best way from the robot to the points of the list (list of water or fire).
+            this.boxIterator = l.iterator();
+        }
     }
     
+    /**
+     * We are currently setting up the volume of the robot
+     * @param volume
+     */
     public void setCurrentVolume(double volume)
     {
+        if (Data.isVerbose)
+        {
+            System.out.println("Curently spilling water.");
+            System.out.println(this);
+        }
         if (this.currentVolume + volume <= 0)
         {
             this.currentVolume = 0;
@@ -254,16 +283,18 @@ public abstract class Robot implements Simulable{
         }
     }
 
-    public int getCurrentVolume()
-    {
-        return this.currentVolume;
-    }
-
+    /**
+     * Fill up the tank of the robot. There is some parameters to know the simulation accurate
+     */
     public void fillUp()
     {
-        // The time to fill the tank is really slow so we incresed it. But if we want the real speed put 0 to increseSpeed.
-        double increaseSpeed = (double)(tankCapacity)/2;
-        this.currentVolume += (this.tankCapacity+increaseSpeed) / this.fillingTime;
+        if (Data.isVerbose)
+        {
+            System.out.println("Filling up the tank.");
+            System.out.println(this);
+        }
+        double increaseSpeed = 0; // if you want to increase the speed of the filling
+        this.currentVolume += (this.tankCapacity + increaseSpeed) / this.fillingTime;
         if (this.currentVolume >= this.tankCapacity)
         {
             this.currentVolume = this.tankCapacity;
@@ -275,6 +306,10 @@ public abstract class Robot implements Simulable{
         }
     }
 
+    /**
+     * Check if there is water around the robot and at a good distance. This last depends on the type of robot
+     * @return boolean that says so
+     */
     private boolean waterAround() {
         int row = this.getPositionRobot().getRow();
         int col = this.getPositionRobot().getColumn();
@@ -344,7 +379,6 @@ public abstract class Robot implements Simulable{
                     }
                     catch (NullPointerException e)
                     {
-                        System.out.println("No more fires");
                         endNext = true;
                         break;
                     }

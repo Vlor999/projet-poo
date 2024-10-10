@@ -8,7 +8,7 @@ public class Drone extends Robot
 {
     public Drone(Data mapData, Box currentCase, double travelSpeed)
     {
-        super(mapData, currentCase, 333, 30, 0, 30, 10000, travelSpeed);
+        super(mapData, currentCase, 10000, 30, 0, 30, 10000, travelSpeed);
         this.file = "images/Robot_Drone.png";
     }
     

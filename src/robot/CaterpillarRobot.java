@@ -8,7 +8,7 @@ public class CaterpillarRobot extends Robot
 {
     public CaterpillarRobot(Data mapData, Box currentCase, double travelSpeed)
     {
-        super(mapData, currentCase, 12.5, 8, 1, 5, 2000, travelSpeed);
+        super(mapData, currentCase, 100, 8, 1, 5, 2000, travelSpeed);
         this.file = "images/Robot_Caterpillar.png";
     }
     public CaterpillarRobot(Data mapData, Box currentCase)

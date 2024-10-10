@@ -19,12 +19,6 @@ public class AStar {
      */
     public List<Box> findBestWayTo(Robot robot, List<Box> list)
     {
-        // There is some useless robot that can't move so no need to find a path
-        if (robot.getIsUseless())
-        {
-            return EMPTY_LIST;
-        }
-
         // We are going to look path for each bow and found the best one
         double minVal = Double.MAX_VALUE;
         List<Box> bestPath = EMPTY_LIST;
@@ -47,7 +41,6 @@ public class AStar {
         // If the best path is empty, the robot can't move then we set the robot as useless. No more path will be found for this robot
         if (bestPath.isEmpty())
         {
-            System.out.println("No path for the robot :  : " + robot.getType());
             robot.setIsUseless(true);
             return EMPTY_LIST;
         }

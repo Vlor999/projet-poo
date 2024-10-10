@@ -10,6 +10,7 @@ public class Data {
     // Size of each case (in meters)
     private double caseSize;
 
+    public static boolean isVerbose = false;
     /**
      * Constructor for the Data class.
      * @param rows        The number of rows in the map.
@@ -54,5 +55,9 @@ public class Data {
     {
         return "Number of columns : " + this.numberOfColumns + "\nNumber of rows : " 
         +  this.numberOfRows + "\nCase size : " + this.caseSize;
+    }
+
+    public static void setIsVerbose(boolean b) {
+        isVerbose = b;
     }
 }

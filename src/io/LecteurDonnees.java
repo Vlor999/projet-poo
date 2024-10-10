@@ -90,6 +90,7 @@ public class LecteurDonnees {
                         + "; taille des cases = " + tailleCases + "m");
             }
             Data myData = new Data(nbLignes, nbColonnes, tailleCases);
+            Data.setIsVerbose(isVerbose);
             Map.setDataMap(myData);
             for (int lig = 0; lig < nbLignes; lig++) {
                 for (int col = 0; col < nbColonnes; col++) {
