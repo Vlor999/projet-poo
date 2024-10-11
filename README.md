@@ -15,13 +15,25 @@ Develop a Java application to simulate autonomous firefighting robots in a natur
 
 ## To Do
 - ![Static Badge](https://img.shields.io/badge/Fire-SUCCES-green) Fire class: Implement the Fire class to represent fires on the map. Each fire has a position and an intensity (quantity of water needed).
-- ![Static Badge](https://img.shields.io/badge/Robot-FAILED-red) Robot class: Implement the Robot class to represent robots on the map. We have to make the movement of the robot class. (Optional: Implement a subclass for flying robots and others.)
-- ![Static Badge](https://img.shields.io/badge/Map-NotYet-yellow) Map class: Implement the Map class to represent the environment. The map contains a grid of cells. We also have to make a foundPath method to find the path between two points. And finaly a method to know the next case knowing the direction.
+- ![Static Badge](https://img.shields.io/badge/Robot-SUCCES-green) Robot class: Implement the Robot class to represent robots on the map. We have to make the movement of the robot class. (Optional: Implement a subclass for flying robots and others.)
+- ![Static Badge](https://img.shields.io/badge/Map-SUCCES-green) Map class: Implement the Map class to represent the environment. The map contains a grid of cells. We also have to make a foundPath method to find the path between two points. And finaly a method to know the next case knowing the direction.
 - ![Static Badge](https://img.shields.io/badge/Pathfinding-SUCCES-green) Pathfinding: Implement the A* algorithm to find the shortest path between two points on the map. This works for all robots on the map.
 
 - ![Static Badge](https://img.shields.io/badge/ControlledMovement-SUCCES-green) Controlled Movement: We have to do the hardest part but also the most exciting one because it is the movement. I've well look onto the TestInvader.java file and I think I understand how it works. We do have to evolve our robot class making it 'Simulable'. It works but we have to make the robots have a "brain" to know where to go. 
 
-- ![Static Badge](https://img.shields.io/badge/FillUp-FAILED-red) FillUp: We have to make the robot fill up the water tank when it is empty. We have to make the robot go to the nearest water source and fill up the tank.
+- ![Static Badge](https://img.shields.io/badge/FillUp-NotEnded-yellow) FillUp: We have to make the robot fill up the water tank when it is empty. We have to make the robot go to the nearest water source and fill up the tank. We have to make sure that the time to fill up the tank is not too long or too short.
+
+- ![Static Badge](https://img.shields.io/badge/Simulateur-FAILED-red) We ahve to make 2 classes (documentation at page 5 of sujet.pdf):
+  - Events (abstract):
+    - date : long
+    + Events(date : long)
+    + getDate() : long
+    + execute() : void
+  - Simulator (linked to Events):
+    - dateSimualtion : long
+    + addEvents(e : Events) : void
+    - incrementDate()
+    - endOfSimulation() : boolean
 
 
 
