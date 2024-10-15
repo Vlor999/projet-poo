@@ -106,7 +106,7 @@ public class AStar {
         while (!openList.isEmpty()) {
             Box current = openList.poll();
 
-            if (current.equals(endBox) || (!currentRobot.getType().equals("Drone") && current.distanceTo(endBox) == 1)) 
+            if (current.equals(endBox) || (!(currentRobot instanceof Drone) && current.distanceTo(endBox) == 1)) 
             {
                 return reconstructPath(current);
             }
