@@ -33,6 +33,4 @@ public class Drone extends Robot
     {
         return "Drone";
     }
-
-
 }

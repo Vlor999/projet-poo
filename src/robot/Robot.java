@@ -49,11 +49,10 @@ public abstract class Robot implements Simulable{
     
     // The number of robots created
     protected static int robotCount = 0;
-    protected static List<Robot> listRobots = new ArrayList<>();
+    static List<Robot> listRobots = new ArrayList<>();
     protected boolean isUseless = false;
 
     public static boolean endNext = false;
-
 
     /**
      * Constructor   
@@ -82,11 +81,9 @@ public abstract class Robot implements Simulable{
         this.initBox = new Box(currentCase.getRow(), currentCase.getColumn(), currentCase.getNature());
         this.currentVolume = 0;
         // We are currently using the second as the time unit so we have to know the time needed to spill the tank
+        listRobots.add(this);
         this.spillVolumePerTimes = quantityPerTimes / this.spillTime;
         robotCount++;
-        if (!(this instanceof SuperRobot)){
-            listRobots.add(this);
-        }
     }
 
     /**
@@ -346,6 +343,13 @@ public abstract class Robot implements Simulable{
         }
     }
     
+
+    /**
+     * Nous voulions quelque chose qui fonctionne pour tous les robots. 
+     * L'idée ici est de regarder à travers tous les robots qui peuvent bouger quel est le prochain mouvement à faire.
+     * Une fois avoir trouvé pour tous les robots ce qu'ils doivent faire alors on les fait bouger.
+     * Si un robot ne peut plus bouger alors on le met en inutile. 
+     */
     @Override
     public void next()
     {
@@ -413,7 +417,7 @@ public abstract class Robot implements Simulable{
             robot.currentVolume = 0;
             robot.boxIterator = Collections.emptyIterator();
         }
-        Draw.drawMap(gui);
+        Draw.restartDisplay(gui);
     }   
 
     public static List<Robot> getListRobotsBox(Box box)
@@ -428,4 +432,9 @@ public abstract class Robot implements Simulable{
         }
         return list;
     }
+
+    public static List<Robot> getListRobots()
+    {
+        return listRobots;
+    } 
 }

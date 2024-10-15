@@ -18,7 +18,7 @@ public class LeggedRobot extends Robot
     @Override
     public String getType()
     {
-        return "LeggedRobot";
+        return "Legged";
     }
     @Override
     /**
