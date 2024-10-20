@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import map.*;
+import robot.LeggedRobot;
 import robot.Robot;
+import robot.Drone;
 
 public class Fire 
 {
@@ -34,11 +36,11 @@ public class Fire
      */
     public boolean decreaseIntensity(Robot r){
         boolean result = false;
-        if (r.getPositionRobot().distanceTo(this.currentPosition) <= Integer.min(r.getFillingType(), 1) && (r.getCurrentVolume() > 0 || r.getType().equals("LeggedRobot")))
+        if (r.getPositionRobot().distanceTo(this.currentPosition) <= Integer.min(r.getFillingType(), 1) && (r.getCurrentVolume() > 0 || r instanceof LeggedRobot))
         {
             //if the volume is under the spillVolumePerTimes, we spill everything
             double vol = Double.min(r.getSpillVolumePerTimes(), r.getCurrentVolume()); // the volume of water that the robot can spill
-            if (r.getType().equals("LeggedRobot"))
+            if (r instanceof LeggedRobot)
             {
                 vol = 10;
             }
@@ -47,7 +49,7 @@ public class Fire
                 this.intensity = this.initValues; // reset the intensity
                 listFires.remove(this); // remove the fire from the list
                 numberFire--; // decrease the number of fires
-                if (r.getType().equals("Drone"))
+                if (r instanceof Drone)
                 {
                     r.setCurrentVolume(-r.getCurrentVolume()); // spend everything in one round for the drone
                 }

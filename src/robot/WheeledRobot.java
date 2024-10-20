@@ -19,7 +19,7 @@ public class WheeledRobot extends Robot
     @Override
     public String getType()
     {
-        return "WheeledRobot";
+        return "Wheeled";
     }
 
     @Override

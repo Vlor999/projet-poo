@@ -6,6 +6,7 @@ import gui.Text;
 
 import java.awt.Color;
 import java.util.List;
+import java.util.ArrayList;
 
 import enumerator.TypeLand;
 import fire.Fire;
@@ -25,6 +26,13 @@ public class Draw {
         gui.addGraphicalElement(new Text(gui.getWidth() / 2, gui.getHeight() / 2, Color.WHITE, "End No More Fires"));
     }
 
+    public static void restartDisplay(GUISimulator gui)
+    {
+        gui.reset();
+        gui.addGraphicalElement(new Text(gui.getWidth() / 2, gui.getHeight() / 2, Color.WHITE, "Restart"));
+        gui.addGraphicalElement(new Text(gui.getWidth() / 2, gui.getHeight() / 2 + 50, Color.WHITE, "Press Debut to restart"));
+    }
+
     /**
      * Draw the map with the boxes and the robots but also the fires water and other stuff
      * @param gui
@@ -38,12 +46,30 @@ public class Draw {
         int columns = dataMap.getColumns();
 
         Box[][] currentMap = Map.getCurrentMap();
-        int width = gui.getWidth() - 50;
-        int height = gui.getHeight() - 150;
+        int widthOffset = 75;
+        int heightOffset = 150;
+        int width = gui.getWidth() - widthOffset;
+        int height = gui.getHeight() - heightOffset;
 
         // Calculate the width and height of each cell
         int widthLength = width / columns;
         int heightLength = height / rows;
+        int compteur = 0;
+        List<Robot> listRobots = Robot.getListRobots();
+        List<String> passed = new ArrayList<>();
+        for (Robot r: listRobots)
+        {
+            if (passed.contains(r.getType()))
+            {
+                continue;
+            }
+            gui.addGraphicalElement(new ImageElement(width, heightLength * compteur * 2, TypeLand.FIELD.getFiles()[0], widthLength, heightLength, gui));
+            gui.addGraphicalElement(new ImageElement(width, heightLength * compteur * 2, r.getFile(),widthLength, heightLength, gui));
+            gui.addGraphicalElement(new Text(width + widthOffset / 3, heightLength * (compteur *2 + 1), Color.WHITE, r.getType()));
+            compteur++;
+            passed.add(r.getType());
+        }
+        
 
         // Iterate over each row and column to draw the boxes
         for (int c = 0; c < columns; c +=1) {
@@ -74,6 +100,7 @@ public class Draw {
                     int number = robots.size();
                     if (number > 0)
                     {
+                        
                         int cols = (int)Math.ceil(Math.sqrt(number));
                         int r = (int)Math.ceil((double)number / cols);
 

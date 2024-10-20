@@ -6,6 +6,7 @@ import map.AStar;
 import map.Box;
 import map.Map;
 
+
 import java.util.List;
 
 import enumerator.*;
@@ -20,13 +21,13 @@ import java.util.Iterator;
 public abstract class Robot implements Simulable{
     
     // This is the iterator that will allow the robot to move and gui is the graphical interface
-    private Iterator<Box> boxIterator;
-    private GUISimulator gui;
+    protected Iterator<Box> boxIterator;
+    protected GUISimulator gui;
 
     // Water tank capacity and volume already spilled (in liters)
-    private int tankCapacity;
-    private double spillVolumePerTimes;
-    private int currentVolume;
+    protected int tankCapacity;
+    protected double spillVolumePerTimes;
+    protected int currentVolume;
     
     // Travel speed (in m/s)
     protected double travelSpeed;
@@ -35,24 +36,23 @@ public abstract class Robot implements Simulable{
     protected String file;
     
     // Filling type and time (0: on case, 1: adjacent, Integer.MAX_VALUE: not required)
-    private int fillingType;
-    private int fillingTime; // in seconds
-    private boolean endFill = false;
+    protected int fillingType;
+    protected int fillingTime; // in seconds
+    protected boolean endFill = false;
     
     // Time to spill the tank (in seconds)
-    private int spillTime;
+    protected int spillTime;
     
     // Current terrain type robot is on
-    private Box currentCase;
+    protected Box currentCase;
     public final Box initBox;
     
     // The number of robots created
-    private static int robotCount = 0;
-    private static List<Robot> listRobots = new ArrayList<>();
-    private boolean isUseless = false;
+    protected static int robotCount = 0;
+    static List<Robot> listRobots = new ArrayList<>();
+    protected boolean isUseless = false;
 
     public static boolean endNext = false;
-
 
     /**
      * Constructor   
@@ -81,9 +81,9 @@ public abstract class Robot implements Simulable{
         this.initBox = new Box(currentCase.getRow(), currentCase.getColumn(), currentCase.getNature());
         this.currentVolume = 0;
         // We are currently using the second as the time unit so we have to know the time needed to spill the tank
+        listRobots.add(this);
         this.spillVolumePerTimes = quantityPerTimes / this.spillTime;
         robotCount++;
-        listRobots.add(this);
     }
 
     /**
@@ -310,7 +310,7 @@ public abstract class Robot implements Simulable{
      * Check if there is water around the robot and at a good distance. This last depends on the type of robot
      * @return boolean that says so
      */
-    private boolean waterAround() {
+    protected boolean waterAround() {
         int row = this.getPositionRobot().getRow();
         int col = this.getPositionRobot().getColumn();
         
@@ -319,7 +319,7 @@ public abstract class Robot implements Simulable{
         int maxCols = Map.getDataMap().getColumns();
         
         // Check if the robot is a Drone
-        if (this.getType().equals("Drone")) {
+        if (this instanceof Drone) {
             return Map.getTypeLand(row, col).getValueTerrain() == TypeLand.WATER.getValueTerrain();
         } else {
             // Define the relative positions to check (down, up, right, left)
@@ -344,6 +344,12 @@ public abstract class Robot implements Simulable{
     }
     
 
+    /**
+     * Nous voulions quelque chose qui fonctionne pour tous les robots. 
+     * L'idée ici est de regarder à travers tous les robots qui peuvent bouger quel est le prochain mouvement à faire.
+     * Une fois avoir trouvé pour tous les robots ce qu'ils doivent faire alors on les fait bouger.
+     * Si un robot ne peut plus bouger alors on le met en inutile. 
+     */
     @Override
     public void next()
     {
@@ -360,7 +366,7 @@ public abstract class Robot implements Simulable{
             }
             else
             {
-                if (robot.getType().equals("LeggedRobot") || (robot.currentVolume > 0 && robot.endFill))
+                if (robot instanceof LeggedRobot || (robot.currentVolume > 0 && robot.endFill))
                 {
                     robot.setIterator(Fire.getListFireBox());
                     Fire f = Fire.getClosestFire(robot.getPositionRobot());
@@ -410,7 +416,7 @@ public abstract class Robot implements Simulable{
             robot.currentVolume = 0;
             robot.boxIterator = Collections.emptyIterator();
         }
-        Draw.drawMap(gui);
+        Draw.restartDisplay(gui);
     }   
 
     public static List<Robot> getListRobotsBox(Box box)
@@ -425,6 +431,11 @@ public abstract class Robot implements Simulable{
         }
         return list;
     }
+
+    public static List<Robot> getListRobots()
+    {
+        return listRobots;
+    } 
 
     public static void resetAllRobots()
     {
