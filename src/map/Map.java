@@ -180,4 +180,11 @@ public class Map {
     {
         listWater.clear();
     }
+
+    public static void resetAllDatas()
+    {
+        resetAll();
+        Fire.resetAllFires();
+        Robot.resetAllRobots();
+    }
 }

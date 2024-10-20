@@ -60,4 +60,5 @@ public class Data {
     public static void setIsVerbose(boolean b) {
         isVerbose = b;
     }
+
 }

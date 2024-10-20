@@ -351,7 +351,6 @@ public abstract class Robot implements Simulable{
         if (endNext)
         {
             Draw.end(gui);
-            return;
         }
         for (Robot robot : listRobots)
         {
@@ -425,5 +424,11 @@ public abstract class Robot implements Simulable{
             }
         }
         return list;
+    }
+
+    public static void resetAllRobots()
+    {
+        listRobots.clear();
+        robotCount = 0;
     }
 }

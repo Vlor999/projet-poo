@@ -9,6 +9,7 @@ import enumerator.TypeLand;
 import map.Box;
 import map.Map;
 import robot.Robot;
+import gui.GUISimulator;
 
 /**
  * Lecteur de cartes au format spectifié dans le sujet.
@@ -276,6 +277,23 @@ public class LecteurDonnees {
             {
                 isVerbose = true;
             }
+        }
+    }
+
+    public static void lireFichierEtSimuler(String args, GUISimulator gui) {
+        try{
+            Map.resetAllDatas();
+            LecteurDonnees.lire(args);
+            Robot.setGuiRobots(gui);
+            Draw.drawMap(gui);
+        }
+        catch (FileNotFoundException e) 
+        {
+            System.out.println("fichier " + args + " inconnu ou illisible");
+        }
+        catch (DataFormatException e) 
+        {
+            System.out.println("\n\t**format du fichier " + args + " invalide: " + e.getMessage());
         }
     }
 }

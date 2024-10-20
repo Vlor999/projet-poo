@@ -179,4 +179,11 @@ public class Fire
         }
         return listFireBox;
     }
+
+    public static void resetAllFires()
+    {
+        listFires.clear();
+        listFiresMemory.clear();
+        numberFire = 0;
+    }
 }
