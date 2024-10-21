@@ -20,6 +20,7 @@ public class LeggedRobot extends Robot
     {
         return "Legged";
     }
+    
     @Override
     /**
      * Get the special speed of the robot depending on the type of land. If 0 the robot can't move

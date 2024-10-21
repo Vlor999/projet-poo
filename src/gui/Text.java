@@ -5,8 +5,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
-public class Text
-extends CenteredGraphicalElement
+public class Text extends CenteredGraphicalElement
 {
     private Color color;
     private String text;

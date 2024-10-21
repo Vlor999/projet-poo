@@ -6,7 +6,6 @@ import map.AStar;
 import map.Box;
 import map.Map;
 
-
 import java.util.List;
 
 import enumerator.*;
@@ -21,7 +20,7 @@ import java.util.Iterator;
 public abstract class Robot implements Simulable{
     
     // This is the iterator that will allow the robot to move and gui is the graphical interface
-    protected Iterator<Box> boxIterator;
+    protected Iterator<Box> boxIterator = Collections.emptyIterator();
     protected GUISimulator gui;
 
     // Water tank capacity and volume already spilled (in liters)
@@ -45,14 +44,14 @@ public abstract class Robot implements Simulable{
     
     // Current terrain type robot is on
     protected Box currentCase;
-    public final Box initBox;
+    protected final Box initBox;
     
     // The number of robots created
     protected static int robotCount = 0;
     static List<Robot> listRobots = new ArrayList<>();
     protected boolean isUseless = false;
 
-    public static boolean endNext = false;
+    protected static boolean endNext = false;
 
     /**
      * Constructor   
@@ -405,6 +404,9 @@ public abstract class Robot implements Simulable{
     }
     
     @Override
+    /**
+     * Restart the simulation by putting all the robots at their initial position and reset the fire
+     */
     public void restart()
     {
         endNext = false;

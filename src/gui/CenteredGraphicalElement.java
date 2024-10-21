@@ -1,7 +1,6 @@
 package gui;
 
-abstract class CenteredGraphicalElement
-implements GraphicalElement
+abstract class CenteredGraphicalElement implements GraphicalElement
 {
     private int x;
     private int y;

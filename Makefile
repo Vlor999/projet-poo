@@ -3,14 +3,11 @@
 all:  testLecture
 
 testLecture:
-	javac -d bin -sourcepath src src/TestLecteurDonnees.java
+	javac -d bin -sourcepath src src/Main.java
 
 # Execution:
 exeLecture: 
-	java -classpath bin TestLecteurDonnees cartes/carteSujet.map
-
-exeLectureAll:
-	clear && java -classpath bin TestLecteurDonnees cartes/*.map
+	java -classpath bin Main cartes/carteSujet.map
 
 clean:
 	rm -rf bin/*

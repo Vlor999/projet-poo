@@ -18,7 +18,9 @@ public class CaterpillarRobot extends Robot
 
     @Override
     public String getType()
-    { return "Caterpillar";}
+    { 
+        return "Caterpillar";
+    }
 
     @Override
     /**

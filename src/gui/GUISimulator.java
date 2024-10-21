@@ -29,6 +29,7 @@ public class GUISimulator extends JFrame
     private static final int MIN_SPEED = 1;
     private static final int MAX_SPEED = 10000;
     private static final int STEP_SPEED = 10;
+    private boolean choosed = false;
     private int panelWidth;
     private int panelHeight;
     private int numberTickInStep = 1;
