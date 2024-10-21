@@ -32,7 +32,7 @@ public abstract class Robot implements Simulable{
     protected double travelSpeed;
 
     // the file to display the robot
-    protected String[] files = {"essai","essai","essai"};
+    protected String[] files = {"a","b","c"};
     
     // Filling type and time (0: on case, 1: adjacent, Integer.MAX_VALUE: not required)
     protected int fillingType;

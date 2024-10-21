@@ -10,6 +10,7 @@ public class Drone extends Robot
     {
         super(mapData, currentCase, 10000, 30, 0, 30, 10000, travelSpeed);
         this.files[0] = "images/Robot_Drone.png";
+        this.files[1] = "images/Pacman_drone.png";
     }
     
     public Drone(Data mapData, Box currentCase)

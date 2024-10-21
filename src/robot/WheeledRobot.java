@@ -9,6 +9,7 @@ public class WheeledRobot extends Robot
     {
         super(mapData, currentCase, 100, 5, 1, 10, 5000, travelSpeed);
         this.files[0] = "images/Robot_Wheeled.png";
+        this.files[1] = "images/Pacman_wheeled.png";
     }
 
     public WheeledRobot(Data mapData, Box currentCase)

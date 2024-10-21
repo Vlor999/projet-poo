@@ -8,11 +8,11 @@ import java.awt.Color;
  * This enum can be useful in map generation, categorizing different land types, or any system that uses various terrain features.
  */
 public enum TypeLand {
-    WATER(0, "water", Color.BLUE, new String[] {"images/Pokemon_water.png"}),
-    FOREST(1, "forest", Color.GREEN, new String[] {"images/Pokemon_forest.png"}),
-    STONE(2, "stone", Color.GRAY, new String[] {"images/Pokemon_stone.png"}),
-    FIELD(3, "field", Color.YELLOW, new String[] {"images/Pokemon_field.png"}),
-    HABITATION(4, "habitation", Color.ORANGE, new String[] {"images/Pokemon_habitation.png"});
+    WATER(0, "water", Color.BLUE, new String[] {"images/Pokemon_water.png", "images/Pokemon_water.png"}),
+    FOREST(1, "forest", Color.GREEN, new String[] {"images/Pokemon_forest.png", "images/Pacman_forest.png"}),
+    STONE(2, "stone", Color.GRAY, new String[] {"images/Pokemon_stone.png", "images/Pacman_stone.png"}),
+    FIELD(3, "field", Color.YELLOW, new String[] {"images/Pokemon_field.png", "images/Pacman_field.png"}),
+    HABITATION(4, "habitation", Color.ORANGE, new String[] {"images/Pokemon_habitation.png", "images/Pacman_habitation.png"});
 
     // Terrain value and name
     private final int valueTerrain;

@@ -64,8 +64,8 @@ public class Draw {
             {
                 continue;
             }
-            gui.addGraphicalElement(new ImageElement(width, heightLength * compteur * 2, TypeLand.FIELD.getFiles()[0], widthLength, heightLength, gui));
-            gui.addGraphicalElement(new ImageElement(width, heightLength * compteur * 2, r.getFiles(0),widthLength, heightLength, gui));
+            gui.addGraphicalElement(new ImageElement(width, heightLength * compteur * 2, TypeLand.FIELD.getFiles()[numberToShow], widthLength, heightLength, gui));
+            gui.addGraphicalElement(new ImageElement(width, heightLength * compteur * 2, r.getFiles(numberToShow),widthLength, heightLength, gui));
             gui.addGraphicalElement(new Text(width + widthOffset / 3, heightLength * (compteur *2 + 1), Color.WHITE, r.getType()));
             compteur++;
             passed.add(r.getType());
@@ -120,7 +120,7 @@ public class Draw {
                             gui.addGraphicalElement(new ImageElement(
                                 c * widthLength + xOffset, 
                                 flippedY * heightLength + yOffset, 
-                                robots.get(i).getFiles(0), 
+                                robots.get(i).getFiles(numberToShow), 
                                 imageWidth, 
                                 imageHeight, 
                                 gui

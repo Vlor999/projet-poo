@@ -9,6 +9,7 @@ public class LeggedRobot extends Robot
     {
         super(mapData, currentCase, 10, 1, Integer.MAX_VALUE, 0, -1, travelSpeed);
         this.files[0] = "images/Robot_Legged.png";
+        this.files[1] = "images/Pacman_legged.png";
     }
     public LeggedRobot(Data mapData, Box currentCase)
     {
