@@ -9,14 +9,13 @@ import java.util.List;
 
 
 public class Map {
-    static String RED = "\u001B[31m";
-    static String GREEN = "\u001B[32m";
-    static String RESET = "\u001B[0m";
-    static String BLUE = "\u001B[34m";
-
-    static Box[][] currentMap;
-    static Data dataMap;
-    static List<Box> listWater = new ArrayList<>();
+    private static String RED = "\u001B[31m";
+    private static String GREEN = "\u001B[32m";
+    private static String RESET = "\u001B[0m";
+    private static String BLUE = "\u001B[34m";
+    private static Box[][] currentMap;
+    private static Data dataMap;
+    private static List<Box> listWater = new ArrayList<>();
 
     /**
      * Set a specific case on the map at the given row and column.
@@ -41,7 +40,7 @@ public class Map {
      */
     public static void preSetMap()
     {
-        resetAll(); // Reset the list of water
+        resetAllWater(); // Reset the list of water
         currentMap = new Box[dataMap.getRows()][dataMap.getColumns()];
     }
 
@@ -67,7 +66,7 @@ public class Map {
 
     /**
      * Will show a line of the map as a terminal image. Could be useful for debugging and tu use less energy.
-     * @return
+     * @return a line of delimitations 
      */
     public String lineString()
     {
@@ -133,11 +132,17 @@ public class Map {
         return txt;
     }
 
+    /**Prints the whole map
+     * @return the map 
+      */
     public static String showMap()
     {
         return new Map().toString();
     }
 
+    /**Prints the list of water boxes
+     * @return the list of water boxes
+     */
     public static String showListWater()
     {
         String txt = "List of water : \n";
@@ -148,6 +153,11 @@ public class Map {
         return txt;
     }
 
+    /**Check if a coordinate is a water box 
+     * @param row the coordinate y
+     * @param column the coordinate x 
+     * @return if the related box is water 
+     */
     public static boolean isWater(int row, int column)
     {
         for (Box box : listWater)
@@ -176,14 +186,17 @@ public class Map {
         }
         return listBoxFire;
     }
-    public static void resetAll()
+
+    //Reset all the list of water 
+    public static void resetAllWater()
     {
         listWater.clear();
     }
 
+    //reset all the data initiated
     public static void resetAllDatas()
     {
-        resetAll();
+        resetAllWater();
         Fire.resetAllFires();
         Robot.resetAllRobots();
     }

@@ -32,7 +32,7 @@ public abstract class Robot implements Simulable{
     protected double travelSpeed;
 
     // the file to display the robot
-    protected String file;
+    protected String[] files = {"essai","essai","essai"};
     
     // Filling type and time (0: on case, 1: adjacent, Integer.MAX_VALUE: not required)
     protected int fillingType;
@@ -48,7 +48,7 @@ public abstract class Robot implements Simulable{
     
     // The number of robots created
     protected static int robotCount = 0;
-    static List<Robot> listRobots = new ArrayList<>();
+    private static List<Robot> listRobots = new ArrayList<>();
     protected boolean isUseless = false;
 
     protected static boolean endNext = false;
@@ -170,6 +170,7 @@ public abstract class Robot implements Simulable{
         }
     }
 
+    @Override
     /**
      * Returns a string representation of the robot's information.
      * @return A string containing the robot's information.
@@ -197,7 +198,7 @@ public abstract class Robot implements Simulable{
     
     public double getSpillVolumePerTimes() { return this.spillVolumePerTimes; }
     
-    public String getFile(){return this.file;} 
+    public String getFiles(int number){return files[number];} 
 
     public int getCurrentVolume(){return this.currentVolume;}
 

@@ -82,6 +82,7 @@ public class Box {
     }
 
     @Override
+    /**Checks if obj is the same box as the studied box */
     public boolean equals(Object obj) {
         if (!(obj instanceof Box)) {
             return false;
@@ -91,6 +92,7 @@ public class Box {
     }
 
     @Override
+    //Prints (x,y) and the type of land 
     public String toString() {
         return "* Position: (" + this.row + ", " + this.column + ") \n* Terrain type: " + this.typeLand;
     }

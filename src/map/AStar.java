@@ -7,12 +7,12 @@ import robot.*;
 
 public class AStar {
     private static final Direction[] DIRECTIONS = {Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH}; 
-    public List<Direction> listDirection = new ArrayList<>();
+    private List<Direction> listDirection = new ArrayList<>();
     private static final List<Box> EMPTY_LIST = Collections.emptyList();
     private List<Direction> finalListDirection = new ArrayList<>();
 
     /**
-     * Find the closest box from the robot in the list
+     * Find the closest box from the robot among the elements in the list
      * @param robot
      * @param list
      * @return the closest box from the robot and the path
@@ -140,7 +140,11 @@ public class AStar {
         return EMPTY_LIST; // Return an empty list if no path is found
     }
 
-    // Reconstruct the path from the end box to the start box
+    /**
+     * Reconstruct the path from the end box to the start box
+     * @param end the final Box which is the aim 
+     * @return the list of boxes from the current position to end 
+     */
     private List<Box> reconstructPath(Box end) {
         List<Box> path = new ArrayList<>();
         Box current = end;
@@ -158,7 +162,13 @@ public class AStar {
         return path;
     }
 
-    // Check if the move is valid and the robot can move to the box
+    /**Check if the move is valid and the robot can move to the box
+     * @param grid the map represented with boxes, 
+     * @param x the coordinate x the robot wants to go 
+     * @param y the coordinate y the robot wants to go 
+     * @param robot the aimed robot 
+     * @return a boolean which is validates (or not) the move  
+     */ 
     private boolean isValidMove(Box[][] grid, int x, int y, Robot robot) {
         return x >= 0 && y >= 0 && x < grid.length && y < grid[0].length && robot.getSpecialSpeed(grid[x][y].getNature()) != 0;
     }
@@ -171,6 +181,10 @@ public class AStar {
         this.listDirection.clear();
     }
 
+    /**Create a normal copy of d
+     * @param d the list of directions 
+     * @return the copy of d
+     */
     public void setFinalListDirection(List<Direction> d){
         List <Direction> res =new ArrayList<>();
         for (Direction elem : d){
@@ -179,6 +193,10 @@ public class AStar {
         this.finalListDirection = res;
     }
 
+    /**Shows the path for a robot move (No path found if not) 
+     * @param path the list of box the robot wants to do to move 
+     * @return a long string sentence which contains all the path 
+    */
     public String showInfo(List<Box> path) {
         if (path.isEmpty()) {
             return "No path found.";
@@ -197,7 +215,7 @@ public class AStar {
         return info.toString();
     }
 
-    // Constructor that clear the list of directions
+    //Constructor that clear the list of directions
     public AStar()
     {
         clearListDirection();

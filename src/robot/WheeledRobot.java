@@ -8,7 +8,7 @@ public class WheeledRobot extends Robot
     public WheeledRobot(Data mapData, Box currentCase, double travelSpeed)
     {
         super(mapData, currentCase, 100, 5, 1, 10, 5000, travelSpeed);
-        this.file = "images/Robot_Wheeled.png";
+        this.files[0] = "images/Robot_Wheeled.png";
     }
 
     public WheeledRobot(Data mapData, Box currentCase)
@@ -17,6 +17,9 @@ public class WheeledRobot extends Robot
     }
 
     @Override
+    /**
+     * return the type of this robot
+     */
     public String getType()
     {
         return "Wheeled";

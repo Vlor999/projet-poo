@@ -36,6 +36,9 @@ public enum Direction {
     }
 
     @Override
+    /**
+     * Gives the name of the direction
+     */
     public String toString() {
         return this.name;
     }

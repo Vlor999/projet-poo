@@ -8,7 +8,7 @@ public class LeggedRobot extends Robot
     public LeggedRobot(Data mapData, Box currentCase, double travelSpeed)
     {
         super(mapData, currentCase, 10, 1, Integer.MAX_VALUE, 0, -1, travelSpeed);
-        this.file = "images/Robot_Legged.png";
+        this.files[0] = "images/Robot_Legged.png";
     }
     public LeggedRobot(Data mapData, Box currentCase)
     {
@@ -16,6 +16,9 @@ public class LeggedRobot extends Robot
     }
 
     @Override
+    /**
+     * return the type of this robot
+     */
     public String getType()
     {
         return "Legged";

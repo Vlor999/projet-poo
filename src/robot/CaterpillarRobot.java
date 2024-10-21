@@ -9,7 +9,7 @@ public class CaterpillarRobot extends Robot
     public CaterpillarRobot(Data mapData, Box currentCase, double travelSpeed)
     {
         super(mapData, currentCase, 100, 8, 1, 5, 2000, travelSpeed);
-        this.file = "images/Robot_Caterpillar.png";
+        this.files[0] = "images/Robot_Caterpillar.png";
     }
     public CaterpillarRobot(Data mapData, Box currentCase)
     {
@@ -17,6 +17,9 @@ public class CaterpillarRobot extends Robot
     }
 
     @Override
+    /**
+     * return the type of this robot
+     */
     public String getType()
     { 
         return "Caterpillar";

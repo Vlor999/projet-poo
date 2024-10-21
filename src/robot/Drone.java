@@ -9,7 +9,7 @@ public class Drone extends Robot
     public Drone(Data mapData, Box currentCase, double travelSpeed)
     {
         super(mapData, currentCase, 10000, 30, 0, 30, 10000, travelSpeed);
-        this.file = "images/Robot_Drone.png";
+        this.files[0] = "images/Robot_Drone.png";
     }
     
     public Drone(Data mapData, Box currentCase)
@@ -29,6 +29,9 @@ public class Drone extends Robot
     }
 
     @Override
+    /**
+     * return the type of this robot
+     */
     public String getType()
     {
         return "Drone";
