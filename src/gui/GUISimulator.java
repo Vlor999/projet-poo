@@ -9,6 +9,10 @@ import javax.swing.event.*;
 import java.io.File;
 public class GUISimulator extends JFrame
 {
+
+    String[] options = {"Pokemon", "Pacman", "Mario"};
+    
+
     private static final long serialVersionUID = 1L;
     private JScrollPane sp;
     private SimulationPanel simuPanel;
@@ -19,6 +23,7 @@ public class GUISimulator extends JFrame
     private JButton nextButton;
     private JButton exitButton;
     private JButton fileButton;
+    private JComboBox<String> typeImage;
 
     private JLabel speedLabel;
     private JSpinner speedSpinner;
@@ -78,6 +83,23 @@ public class GUISimulator extends JFrame
         jPanel1.add(this.stepSpinner);
 
         this.fileButton = new JButton("Ouvrir un fichier (*.map)");
+        this.selectBox = new JComboBox<>();
+        this.selectBox.addItemListener(paramItemEvent -> paramSimulable.selectedItem((String)paramItemEvent.getItem()));
+        this.typeImage = new JComboBox<>(options);
+        typeImage.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selectedItem = (String) typeImage.getSelectedItem();
+                JOptionPane.showMessageDialog(GUISimulator.this, "Vous avez selectionné : " + selectedItem);
+                int index = typeImage.getSelectedIndex();
+                Draw.setNumberToShow(index);
+        }});
+        this.restartButton = new JButton("Début");
+        this.playPauseButton = new JButton("Lecture");
+        this.nextButton = new JButton("Suivant");
+        this.exitButton = new JButton("Quitter");
+        JPanel jPanel2 = new JPanel();
+
         this.fileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -88,11 +110,10 @@ public class GUISimulator extends JFrame
                 if (result == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = fileChooser.getSelectedFile();
                     JOptionPane.showMessageDialog(GUISimulator.this, "Fichier sélectionné : " + selectedFile.getAbsolutePath());
-                    
-                    timer.stop(); 
-                    playPauseButton.setText("Lecture");
 
                     LecteurDonnees.lireFichierEtSimuler(selectedFile.getAbsolutePath(), GUISimulator.this);
+                    speedSpinner.setValue(100);
+                    stepSpinner.setValue(1);
                     
                     simuPanel.repaint();
                     repaint();
@@ -104,18 +125,13 @@ public class GUISimulator extends JFrame
 
         // Ajout du bouton au panel
         
-        this.selectBox = new JComboBox<>();
-        this.selectBox.addItemListener(paramItemEvent -> paramSimulable.selectedItem((String)paramItemEvent.getItem()));
-        this.restartButton = new JButton("Début");
-        this.playPauseButton = new JButton("Lecture");
-        this.nextButton = new JButton("Suivant");
-        this.exitButton = new JButton("Quitter");
-        JPanel jPanel2 = new JPanel();
+        
         jPanel2.add(this.playPauseButton);
         jPanel2.add(this.nextButton);
         jPanel2.add(this.restartButton);
         jPanel2.add(this.exitButton);
         jPanel2.add(this.fileButton);
+        jPanel2.add(this.typeImage);
         
         this.controlPanel = new JPanel();
         this.controlPanel.setLayout(new BorderLayout());
@@ -254,6 +270,10 @@ public class GUISimulator extends JFrame
         .getNumber().intValue();
             GUISimulator.this.timer.setDelay(((SpinnerNumberModel)GUISimulator.this.speedSpinner.getModel())
             .getNumber().intValue());
+        }
+
+        public void setPlay(boolean param1Boolean) {
+            this.play = param1Boolean;
         }
     }
 }

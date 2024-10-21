@@ -16,6 +16,7 @@ import robot.Robot;
 
 public class Draw {
 
+    private static int numberToShow = 0;
     /**
      * Will show and end display to explain that there is not any fires
      * @param gui
@@ -25,7 +26,7 @@ public class Draw {
         gui.reset();
         gui.addGraphicalElement(new Text(gui.getWidth() / 2, gui.getHeight() / 2, Color.WHITE, "End No More Fires"));
     }
-
+    
     public static void restartDisplay(GUISimulator gui)
     {
         gui.reset();
@@ -85,7 +86,7 @@ public class Draw {
                     // Here we draw the box with the nature.
                     // The value 0 represent the first set of images for the nature
                     // If we want to change and add some other images we can change the value but we also have to add the files
-                    gui.addGraphicalElement(new ImageElement(c * widthLength, flippedY * heightLength, filesName[0], widthLength, heightLength, gui));
+                    gui.addGraphicalElement(new ImageElement(c * widthLength, flippedY * heightLength, filesName[numberToShow], widthLength, heightLength, gui));
 
                     boolean isFire  = Fire.isFire(c, l);
 
@@ -130,5 +131,10 @@ public class Draw {
                 }
             }
         }   
+    }
+
+    public static void setNumberToShow(int number)
+    {
+        numberToShow = number;
     }
 }
