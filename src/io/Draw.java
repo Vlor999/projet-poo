@@ -30,7 +30,7 @@ public class Draw {
     {
         gui.reset();
         gui.addGraphicalElement(new Text(gui.getWidth() / 2, gui.getHeight() / 2, Color.WHITE, "Restart"));
-        gui.addGraphicalElement(new Text(gui.getWidth() / 2, gui.getHeight() / 2 + 50, Color.WHITE, "Press Debut to restart"));
+        gui.addGraphicalElement(new Text(gui.getWidth() / 2, gui.getHeight() / 2 + 50, Color.WHITE, "Press Lecture to restart"));
     }
 
     /**
