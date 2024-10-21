@@ -92,7 +92,7 @@ public class Draw {
                     if (isFire)
                     {
                         int number = (int)(Math.random() * 3 + 0.5); 
-                        String randomfile = Fire.files[number];
+                        String randomfile = Fire.getFiles()[number];
                         gui.addGraphicalElement(new ImageElement(c * widthLength, flippedY * heightLength, randomfile, widthLength, heightLength, gui));   
                     }
 

@@ -268,7 +268,7 @@ public abstract class Robot implements Simulable{
      */
     public void setCurrentVolume(double volume)
     {
-        if (Data.isVerbose)
+        if (Data.getIsVerbose())
         {
             System.out.println("Curently spilling water.");
             System.out.println(this);
@@ -288,7 +288,7 @@ public abstract class Robot implements Simulable{
      */
     public void fillUp()
     {
-        if (Data.isVerbose)
+        if (Data.getIsVerbose())
         {
             System.out.println("Filling up the tank.");
             System.out.println(this);

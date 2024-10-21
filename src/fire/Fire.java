@@ -15,8 +15,8 @@ public class Fire
     private static List<Fire> listFires = new ArrayList<>();
     private static List<Fire> listFiresMemory = new ArrayList<>(); // to keep the initial values of the fires
     private int initValues; // to keep the initial values of the fires
-    static int numberFire = 0;
-    public static String[] files = {"images/fire1.png", "images/fire2.png", "images/fire3.png",  "images/fire4.png"};
+    private static int numberFire = 0;
+    private static String[] files = {"images/fire1.png", "images/fire2.png", "images/fire3.png",  "images/fire4.png"};
 
     public Fire(Box currentPosition, int intensity){
         this.initValues = intensity;
@@ -61,6 +61,11 @@ public class Fire
         }
         return result;
     }
+
+    public static String[] getFiles(){
+        return files;
+    }
+
 
     /**
      * Get the closest fire from a box

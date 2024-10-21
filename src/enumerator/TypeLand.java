@@ -31,13 +31,14 @@ public enum TypeLand {
         this.valueTerrain = valueTerrain;
         this.name = name;
         this.color = color;
-        this.listLand = listLand;
+        this.listLand = listLand; 
     }
 
     public int getValueTerrain() {return this.valueTerrain;}
 
     public Color getColor() {return this.color;}
 
+    @Override
     /**
      * Get the name of the terrain type and its value.
      * The toString method does not exists for enum, so we have to create it.
@@ -73,6 +74,10 @@ public enum TypeLand {
         }
     }
 
+    /**
+     * Shows the information about different lands 
+     * @return string of all the info 
+     */
     public static String infos()
     {
         String info = "";

@@ -10,7 +10,8 @@ public class Data {
     // Size of each case (in meters)
     private double caseSize;
 
-    public static boolean isVerbose = false;
+    // Prints more information during the simulation to resolve problems
+    private static boolean isVerbose = false;
     /**
      * Constructor for the Data class.
      * @param rows        The number of rows in the map.
@@ -31,6 +32,9 @@ public class Data {
         return this.numberOfColumns;
     }
 
+    public static boolean getIsVerbose(){
+        return isVerbose;
+    }
     /**
      * Get the number of rows in the map.
      * @return The number of rows.
