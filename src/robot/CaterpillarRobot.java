@@ -11,6 +11,7 @@ public class CaterpillarRobot extends Robot
         super(mapData, currentCase, 100, 8, 1, 5, 2000, travelSpeed);
         this.files[0] = "images/Robot_Caterpillar.png";
         this.files[1] = "images/Pacman_caterpillar.png";
+        this.files[2] = "images/mario.png";
     }
     public CaterpillarRobot(Data mapData, Box currentCase)
     {
