@@ -47,7 +47,7 @@ public class Draw {
         int columns = dataMap.getColumns();
 
         Box[][] currentMap = Map.getCurrentMap();
-        int widthOffset = 75;
+        int widthOffset = 100;
         int heightOffset = 150;
         int width = gui.getWidth() - widthOffset;
         int height = gui.getHeight() - heightOffset;

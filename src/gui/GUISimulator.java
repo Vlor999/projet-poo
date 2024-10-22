@@ -86,44 +86,11 @@ public class GUISimulator extends JFrame
         this.selectBox = new JComboBox<>();
         this.selectBox.addItemListener(paramItemEvent -> paramSimulable.selectedItem((String)paramItemEvent.getItem()));
         this.typeImage = new JComboBox<>(options);
-        typeImage.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String selectedItem = (String) typeImage.getSelectedItem();
-                JOptionPane.showMessageDialog(GUISimulator.this, "Vous avez selectionné : " + selectedItem);
-                int index = typeImage.getSelectedIndex();
-                Draw.setNumberToShow(index);
-        }});
         this.restartButton = new JButton("Début");
         this.playPauseButton = new JButton("Lecture");
         this.nextButton = new JButton("Suivant");
         this.exitButton = new JButton("Quitter");
         JPanel jPanel2 = new JPanel();
-
-        this.fileButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
-                int result = fileChooser.showOpenDialog(GUISimulator.this);
-
-                // Si un fichier est sélectionné, afficher le chemin dans une boîte de dialogue
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = fileChooser.getSelectedFile();
-                    JOptionPane.showMessageDialog(GUISimulator.this, "Fichier sélectionné : " + selectedFile.getAbsolutePath());
-
-                    LecteurDonnees.lireFichierEtSimuler(selectedFile.getAbsolutePath(), GUISimulator.this);
-                    speedSpinner.setValue(100);
-                    stepSpinner.setValue(1);
-                    
-                    simuPanel.repaint();
-                    repaint();
-                } else {
-                    JOptionPane.showMessageDialog(GUISimulator.this, "Aucun fichier sélectionné.");
-                }
-            }
-        });
-
-        // Ajout du bouton au panel
         
         
         jPanel2.add(this.playPauseButton);
@@ -153,6 +120,10 @@ public class GUISimulator extends JFrame
         this.stepSpinner.addChangeListener(displayControler);
         this.exitButton.setActionCommand("exit");
         this.exitButton.addActionListener(displayControler);
+        this.typeImage.setActionCommand("typeImage");
+        this.typeImage.addActionListener(displayControler);
+        this.fileButton.setActionCommand("fileButton");
+        this.fileButton.addActionListener(displayControler);
         
         setDefaultCloseOperation(3);
         pack();
@@ -261,7 +232,35 @@ public class GUISimulator extends JFrame
                     GUISimulator.this.repaint();
             } else if (Objects.equals(param1ActionEvent.getActionCommand(), "exit")) {
                 System.exit(0);
-            } 
+            } else if (Objects.equals(param1ActionEvent.getActionCommand(), "typeImage")) {
+                String selectedItem = (String) typeImage.getSelectedItem();
+                JOptionPane.showMessageDialog(GUISimulator.this, "Vous avez selectionné : " + selectedItem);
+                int index = typeImage.getSelectedIndex();
+                Draw.setNumberToShow(index);
+
+                GUISimulator.this.simuPanel.repaint();
+                repaint();
+                GUISimulator.this.simulator.next();
+            }
+            else if (Objects.equals(param1ActionEvent.getActionCommand(), "fileButton")) {
+                JFileChooser fileChooser = new JFileChooser();
+                int result = fileChooser.showOpenDialog(GUISimulator.this);
+
+                // Si un fichier est sélectionné, afficher le chemin dans une boîte de dialogue
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    JOptionPane.showMessageDialog(GUISimulator.this, "Fichier sélectionné : " + selectedFile.getAbsolutePath());
+
+                    LecteurDonnees.lireFichierEtSimuler(selectedFile.getAbsolutePath(), GUISimulator.this);
+                    speedSpinner.setValue(100);
+                    stepSpinner.setValue(1);
+                    
+                    simuPanel.repaint();
+                    repaint();
+                } else {
+                    JOptionPane.showMessageDialog(GUISimulator.this, "Aucun fichier sélectionné.");
+                }
+            }
         }
 
         
