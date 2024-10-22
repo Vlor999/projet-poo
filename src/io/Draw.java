@@ -30,8 +30,8 @@ public class Draw {
     public static void restartDisplay(GUISimulator gui)
     {
         gui.reset();
-        gui.addGraphicalElement(new Text(gui.getWidth() / 2, gui.getHeight() / 2, Color.WHITE, "Restart"));
-        gui.addGraphicalElement(new Text(gui.getWidth() / 2, gui.getHeight() / 2 + 50, Color.WHITE, "Press Lecture to restart"));
+        gui.addGraphicalElement(new ImageElement(0, 0, "images/game_over.jpg", gui.getWidth(), gui.getHeight(), gui));
+        gui.addGraphicalElement(new Text(gui.getWidth() / 2, 3 * gui.getHeight() / 4, Color.WHITE, "Press Lecture to restart"));
     }
 
     /**
