@@ -1,15 +1,13 @@
 package io;
 
+import enumerator.TypeLand;
+import fire.Fire;
 import gui.GUISimulator;
 import gui.ImageElement;
 import gui.Text;
-
 import java.awt.Color;
-import java.util.List;
 import java.util.ArrayList;
-
-import enumerator.TypeLand;
-import fire.Fire;
+import java.util.List;
 import map.Box;
 import map.Map;
 import robot.Robot;

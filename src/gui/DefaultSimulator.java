@@ -1,7 +1,6 @@
 package gui;
 
-class DefaultSimulator
-implements Simulable
+class DefaultSimulator implements Simulable
 {
     public void next() {
         message("next()");

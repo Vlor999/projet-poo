@@ -3,10 +3,10 @@ package gui;
 import io.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.*;
-import java.io.File;
 public class GUISimulator extends JFrame
 {
 
@@ -274,5 +274,11 @@ public class GUISimulator extends JFrame
         public void setPlay(boolean param1Boolean) {
             this.play = param1Boolean;
         }
+    }
+
+    @Override
+    public String toString()
+    {
+        return "GUISimulator";
     }
 }

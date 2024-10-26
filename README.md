@@ -23,17 +23,7 @@ Develop a Java application to simulate autonomous firefighting robots in a natur
 
 - ![Static Badge](https://img.shields.io/badge/FillUp-NotEnded-yellow) FillUp: We have to make the robot fill up the water tank when it is empty. We have to make the robot go to the nearest water source and fill up the tank. We have to make sure that the time to fill up the tank is not too long or too short.
 
-- ![Static Badge](https://img.shields.io/badge/Simulateur-FAILED-red) We ahve to make 2 classes (documentation at page 5 of sujet.pdf):
-  - Events (abstract):
-    - date : long
-    + Events(date : long)
-    + getDate() : long
-    + execute() : void
-  - Simulator (linked to Events):
-    - dateSimualtion : long
-    + addEvents(e : Events) : void
-    - incrementDate()
-    - endOfSimulation() : boolean
+- ![Static Badge](https://img.shields.io/badge/Simulateur-FAILED-red) Je fais en francais ici. J'ai globalemnt commencé à implémenté le simulateur et evenements. En fait, cela fonctionne mais ne correspond pas tout à fait à ce qu'il est demandé dans le sujet page 5. Il serait intéressant de regarder cette partie. Je ne sais pas encore tout à fait comment faire et si il faut vriament y passer beaucoup de tmeps mais cela peut être intéressant. Je vous laisse regarder de votre côté et me tenir au courant de ce que vous faites. Je regarde aussi un peu mais pas plus que ça. 
 
 
 

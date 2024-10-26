@@ -1,23 +1,21 @@
 package robot;
 
-import io.Data;
-import io.Draw;
-import map.AStar;
-import map.Box;
-import map.Map;
-
-import java.util.List;
-
 import enumerator.*;
 import fire.Fire;
 import gui.GUISimulator;
-import gui.Simulable;
-
+import io.Data;
+import io.Draw;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
+import map.AStar;
+import map.Box;
+import map.Map;
+import simulation.Simulateur;
 
-public abstract class Robot implements Simulable{
+
+public abstract class Robot{
     
     // This is the iterator that will allow the robot to move and gui is the graphical interface
     protected Iterator<Box> boxIterator = Collections.emptyIterator();
@@ -32,7 +30,7 @@ public abstract class Robot implements Simulable{
     protected double travelSpeed;
 
     // the file to display the robot
-    protected String[] files = {"a","b","c"};
+    protected String[] files = new String[3];
     
     // Filling type and time (0: on case, 1: adjacent, Integer.MAX_VALUE: not required)
     protected int fillingType;
@@ -80,9 +78,13 @@ public abstract class Robot implements Simulable{
         this.initBox = new Box(currentCase.getRow(), currentCase.getColumn(), currentCase.getNature());
         this.currentVolume = 0;
         // We are currently using the second as the time unit so we have to know the time needed to spill the tank
-        listRobots.add(this);
-        this.spillVolumePerTimes = quantityPerTimes / this.spillTime;
-        robotCount++;
+        if(!this.getType().equals("Captain"))
+        {
+            listRobots.add(this);
+            this.spillVolumePerTimes = quantityPerTimes / this.spillTime;
+            robotCount++;
+            this.boxIterator = Collections.emptyIterator();
+        }
     }
 
     /**
@@ -94,24 +96,6 @@ public abstract class Robot implements Simulable{
     {
         this.isUseless = isUseless;
         return this.isUseless; 
-    }
-
-    public void setGui(GUISimulator gui)
-    {
-        this.gui = gui;
-    }
-
-    /**
-     * Set all the robots with the same gui and set the simulable
-     */
-    public static void setGuiRobots(GUISimulator gui)
-    {
-        for(Robot robot: listRobots)
-        {
-            robot.setGui(gui);
-            gui.setSimulable(robot);	
-            robot.boxIterator = Collections.emptyIterator();
-        }
     }
 
     /**
@@ -350,13 +334,12 @@ public abstract class Robot implements Simulable{
      * Une fois avoir trouvé pour tous les robots ce qu'ils doivent faire alors on les fait bouger.
      * Si un robot ne peut plus bouger alors on le met en inutile. 
      */
-    @Override
-    public void next()
+    public boolean nextOP()
     {
         boolean resultFire;
         if (endNext)
         {
-            Draw.end(gui);
+            return endNext;
         }
         for (Robot robot : listRobots)
         {
@@ -400,15 +383,15 @@ public abstract class Robot implements Simulable{
                     }
                 }
             }
-            Draw.drawMap(gui);
+            Draw.drawMap(Simulateur.getGUI());
         }
+        return endNext;
     }
     
-    @Override
     /**
      * Restart the simulation by putting all the robots at their initial position and reset the fire
      */
-    public void restart()
+    public void restartOP()
     {
         endNext = false;
         Fire.setListFires();
@@ -419,7 +402,7 @@ public abstract class Robot implements Simulable{
             robot.currentVolume = 0;
             robot.boxIterator = Collections.emptyIterator();
         }
-        Draw.restartDisplay(gui);
+        Draw.restartDisplay(Simulateur.getGUI());
     }   
 
     public static List<Robot> getListRobotsBox(Box box)

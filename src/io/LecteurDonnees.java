@@ -1,15 +1,14 @@
 package io;
 
 
+import enumerator.TypeLand;
+import gui.GUISimulator;
 import java.io.*;
 import java.util.*;
 import java.util.zip.DataFormatException;
-
-import enumerator.TypeLand;
 import map.Box;
 import map.Map;
 import robot.Robot;
-import gui.GUISimulator;
 
 /**
  * Lecteur de cartes au format spectifié dans le sujet.
@@ -282,9 +281,9 @@ public class LecteurDonnees {
 
     public static void lireFichierEtSimuler(String args, GUISimulator gui) {
         try{
+            System.out.println("" + gui);
             Map.resetAllDatas();
             LecteurDonnees.lire(args);
-            Robot.setGuiRobots(gui);
             Draw.drawMap(gui);
         }
         catch (FileNotFoundException e) 

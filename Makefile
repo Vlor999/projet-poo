@@ -17,3 +17,13 @@ cleanDocs:
 
 docs:
 	javadoc -d docs src/*/*.java
+
+help:
+	@echo "Les cibles disponibles sont :"
+	@echo "  all: compile le projet"
+	@echo "  testLecture: compile le projet"
+	@echo "  exeLecture: execute le projet"
+	@echo "  clean: supprime les fichiers générés"
+	@echo "  cleanDocs: supprime la documentation"
+	@echo "  docs: génère la documentation"
+	@echo "  help: affiche ce message"
