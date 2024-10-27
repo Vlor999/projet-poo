@@ -61,5 +61,7 @@ public class Simulateur implements Simulable{
     public void restart()
     {
         this.capitaine.restart();
+        this.dateSimulation = 0;
+        end = false;
     }
 }
