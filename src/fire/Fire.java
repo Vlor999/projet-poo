@@ -29,6 +29,13 @@ public class Fire
 
     public Box getCurrentPosition(){ return this.currentPosition; }
 
+
+    private double absolu(double v){
+        if (v<0){
+            return -v;
+        }
+        return v;
+    }
     /**
      * Increase the intensity of the fire if the robot is close enough and has enough water
      * @param r the robot
@@ -39,10 +46,11 @@ public class Fire
         if (r.getPositionRobot().distanceTo(this.currentPosition) <= Integer.min(r.getFillingType(), 1) && (r.getCurrentVolume() > 0 || r instanceof LeggedRobot))
         {
             //if the volume is under the spillVolumePerTimes, we spill everything
-            double vol = Double.min(r.getSpillVolumePerTimes(), r.getCurrentVolume()); // the volume of water that the robot can spill
+            // constant to go a little bit faster in the Simulation
+            double vol = (1+absolu(r.getFillingTime()/r.getSpillingTime() - 1.5))*Double.min(r.getSpillVolumePerTimes(), r.getCurrentVolume()); // the volume of water that the robot can spill
             if (r instanceof LeggedRobot)
             {
-                vol = 10;
+                vol = 10*1.5;// constant to go a little bit faster in the Simulation
             }
             if (this.intensity - vol <= 0){
                 result = true;

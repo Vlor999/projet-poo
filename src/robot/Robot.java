@@ -184,6 +184,10 @@ public abstract class Robot{
     
     public String getFiles(int number){return files[number];} 
 
+    public double getFillingTime() {return this.fillingTime;}
+
+    public double getSpillingTime() {return this.spillTime;}
+
     public int getCurrentVolume(){return this.currentVolume;}
 
     /**
@@ -277,8 +281,11 @@ public abstract class Robot{
             System.out.println("Filling up the tank.");
             System.out.println(this);
         }
-        double increaseSpeed = 0; // if you want to increase the speed of the filling
-        this.currentVolume += (this.tankCapacity + increaseSpeed) / this.fillingTime;
+        double increaseSpeed = this.fillingTime/this.spillTime - 1.5; // to keep a good timing during the simulation
+        if (increaseSpeed < 0){
+            increaseSpeed = 1;
+        }
+        this.currentVolume += (this.tankCapacity * (1+increaseSpeed)) / this.fillingTime;
         if (this.currentVolume >= this.tankCapacity)
         {
             this.currentVolume = this.tankCapacity;
