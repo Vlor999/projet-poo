@@ -12,7 +12,7 @@ import java.util.List;
 import map.AStar;
 import map.Box;
 import map.Map;
-import simulation.Simulateur;
+import simulation.*;
 
 
 public abstract class Robot{
@@ -78,7 +78,7 @@ public abstract class Robot{
         this.initBox = new Box(currentCase.getRow(), currentCase.getColumn(), currentCase.getNature());
         this.currentVolume = 0;
         // We are currently using the second as the time unit so we have to know the time needed to spill the tank
-        if(!this.getType().equals("Captain"))
+        if(!(this instanceof CaptainRobot))
         {
             listRobots.add(this);
             this.spillVolumePerTimes = quantityPerTimes / this.spillTime;
@@ -190,6 +190,14 @@ public abstract class Robot{
 
     public int getCurrentVolume(){return this.currentVolume;}
 
+    public double getTankCapacity(){return this.tankCapacity;}
+
+    public void setEndFill(boolean b){this.endFill = b;}
+
+    public boolean getIsUseless(){ return this.isUseless;}
+
+    public void setBoxIterator(Iterator<Box> I){ this.boxIterator = I;}
+
     /**
      * Sets the robot's position to a new case with a deep copy.
      * @param newCase The new case where the robot should move to.
@@ -232,23 +240,6 @@ public abstract class Robot{
         return false;
     }
 
-    /**
-     * Set the iterator for the robot if the robot is not useless
-     * @param list
-     */
-    public void setIterator(List<Box> list) {
-        if (this.isUseless)
-        {
-            // If the robot is useless we don't need to look for the closest fire or water
-            this.boxIterator = Collections.emptyIterator();
-        }
-        else
-        {
-            AStar aStar = new AStar();
-            List<Box> l = aStar.findBestWayTo(this, list); //Find the best way from the robot to the points of the list (list of water or fire).
-            this.boxIterator = l.iterator();
-        }
-    }
     
     /**
      * We are currently setting up the volume of the robot
@@ -271,31 +262,6 @@ public abstract class Robot{
         }
     }
 
-    /**
-     * Fill up the tank of the robot. There is some parameters to know the simulation accurate
-     */
-    public void fillUp()
-    {
-        if (Data.getIsVerbose())
-        {
-            System.out.println("Filling up the tank.");
-            System.out.println(this);
-        }
-        double increaseSpeed = this.fillingTime/this.spillTime - 1.5; // to keep a good timing during the simulation
-        if (increaseSpeed < 0){
-            increaseSpeed = 1;
-        }
-        this.currentVolume += (this.tankCapacity * (1+increaseSpeed)) / this.fillingTime;
-        if (this.currentVolume >= this.tankCapacity)
-        {
-            this.currentVolume = this.tankCapacity;
-            this.endFill = true;
-        }
-        else
-        {
-            this.endFill = false;
-        }
-    }
 
     /**
      * Check if there is water around the robot and at a good distance. This last depends on the type of robot
@@ -358,7 +324,7 @@ public abstract class Robot{
             {
                 if (robot instanceof LeggedRobot || (robot.currentVolume > 0 && robot.endFill))
                 {
-                    robot.setIterator(Fire.getListFireBox());
+                    SetIterator.setIterator(Fire.getListFireBox(),robot);
                     Fire f = Fire.getClosestFire(robot.getPositionRobot());
                     try
                     {
@@ -367,7 +333,7 @@ public abstract class Robot{
                             for (Robot r : listRobots){
                                 if (robot.currentVolume > 0)
                                 {
-                                    r.setIterator(Fire.getListFireBox());
+                                    SetIterator.setIterator(Fire.getListFireBox(),robot);
                                 }
                             }
                         }
@@ -382,11 +348,11 @@ public abstract class Robot{
                 {
                     if (robot.waterAround())
                     {
-                        robot.fillUp();
+                        FillUp.fillUpRobot(robot);
                     }
                     else
                     {
-                        robot.setIterator(Map.getListWater());
+                        SetIterator.setIterator(Map.getListWater(),robot);
                     }
                 }
             }
