@@ -367,7 +367,7 @@ public abstract class Robot{
     public void restartOP()
     {
         endNext = false;
-        Fire.setListFires();
+        SetListFires.setListFires();
         for(Robot robot : listRobots)
         {
             robot.isUseless = false;

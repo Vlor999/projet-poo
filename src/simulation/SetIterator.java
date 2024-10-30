@@ -31,4 +31,9 @@ public class SetIterator extends Evenement{
             r.setBoxIterator(l.iterator());
         }
     }
+
+    @Override
+    public String toString(){
+        return "Nouveau chemin trouvé";
+    }
 }

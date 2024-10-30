@@ -34,4 +34,9 @@ public class FillUp extends Evenement{
             r.setEndFill(false);
         }
     }
+
+    @Override
+    public String toString(){
+        return "Rechargement du robot";
+    }
 }

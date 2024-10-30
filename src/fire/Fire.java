@@ -27,8 +27,11 @@ public class Fire
         numberFire++;
     }
 
+    public int getIntensity(){ return this.intensity;}
     public Box getCurrentPosition(){ return this.currentPosition; }
-
+    public void setIntensity(int v){ this.intensity = v;}
+    public int getInitValues(){ return this.initValues;}
+    public static void setNumberFire(int v){ numberFire = v;}
 
     private double absolu(double v){
         if (v<0){
@@ -93,25 +96,6 @@ public class Fire
         return closestFire;
     }
 
-    /**
-     * Split the fire to the adjacent boxes if possible but not introduced onto the subject
-     */
-    public void splitFire(){
-        int row = this.currentPosition.getRow();
-        int column = this.currentPosition.getColumn();
-        if (row - 1 >= 0){
-            Map.setFire(row - 1, column, this.intensity);
-        }
-        if (row + 1 < Map.getDataMap().getRows()){
-            Map.setFire(row + 1, column, this.intensity);
-        }
-        if (column - 1 >= 0){
-            Map.setFire(row, column - 1, this.intensity);
-        }
-        if (column + 1 < Map.getDataMap().getColumns()){
-            Map.setFire(row, column + 1, this.intensity);
-        }
-    }
     
     /**
      * Get the list of fires
@@ -119,23 +103,10 @@ public class Fire
      */
     public static List<Fire> getListFires(){return listFires;}
 
-    /**
-     * Set the list of fires to know where to fires are
-     */
-    public static void setListFires()
-    {
-        List<Fire> listFiresToAdd = new ArrayList<>();
-        int compteur = 0;
-        for (Fire f : listFiresMemory)
-        {
-            listFiresToAdd.add(f);
-            f.intensity = f.initValues; 
-            compteur += 1;
-        }
-        listFires = listFiresToAdd;
-        numberFire = compteur;
+
+    public static void setListFires(List<Fire> L){ 
+        listFires = L; //DOUTE
     }
-    
     public static List<Fire> getListFiresMemory(){return listFiresMemory;}
 
     /**
