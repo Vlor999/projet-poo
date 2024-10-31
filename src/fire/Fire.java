@@ -32,46 +32,10 @@ public class Fire
     public void setIntensity(int v){ this.intensity = v;}
     public int getInitValues(){ return this.initValues;}
     public static void setNumberFire(int v){ numberFire = v;}
+    public static int getNumberFire(){ return numberFire;}
+    
 
-    private double absolu(double v){
-        if (v<0){
-            return -v;
-        }
-        return v;
-    }
-    /**
-     * Increase the intensity of the fire if the robot is close enough and has enough water
-     * @param r the robot
-     * @return result boolean if the fire is extinguished
-     */
-    public boolean decreaseIntensity(Robot r){
-        boolean result = false;
-        if (r.getPositionRobot().distanceTo(this.currentPosition) <= Integer.min(r.getFillingType(), 1) && (r.getCurrentVolume() > 0 || r instanceof LeggedRobot))
-        {
-            //if the volume is under the spillVolumePerTimes, we spill everything
-            // constant to go a little bit faster in the Simulation
-            double vol = (1+absolu(r.getFillingTime()/r.getSpillingTime() - 1.5))*Double.min(r.getSpillVolumePerTimes(), r.getCurrentVolume()); // the volume of water that the robot can spill
-            if (r instanceof LeggedRobot)
-            {
-                vol = 10*1.5;// constant to go a little bit faster in the Simulation
-            }
-            if (this.intensity - vol <= 0){
-                result = true;
-                this.intensity = this.initValues; // reset the intensity
-                listFires.remove(this); // remove the fire from the list
-                numberFire--; // decrease the number of fires
-                if (r instanceof Drone)
-                {
-                    r.setCurrentVolume(-r.getCurrentVolume()); // spend everything in one round for the drone
-                }
-            }
-            else{
-                this.intensity -= vol; // decrease the intensity of the fire if not enough water
-            }
-            r.setCurrentVolume(-vol); // decrease the volume of water of the robot
-        }
-        return result;
-    }
+
 
     public static String[] getFiles(){
         return files;
@@ -118,7 +82,7 @@ public class Fire
      * Remove a fire from the list
      * @param fire
      */
-    public void removeFire(Fire fire){listFires.remove(fire);}
+    public static void removeFire(Fire fire){listFires.remove(fire);}
 
     /**
      * Show the list of fires

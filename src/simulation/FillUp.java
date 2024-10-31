@@ -21,7 +21,7 @@ public class FillUp extends Evenement{
         }
         double increaseSpeed = r.getFillingTime()/r.getSpillingTime() - 1.5; // to keep a good timing during the simulation
         if (increaseSpeed < 0){
-            increaseSpeed = 1;
+            increaseSpeed = 0;
         }
         r.setCurrentVolume(r.getCurrentVolume() + (r.getTankCapacity() * (1+increaseSpeed)) / r.getFillingTime());
         if (r.getCurrentVolume() >= r.getTankCapacity())
@@ -37,6 +37,6 @@ public class FillUp extends Evenement{
 
     @Override
     public String toString(){
-        return "Rechargement du robot";
+        return "Rechargement du robot en cours";
     }
 }

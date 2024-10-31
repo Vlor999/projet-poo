@@ -328,7 +328,7 @@ public abstract class Robot{
                     Fire f = Fire.getClosestFire(robot.getPositionRobot());
                     try
                     {
-                        resultFire = f.decreaseIntensity(robot);
+                        resultFire = DecreaseIntensity.decreaseIntensity(robot,f);
                         if (resultFire){ // on doit changer leurs directions
                             for (Robot r : listRobots){
                                 if (robot.currentVolume > 0)
