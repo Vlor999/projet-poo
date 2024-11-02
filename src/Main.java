@@ -1,6 +1,4 @@
 
-package main;
-
 import gui.GUISimulator;
 import io.*;
 import java.awt.Color;

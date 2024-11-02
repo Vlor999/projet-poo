@@ -1,5 +1,4 @@
 package simulation;
-import main.Main;
 import fire.*;
 import robot.*;
 

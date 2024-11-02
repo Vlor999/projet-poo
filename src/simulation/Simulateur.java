@@ -56,6 +56,16 @@ public class Simulateur implements Simulable{
     @Override
     public void next()
     {
+
+        List<String> test = new ArrayList<>();
+        test.add("a");
+        test.add("a");
+        test.add("b");
+        test.add("b");
+        List<String> test2 = test;
+        test.remove("a");
+        System.out.println(test);
+         System.out.println(test2);
         if(Terminee())
         {
             System.out.printf("\r----- Simulation terminee ------");
