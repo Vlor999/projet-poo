@@ -56,16 +56,6 @@ public class Simulateur implements Simulable{
     @Override
     public void next()
     {
-
-        List<String> test = new ArrayList<>();
-        test.add("a");
-        test.add("a");
-        test.add("b");
-        test.add("b");
-        List<String> test2 = test;
-        test.remove("a");
-        System.out.println(test);
-         System.out.println(test2);
         if(Terminee())
         {
             System.out.printf("\r----- Simulation terminee ------");
@@ -73,19 +63,17 @@ public class Simulateur implements Simulable{
             return;
         }
         // TENTATIVE AFFICHAGE EVENEMENTS
-        int indice = 0;
         if (!listEvenements.isEmpty()){
+            List<Evenement> copy = new ArrayList<>();
             for (Evenement eve : listEvenements){
-                if (eve.getDate() < dateSimulation - 1){
-                    // listEvenements.remove(indice);
-                }
-                else{
+                if (eve.getDate() >= dateSimulation - 1){
+                    copy.add(eve);
                     eve.execute();
-                    indice += 1;
                 }
             }
+
+            listEvenements = copy;
         }
-        // System.out.println(listEvenements +"\n");
         end = this.capitaine.next();
         this.incrementeDate();
     }
