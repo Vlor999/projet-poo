@@ -2,11 +2,7 @@ package fire;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import map.*;
-import robot.LeggedRobot;
-import robot.Robot;
-import robot.Drone;
 
 public class Fire 
 {
@@ -82,7 +78,10 @@ public class Fire
      * Remove a fire from the list
      * @param fire
      */
-    public static void removeFire(Fire fire){listFires.remove(fire);}
+    public static void removeFire(Fire fire){
+        listFires.remove(fire);
+        numberFire--;
+    }
 
     /**
      * Show the list of fires
@@ -119,6 +118,11 @@ public class Fire
             }
         }
         return false;
+    }
+
+
+    public static boolean isFire(Box box){
+        return isFire(box.getRow(), box.getColumn());
     }
 
     public static List<Box> getListFireBox()

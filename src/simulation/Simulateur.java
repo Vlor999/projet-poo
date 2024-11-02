@@ -3,8 +3,6 @@ package simulation;
 import gui.*;
 import io.Draw;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import robot.*;
 
@@ -60,14 +58,14 @@ public class Simulateur implements Simulable{
             Draw.end(Simulateur.getGUI());
             return;
         }
-        // TENTATIVE AFFICHAGE EVENEMENTS
-        for (Evenement eve : this.listEvenements){
-            eve.execute();
-            if (eve.getDate() <= this.dateSimulation){
-                this.listEvenements.remove(eve);
-            }
-        }
-        System.out.println(listEvenements +"feznef\n");
+        // // TENTATIVE AFFICHAGE EVENEMENTS
+        // for (Evenement eve : this.listEvenements){
+        //     eve.execute();
+        //     if (eve.getDate() <= this.dateSimulation){
+        //         this.listEvenements.remove(eve);
+        //     }
+        // }
+        // System.out.println(listEvenements +"feznef\n");
         end = this.capitaine.next();
         this.incrementeDate();
     }

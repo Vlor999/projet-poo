@@ -1,6 +1,5 @@
 package simulation;
 
-import simulation.*;
 import fire.*;
 import robot.*;
 
@@ -28,25 +27,25 @@ public class DecreaseIntensity extends Evenement{
         {
             //if the volume is under the spillVolumePerTimes, we spill everything
             // constant to go a little bit faster in the Simulation
-            double vol = (1+absolu(r.getFillingTime()/r.getSpillingTime() - 1.5))*Double.min(r.getSpillVolumePerTimes(), r.getCurrentVolume()); // the volume of water that the robot can spill
+            // double vol = (1+absolu(r.getFillingTime()/r.getSpillingTime()))*Double.min(r.getSpillVolumePerTimes(), r.getCurrentVolume()); // the volume of water that the robot can spill
+            double vol = Double.min(r.getSpillVolumePerTimes(), r.getCurrentVolume()); // the volume of water that the robot can spill
             if (r instanceof LeggedRobot)
             {
-                vol = 10*1.5;// constant to go a little bit faster in the Simulation
+                vol = 10;// constant to go a little bit faster in the Simulation
             }
             if (f.getIntensity() - vol <= 0){
                 result = true;
                 f.setIntensity(f.getInitValues()); // reset the intensity
                 Fire.removeFire(f); // remove the fire from the list
-                Fire.setNumberFire(Fire.getNumberFire()-1); // decrease the number of fires
                 if (r instanceof Drone)
                 {
-                    r.setCurrentVolume(-r.getCurrentVolume()); // spend everything in one round for the drone
+                    r.setCurrentVolume(0); // spend everything in one round for the drone
                 }
             }
             else{
                 f.setIntensity(f.getIntensity() - (int) vol); // decrease the intensity of the fire if not enough water
             }
-            r.setCurrentVolume(-vol); // decrease the volume of water of the robot
+            r.setCurrentVolume(r.getCurrentVolume() - vol); // decrease the volume of water of the robot
         }
         return result;
     }

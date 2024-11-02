@@ -1,7 +1,6 @@
 package simulation;
-import robot.*;
-import simulation.*;
 import io.*;
+import robot.*;
 
 public class FillUp extends Evenement{
 
@@ -19,11 +18,11 @@ public class FillUp extends Evenement{
             System.out.println("Filling up the tank.");
             System.out.println(r);
         }
-        double increaseSpeed = r.getFillingTime()/r.getSpillingTime() - 1.5; // to keep a good timing during the simulation
+        double increaseSpeed = 0; // to keep a good timing during the simulation
         if (increaseSpeed < 0){
             increaseSpeed = 0;
         }
-        r.setCurrentVolume(r.getCurrentVolume() + (r.getTankCapacity() * (1+increaseSpeed)) / r.getFillingTime());
+        r.setCurrentVolume(r.getCurrentVolume() + ((r.getTankCapacity() + increaseSpeed)) / r.getFillingTime());
         if (r.getCurrentVolume() >= r.getTankCapacity())
         {
             r.setCurrentVolume(r.getTankCapacity());

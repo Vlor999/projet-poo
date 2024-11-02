@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import map.AStar;
 import map.Box;
 import map.Map;
 import simulation.*;
@@ -258,7 +257,7 @@ public abstract class Robot{
         }
         else
         {
-            this.currentVolume += volume;
+            this.currentVolume = (int)volume;
         }
     }
 
@@ -331,9 +330,17 @@ public abstract class Robot{
                         resultFire = DecreaseIntensity.decreaseIntensity(robot,f);
                         if (resultFire){ // on doit changer leurs directions
                             for (Robot r : listRobots){
-                                if (robot.currentVolume > 0)
+                                if (r.currentVolume >= 0)
                                 {
-                                    SetIterator.setIterator(Fire.getListFireBox(),robot);
+                                    if ( r instanceof Drone && !Fire.isFire(r.getPositionRobot()))
+                                    {
+                                        r.currentVolume = 0;
+                                        SetIterator.setIterator(Map.getListWater(),r);
+                                    }
+                                    else
+                                    {
+                                        SetIterator.setIterator(Fire.getListFireBox(),r);
+                                    }
                                 }
                             }
                         }

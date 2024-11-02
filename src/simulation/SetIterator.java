@@ -1,12 +1,8 @@
 package simulation;
-import robot.*;
-import simulation.*;
-import io.*;
-import map.*;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
+import map.*;
+import robot.*;
 
 public class SetIterator extends Evenement{
 

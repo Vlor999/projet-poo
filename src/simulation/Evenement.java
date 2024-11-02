@@ -1,5 +1,4 @@
 package simulation;
-import simulation.*;
 
 public abstract class Evenement {
     private long date;
@@ -15,8 +14,7 @@ public abstract class Evenement {
     }
 
     public void execute()
-    {   
-        
+    { 
         System.out.println("["+this.date+"] " + this.toString()+"\n");
     }
 }
