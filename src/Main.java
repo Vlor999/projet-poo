@@ -1,10 +1,16 @@
 
+package main;
+
 import gui.GUISimulator;
 import io.*;
 import java.awt.Color;
 import simulation.Simulateur;
 
 public class Main {
+
+    
+    
+
     public static void main(String[] args) {
         /*
          * This part is if you want to test the program without using the terminal
@@ -23,7 +29,7 @@ public class Main {
             LecteurDonnees.analyse(args);
             GUISimulator gui = new GUISimulator(800, 600, Color.BLACK);
             LecteurDonnees.lireFichierEtSimuler(args[0], gui);
-            new Simulateur(0, gui);
+            Simulateur s = new Simulateur(0, gui);
         }
     }
 }

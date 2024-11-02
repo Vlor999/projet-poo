@@ -30,7 +30,7 @@ public class SplitFire extends Evenement{
 
     @Override
     public String toString(){
-        return "Décuplement des feux";
+        return "Le feu se propage";
     }
 
 }

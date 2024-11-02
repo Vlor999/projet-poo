@@ -1,5 +1,5 @@
 package simulation;
-
+import main.Main;
 import fire.*;
 import robot.*;
 
@@ -22,6 +22,7 @@ public class DecreaseIntensity extends Evenement{
      * @return result boolean if the fire is extinguished
      */
     public static boolean decreaseIntensity(Robot r, Fire f){
+
         boolean result = false;
         if (r.getPositionRobot().distanceTo(f.getCurrentPosition()) <= Integer.min(r.getFillingType(), 1) && (r.getCurrentVolume() > 0 || r instanceof LeggedRobot))
         {

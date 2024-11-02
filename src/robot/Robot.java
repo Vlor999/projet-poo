@@ -323,11 +323,15 @@ public abstract class Robot{
             {
                 if (robot instanceof LeggedRobot || (robot.currentVolume > 0 && robot.endFill))
                 {
-                    SetIterator.setIterator(Fire.getListFireBox(),robot);
+                    SetIterator seti = new SetIterator(Simulateur.getDateSimulation());
+                    seti.setIterator(Fire.getListFireBox(),robot);
+                    Simulateur.ajouteEvenement(seti);
                     Fire f = Fire.getClosestFire(robot.getPositionRobot());
                     try
                     {
-                        resultFire = DecreaseIntensity.decreaseIntensity(robot,f);
+                        DecreaseIntensity d = new DecreaseIntensity(Simulateur.getDateSimulation());
+                        resultFire = d.decreaseIntensity(robot,f);
+                        Simulateur.ajouteEvenement(d);
                         if (resultFire){ // on doit changer leurs directions
                             for (Robot r : listRobots){
                                 if (r.currentVolume >= 0)
@@ -335,11 +339,15 @@ public abstract class Robot{
                                     if ( r instanceof Drone && !Fire.isFire(r.getPositionRobot()))
                                     {
                                         r.currentVolume = 0;
-                                        SetIterator.setIterator(Map.getListWater(),r);
+                                        SetIterator seti2 = new SetIterator(Simulateur.getDateSimulation());
+                                        seti2.setIterator(Map.getListWater(),r);
+                                        Simulateur.ajouteEvenement(seti2);
                                     }
                                     else
                                     {
-                                        SetIterator.setIterator(Fire.getListFireBox(),r);
+                                        SetIterator seti2 = new SetIterator(Simulateur.getDateSimulation());
+                                        seti2.setIterator(Fire.getListFireBox(),r);
+                                        Simulateur.ajouteEvenement(seti2);
                                     }
                                 }
                             }
@@ -355,11 +363,15 @@ public abstract class Robot{
                 {
                     if (robot.waterAround())
                     {
-                        FillUp.fillUpRobot(robot);
+                        FillUp fillup = new FillUp(Simulateur.getDateSimulation());
+                        fillup.fillUpRobot(robot);
+                        Simulateur.ajouteEvenement(fillup);
                     }
                     else
                     {
-                        SetIterator.setIterator(Map.getListWater(),robot);
+                        SetIterator seti3 = new SetIterator(Simulateur.getDateSimulation());
+                        seti3.setIterator(Map.getListWater(),robot);
+                        Simulateur.ajouteEvenement(seti3);
                     }
                 }
             }
@@ -374,7 +386,9 @@ public abstract class Robot{
     public void restartOP()
     {
         endNext = false;
-        SetListFires.setListFires();
+        SetListFires setFire = new SetListFires(Simulateur.getDateSimulation());
+        setFire.setListFires();
+        Simulateur.ajouteEvenement(setFire);
         for(Robot robot : listRobots)
         {
             robot.isUseless = false;

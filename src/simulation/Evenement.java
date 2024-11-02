@@ -6,7 +6,6 @@ public abstract class Evenement {
 
     public Evenement(long date) {
         this.date = date;
-         
     }
 
     public long getDate() {

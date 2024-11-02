@@ -4,6 +4,7 @@ import gui.*;
 import io.Draw;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collection;
 import robot.*;
 
 public class Simulateur implements Simulable{
@@ -11,7 +12,7 @@ public class Simulateur implements Simulable{
     private CaptainRobot capitaine;
     private boolean end = false;
     private static GUISimulator gui;
-    private static List<Evenement> listEvenements = new ArrayList<>();
+    protected static List<Evenement> listEvenements = new ArrayList<>();
 
     public Simulateur(long date, GUISimulator myGUI){
         this.dateSimulation = date;
@@ -20,8 +21,11 @@ public class Simulateur implements Simulable{
         myGUI.setSimulable(this);
     }
 
-    public void ajouteEvenement(Evenement e){
-        this.listEvenements.add(e);
+    /**
+     * Permet d'agrandir la liste des évènements 
+     */
+    public static void ajouteEvenement(Evenement e){
+        listEvenements.add(e);
     }
 
     public static long getDateSimulation(){return dateSimulation;}
@@ -58,14 +62,20 @@ public class Simulateur implements Simulable{
             Draw.end(Simulateur.getGUI());
             return;
         }
-        // // TENTATIVE AFFICHAGE EVENEMENTS
-        // for (Evenement eve : this.listEvenements){
-        //     eve.execute();
-        //     if (eve.getDate() <= this.dateSimulation){
-        //         this.listEvenements.remove(eve);
-        //     }
-        // }
-        // System.out.println(listEvenements +"feznef\n");
+        // TENTATIVE AFFICHAGE EVENEMENTS
+        int indice = 0;
+        if (!listEvenements.isEmpty()){
+            for (Evenement eve : listEvenements){
+                if (eve.getDate() < dateSimulation - 1){
+                    // listEvenements.remove(indice);
+                }
+                else{
+                    eve.execute();
+                    indice += 1;
+                }
+            }
+        }
+        // System.out.println(listEvenements +"\n");
         end = this.capitaine.next();
         this.incrementeDate();
     }
