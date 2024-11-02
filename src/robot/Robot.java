@@ -330,8 +330,8 @@ public abstract class Robot{
                     try
                     {
                         DecreaseIntensity d = new DecreaseIntensity(Simulateur.getDateSimulation());
-                        resultFire = d.decreaseIntensity(robot,f);
                         Simulateur.ajouteEvenement(d);
+                        resultFire = d.decreaseIntensity(robot,f);
                         if (resultFire){ // on doit changer leurs directions
                             for (Robot r : listRobots){
                                 if (r.currentVolume >= 0)
