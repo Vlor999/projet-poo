@@ -49,66 +49,81 @@ public class GUISimulator extends JFrame
         this(paramInt1, paramInt2, paramColor, new DefaultSimulator());
     }
 
+    private JButton createHoverButton(String text) {
+        JButton button = new JButton(text);
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBackground(Color.BLACK);
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setBackground(UIManager.getColor("control"));
+            }
+        });
+        return button;
+    }
+
     public GUISimulator(int paramInt1, int paramInt2, Color paramColor, Simulable paramSimulable) {
         super("Simulateur de Systèmes Multi-Agents");
-        
+    
         this.timer = new Timer(100, new TimerListener());
         this.timer.stop();
         setSimulable(paramSimulable);
-
-        
-        try { UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel"); }
-        catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+    
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+        } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
-        
+    
+        // Panneau pour la zone de simulation
         this.simuPanel = new SimulationPanel(paramInt1, paramInt2, paramColor);
         this.sp = new JScrollPane(this.simuPanel);
         this.sp.setPreferredSize(new Dimension(Math.min(800, paramInt1), Math.min(600, paramInt2)));
-        
+    
         this.panelWidth = paramInt1;
         this.panelHeight = paramInt2;
         this.simuPanel.setBackground(paramColor);
-        
-        JPanel jPanel1 = new JPanel(new GridLayout(2, 2));
+    
+        // Panneau de configuration (haut de l'écran) pour les valeurs modifiables
+        JPanel controlSettingsPanel = new JPanel(new GridLayout(2, 2, 10, 10));
         this.speedLabel = new JLabel("Tps entre 2 affichages (ms) :");
         this.speedSpinner = new JSpinner(new SpinnerNumberModel(100, 1, 10000, 10));
-        
-        jPanel1.add(this.speedLabel);
-        jPanel1.add(this.speedSpinner);
+        controlSettingsPanel.add(this.speedLabel);
+        controlSettingsPanel.add(this.speedSpinner);
+    
         this.stepLabel = new JLabel("Nb de pas simulés entre 2 affichages :");
         this.stepSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 10000, 10));
-        
-        jPanel1.add(this.stepLabel);
-        jPanel1.add(this.stepSpinner);
-
-        this.fileButton = new JButton("Ouvrir un fichier (*.map)");
+        controlSettingsPanel.add(this.stepLabel);
+        controlSettingsPanel.add(this.stepSpinner);
+    
+        // Panneau de boutons de contrôle (bas de l'écran)
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        this.fileButton = createHoverButton("Ouvrir un fichier (*.map)");
         this.selectBox = new JComboBox<>();
         this.selectBox.addItemListener(paramItemEvent -> paramSimulable.selectedItem((String)paramItemEvent.getItem()));
         this.typeImage = new JComboBox<>(options);
-        this.restartButton = new JButton("Début");
-        this.playPauseButton = new JButton("Lecture");
-        this.nextButton = new JButton("Suivant");
-        this.exitButton = new JButton("Quitter");
-        JPanel jPanel2 = new JPanel();
-        
-        
-        jPanel2.add(this.playPauseButton);
-        jPanel2.add(this.nextButton);
-        jPanel2.add(this.restartButton);
-        jPanel2.add(this.exitButton);
-        jPanel2.add(this.fileButton);
-        jPanel2.add(this.typeImage);
-        
-        this.controlPanel = new JPanel();
-        this.controlPanel.setLayout(new BorderLayout());
-        this.controlPanel.add(jPanel1, "West");
-        this.controlPanel.add(jPanel2, "East");
-        
+    
+        this.restartButton = createHoverButton("Début");
+        this.playPauseButton = createHoverButton("Lecture");
+        this.nextButton = createHoverButton("Suivant");
+        this.exitButton = createHoverButton("Quitter");
+    
+        // Ajout de tous les boutons dans le panneau des boutons
+        buttonPanel.add(this.playPauseButton);
+        buttonPanel.add(this.nextButton);
+        buttonPanel.add(this.restartButton);
+        buttonPanel.add(this.exitButton);
+        buttonPanel.add(this.fileButton);
+        buttonPanel.add(this.typeImage);
+    
+        // Configuration du panneau principal
         getContentPane().setLayout(new BorderLayout());
-        getContentPane().add(this.sp, "Center");
-        getContentPane().add(this.controlPanel, "South");
-        
+        getContentPane().add(this.sp, BorderLayout.CENTER);
+        getContentPane().add(controlSettingsPanel, BorderLayout.NORTH);
+        getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+    
+        // Gestion des actions
         DisplayControler displayControler = new DisplayControler(this);
         this.restartButton.setActionCommand("restart");
         this.restartButton.addActionListener(displayControler);
@@ -124,12 +139,14 @@ public class GUISimulator extends JFrame
         this.typeImage.addActionListener(displayControler);
         this.fileButton.setActionCommand("fileButton");
         this.fileButton.addActionListener(displayControler);
-        
-        setDefaultCloseOperation(3);
+    
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
         setVisible(true);
     }
-
+    
+    
+    
 
     public void setSimulable(Simulable paramSimulable) {
     this.simulator = paramSimulable;

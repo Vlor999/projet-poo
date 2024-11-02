@@ -115,7 +115,7 @@ public class LecteurDonnees {
      */
     private TypeLand lireCase(int lig, int col) throws DataFormatException {
         ignorerCommentaires();
-        String chaineNature = new String();
+        String chaineNature;
         //		NatureTerrain nature;
         try {
             chaineNature = scanner.next();
