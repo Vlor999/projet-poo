@@ -4,7 +4,10 @@ import gui.*;
 import io.Draw;
 import java.util.ArrayList;
 import java.util.List;
+
+import fire.Fire;
 import robot.*;
+import map.*;
 
 public class Simulateur implements Simulable{
     private static long dateSimulation;
@@ -77,6 +80,13 @@ public class Simulateur implements Simulable{
             listEvenements = copy;
             copy.clear();
         }
+        
+        if (Simulateur.getGUI().isFirePropagationEnabled() && this.dateSimulation % (Math.round(Map.getDataMap().getCaseSize()/2)) == 0 && this.dateSimulation != 0) { // Exemple : propagation tous les en fonction de la taille de la case
+            for (Fire fire : Fire.getListFires()) {
+                this.ajouteEvenement(new FirePropa(this.dateSimulation, fire));
+            }
+        }
+
         end = this.capitaine.next();
         this.incrementeDate();
     }

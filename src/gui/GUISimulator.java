@@ -7,17 +7,16 @@ import java.io.File;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.*;
-public class GUISimulator extends JFrame
-{
 
-    String[] options = {"Pokemon", "Pacman", "Mario"};
-    
+public class GUISimulator extends JFrame {
+
+    String[] options = { "Pokemon", "Pacman", "Mario" };
 
     private static final long serialVersionUID = 1L;
     private JScrollPane sp;
     private SimulationPanel simuPanel;
     private JPanel controlPanel;
-    
+
     private JButton restartButton;
     private JButton playPauseButton;
     private JButton nextButton;
@@ -44,6 +43,9 @@ public class GUISimulator extends JFrame
     private Simulable simulator;
 
     private boolean warning = false;
+
+    private JButton fireToggleButton;
+    private boolean firePropagationEnabled = false;
 
     public GUISimulator(int paramInt1, int paramInt2, Color paramColor) {
         this(paramInt1, paramInt2, paramColor, new DefaultSimulator());
@@ -116,6 +118,7 @@ public class GUISimulator extends JFrame
         buttonPanel.add(this.exitButton);
         buttonPanel.add(this.fileButton);
         buttonPanel.add(this.typeImage);
+        
     
         // Configuration du panneau principal
         getContentPane().setLayout(new BorderLayout());
@@ -139,13 +142,26 @@ public class GUISimulator extends JFrame
         this.typeImage.addActionListener(displayControler);
         this.fileButton.setActionCommand("fileButton");
         this.fileButton.addActionListener(displayControler);
-    
+                //Fire propagation DLC
+        this.fireToggleButton = new JButton("Propagation: OFF");
+        this.fireToggleButton.setActionCommand("toggleFirePropagation");
+        this.fireToggleButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            firePropagationEnabled = !firePropagationEnabled;
+            fireToggleButton.setText("Propagation: " + (firePropagationEnabled ? "ON" : "OFF"));
+                    }});
+        buttonPanel.add(this.fireToggleButton); 
+        
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
         setVisible(true);
     }
     
-    
+    public boolean isFirePropagationEnabled() {
+        return this.firePropagationEnabled;
+    }
     
 
     public void setSimulable(Simulable paramSimulable) {
