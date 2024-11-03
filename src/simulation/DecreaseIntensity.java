@@ -7,14 +7,6 @@ public class DecreaseIntensity extends Evenement{
         super(date);
     }
 
-
-    private static double absolu(double v){
-        if (v<0){
-            return -v;
-        }
-        return v;
-    }
-
     /**
      * Increase the intensity of the fire if the robot is close enough and has enough water
      * @param r the robot

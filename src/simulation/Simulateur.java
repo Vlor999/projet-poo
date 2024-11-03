@@ -4,21 +4,24 @@ import gui.*;
 import io.Draw;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Collection;
 import robot.*;
 
 public class Simulateur implements Simulable{
     private static long dateSimulation;
-    private CaptainRobot capitaine;
+    private final CaptainRobot capitaine;
     private boolean end = false;
     private static GUISimulator gui;
     protected static List<Evenement> listEvenements = new ArrayList<>();
 
     public Simulateur(long date, GUISimulator myGUI){
-        this.dateSimulation = date;
+        dateSimulation = date;
         this.capitaine = new CaptainRobot();
         Simulateur.setGUI(myGUI);
-        myGUI.setSimulable(this);
+    }
+
+    public void initialize()
+    {
+        gui.setSimulable(this);
     }
 
     /**
@@ -35,7 +38,7 @@ public class Simulateur implements Simulable{
      */
     private void incrementeDate()
     {
-        this.dateSimulation += 1;
+        dateSimulation += 1;
     }
 
     private boolean Terminee()
@@ -71,8 +74,8 @@ public class Simulateur implements Simulable{
                     eve.execute();
                 }
             }
-
             listEvenements = copy;
+            copy.clear();
         }
         end = this.capitaine.next();
         this.incrementeDate();
@@ -82,7 +85,7 @@ public class Simulateur implements Simulable{
     public void restart()
     {
         this.capitaine.restart();
-        this.dateSimulation = 0;
+        dateSimulation = 0;
         end = false;
     }
 }

@@ -1,4 +1,3 @@
-
 import gui.GUISimulator;
 import io.*;
 import java.awt.Color;
@@ -28,6 +27,7 @@ public class Main {
             GUISimulator gui = new GUISimulator(800, 600, Color.BLACK);
             LecteurDonnees.lireFichierEtSimuler(args[0], gui);
             Simulateur s = new Simulateur(0, gui);
+            s.initialize();
         }
     }
 }

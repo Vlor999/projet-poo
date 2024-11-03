@@ -6,21 +6,27 @@ import map.*;
 
 public class Fire 
 {
-    private Box currentPosition;
+    private final Box currentPosition;
     private int intensity; // Represent the quantityy of water needed to extinguish the fire
     private static List<Fire> listFires = new ArrayList<>();
-    private static List<Fire> listFiresMemory = new ArrayList<>(); // to keep the initial values of the fires
-    private int initValues; // to keep the initial values of the fires
+    private final static List<Fire> listFiresMemory = new ArrayList<>(); // to keep the initial values of the fires
+    private final int initValues; // to keep the initial values of the fires
     private static int numberFire = 0;
-    private static String[] files = {"images/fire1.png", "images/fire2.png", "images/fire3.png",  "images/fire4.png"};
+    private final static String[] files = {"images/fire1.png", "images/fire2.png", "images/fire3.png",  "images/fire4.png"};
 
-    public Fire(Box currentPosition, int intensity){
+    private Fire(Box currentPosition, int intensity){
         this.initValues = intensity;
         this.currentPosition = currentPosition;
         this.intensity = intensity;
-        listFires.add(this);
-        listFiresMemory.add(this); // to keep the initial values of the fires
+    }
+
+    // Factory method
+    public static Fire createFire(Box currentPosition, int intensity) {
+        Fire fire = new Fire(currentPosition, intensity);
+        listFires.add(fire);
+        listFiresMemory.add(fire); // to keep the initial values of the fires
         numberFire++;
+        return fire;
     }
 
     public int getIntensity(){ return this.intensity;}
@@ -30,9 +36,6 @@ public class Fire
     public static void setNumberFire(int v){ numberFire = v;}
     public static int getNumberFire(){ return numberFire;}
     
-
-
-
     public static String[] getFiles(){
         return files;
     }
@@ -47,7 +50,10 @@ public class Fire
         int minDistance = Integer.MAX_VALUE;
         Fire closestFire = null;
         for (Fire fire : listFires){
-            int distance = Math.abs(fire.getCurrentPosition().getRow() - box.getRow()) + Math.abs(fire.getCurrentPosition().getColumn() - box.getColumn());
+            int distance = 
+            Math.abs(fire.getCurrentPosition().getRow() - box.getRow()) 
+            + 
+            Math.abs(fire.getCurrentPosition().getColumn() - box.getColumn());
             if (distance < minDistance){
                 minDistance = distance;
                 closestFire = fire;

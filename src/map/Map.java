@@ -2,20 +2,20 @@ package map;
 import enumerator.*;
 import fire.*;
 import io.*;
-import robot.Robot;
-
 import java.util.ArrayList;
 import java.util.List;
+import robot.Robot;
+
 
 
 public class Map {
-    private static String RED = "\u001B[31m";
-    private static String GREEN = "\u001B[32m";
-    private static String RESET = "\u001B[0m";
-    private static String BLUE = "\u001B[34m";
+    private final static String RED = "\u001B[31m";
+    private final static String GREEN = "\u001B[32m";
+    private final static String RESET = "\u001B[0m";
+    private final static String BLUE = "\u001B[34m";
     private static Box[][] currentMap;
     private static Data dataMap;
-    private static List<Box> listWater = new ArrayList<>();
+    private final static List<Box> listWater = new ArrayList<>();
 
     /**
      * Set a specific case on the map at the given row and column.
@@ -61,7 +61,7 @@ public class Map {
      * @param intensity
      */
     public static void setFire(int row, int column, int intensity){
-        new Fire(currentMap[row][column], intensity);
+        Fire.createFire(currentMap[row][column], intensity);
     }
 
     /**
@@ -83,6 +83,7 @@ public class Map {
      * Return the String that represente the map at the begenning
      * @return String of the map
      */
+    @Override
     public String toString()
     {
         int numberRows = dataMap.getRows();

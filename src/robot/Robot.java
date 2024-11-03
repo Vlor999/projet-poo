@@ -45,7 +45,7 @@ public abstract class Robot{
     
     // The number of robots created
     protected static int robotCount = 0;
-    private static List<Robot> listRobots = new ArrayList<>();
+    private final static List<Robot> listRobots = new ArrayList<>();
     protected boolean isUseless = false;
 
     protected static boolean endNext = false;
@@ -118,38 +118,32 @@ public abstract class Robot{
      */
     public static Robot stringToRobot(String type, Data mapData, Box currentCase, double travelSpeed) {
         switch (type.toUpperCase()) {
-            // toUpperCase to be sure that all the letters are in uppercase and that there is no miss match
-            // Convert km/h -> m/s
             case "CHENILLES":
-                if (travelSpeed <= 0 || travelSpeed > 80)
-                {
+                if (travelSpeed <= 0 || travelSpeed > 80) {
                     travelSpeed = 60; // Default speed if over the limit
                 }
                 travelSpeed = travelSpeed / 3.6; // Conversion from km/h to m/s
                 return new CaterpillarRobot(mapData, currentCase, travelSpeed);
             case "DRONE":
-                if (travelSpeed <= 0 || travelSpeed > 150)
-                {
+                if (travelSpeed <= 0 || travelSpeed > 150) {
                     travelSpeed = 100;
                 }
                 travelSpeed = travelSpeed / 3.6;
                 return new Drone(mapData, currentCase, travelSpeed);
-            case "PATTES": // the speed must be 30 and can't be changed 
-                if (travelSpeed != 30)
-                {
+            case "PATTES":
+                if (travelSpeed != 30) {
                     travelSpeed = 30;
                 }
                 travelSpeed = travelSpeed / 3.6;
                 return new LeggedRobot(mapData, currentCase, travelSpeed);
             case "ROUES":
-                if (travelSpeed <= 0)
-                {
+                if (travelSpeed <= 0) {
                     travelSpeed = 80; // no max value for the speed
                 }
                 travelSpeed = travelSpeed / 3.6;
                 return new WheeledRobot(mapData, currentCase, travelSpeed);
             default:
-                throw new IllegalArgumentException("Invalid type of robot."); // If the type is not recognized
+                throw new IllegalArgumentException("Invalid type of robot.");
         }
     }
 
@@ -306,79 +300,82 @@ public abstract class Robot{
      * Une fois avoir trouvé pour tous les robots ce qu'ils doivent faire alors on les fait bouger.
      * Si un robot ne peut plus bouger alors on le met en inutile. 
      */
-    public boolean nextOP()
-    {
-        boolean resultFire;
-        if (endNext)
-        {
-            return endNext;
+    public boolean nextOP() {
+        if (endNext) {
+            return true;
         }
-        for (Robot robot : listRobots)
-        {
-            if (robot.boxIterator.hasNext()) // Ne fais pas attention si le feu est éteint ou pas 
-            {
-                robot.setPositionRobot(robot.boxIterator.next());
-            }
-            else
-            {
-                if (robot instanceof LeggedRobot || (robot.currentVolume > 0 && robot.endFill))
-                {
-                    SetIterator seti = new SetIterator(Simulateur.getDateSimulation());
-                    seti.setIterator(Fire.getListFireBox(),robot);
-                    Simulateur.ajouteEvenement(seti);
-                    Fire f = Fire.getClosestFire(robot.getPositionRobot());
-                    try
-                    {
-                        DecreaseIntensity d = new DecreaseIntensity(Simulateur.getDateSimulation());
-                        Simulateur.ajouteEvenement(d);
-                        resultFire = d.decreaseIntensity(robot,f);
-                        if (resultFire){ // on doit changer leurs directions
-                            for (Robot r : listRobots){
-                                if (r.currentVolume >= 0)
-                                {
-                                    if ( r instanceof Drone && !Fire.isFire(r.getPositionRobot()))
-                                    {
-                                        r.currentVolume = 0;
-                                        SetIterator seti2 = new SetIterator(Simulateur.getDateSimulation());
-                                        seti2.setIterator(Map.getListWater(),r);
-                                        Simulateur.ajouteEvenement(seti2);
-                                    }
-                                    else
-                                    {
-                                        SetIterator seti2 = new SetIterator(Simulateur.getDateSimulation());
-                                        seti2.setIterator(Fire.getListFireBox(),r);
-                                        Simulateur.ajouteEvenement(seti2);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    catch (NullPointerException e)
-                    {
-                        endNext = true;
-                        break;
-                    }
-                }
-                else
-                {
-                    if (robot.waterAround())
-                    {
-                        FillUp fillup = new FillUp(Simulateur.getDateSimulation());
-                        fillup.fillUpRobot(robot);
-                        Simulateur.ajouteEvenement(fillup);
-                    }
-                    else
-                    {
-                        SetIterator seti3 = new SetIterator(Simulateur.getDateSimulation());
-                        seti3.setIterator(Map.getListWater(),robot);
-                        Simulateur.ajouteEvenement(seti3);
-                    }
-                }
+        
+        for (Robot robot : listRobots) {
+            if (processNextRobotStep(robot)) {
+                endNext = true;
+                break;
             }
             Draw.drawMap(Simulateur.getGUI());
         }
+        
         return endNext;
     }
+    
+    private boolean processNextRobotStep(Robot robot) {
+        try {
+            if (robot.boxIterator.hasNext()) {
+                robot.setPositionRobot(robot.boxIterator.next());
+            } else if (shouldExtinguishFire(robot)) {
+                handleFireExtinguishing(robot);
+            } else {
+                handleWaterRefill(robot);
+            }
+        } catch (NullPointerException e) {
+            return true; // Fin de la simulation en cas d'exception.
+        }
+        return false;
+    }
+    
+    private boolean shouldExtinguishFire(Robot robot) {
+        return robot instanceof LeggedRobot || (robot.currentVolume > 0 && robot.endFill);
+    }
+    
+    private void handleFireExtinguishing(Robot robot) {
+        SetIterator setIteratorObject = new SetIterator(Simulateur.getDateSimulation());
+        SetIterator.setIterator(Fire.getListFireBox(), robot);
+        Simulateur.ajouteEvenement(setIteratorObject);
+        
+        Fire fire = Fire.getClosestFire(robot.getPositionRobot());
+        DecreaseIntensity d = new DecreaseIntensity(Simulateur.getDateSimulation());
+        Simulateur.ajouteEvenement(d);
+        
+        if (DecreaseIntensity.decreaseIntensity(robot, fire)) {
+            adjustRobotsDirection();
+        }
+    }
+    
+    private void adjustRobotsDirection() {
+        for (Robot r : listRobots) {
+            if (r.currentVolume >= 0) {
+                SetIterator setIteratorObject = new SetIterator(Simulateur.getDateSimulation());
+                if (r instanceof Drone && !Fire.isFire(r.getPositionRobot())) {
+                    r.currentVolume = 0;
+                    SetIterator.setIterator(Map.getListWater(), r);
+                } else {
+                    SetIterator.setIterator(Fire.getListFireBox(), r);
+                }
+                Simulateur.ajouteEvenement(setIteratorObject);
+            }
+        }
+    }
+    
+    private void handleWaterRefill(Robot robot) {
+        if (robot.waterAround()) {
+            FillUp fillup = new FillUp(Simulateur.getDateSimulation());
+            FillUp.fillUpRobot(robot);
+            Simulateur.ajouteEvenement(fillup);
+        } else {
+            SetIterator setIteratorObject = new SetIterator(Simulateur.getDateSimulation());
+            SetIterator.setIterator(Map.getListWater(), robot);
+            Simulateur.ajouteEvenement(setIteratorObject);
+        }
+    }
+    
     
     /**
      * Restart the simulation by putting all the robots at their initial position and reset the fire
@@ -387,7 +384,7 @@ public abstract class Robot{
     {
         endNext = false;
         SetListFires setFire = new SetListFires(Simulateur.getDateSimulation());
-        setFire.setListFires();
+        SetListFires.setListFires();
         Simulateur.ajouteEvenement(setFire);
         for(Robot robot : listRobots)
         {

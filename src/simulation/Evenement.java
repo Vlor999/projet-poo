@@ -1,8 +1,7 @@
 package simulation;
 
 public abstract class Evenement {
-    private long date;
-
+    private final long date;
 
     public Evenement(long date) {
         this.date = date;
