@@ -35,7 +35,7 @@ public class DecreaseIntensity extends Evenement{
                 }
             }
             else{
-                f.setIntensity(f.getIntensity() - (int) vol); // decrease the intensity of the fire if not enough water
+                f.setIntensity(f.getIntensity() - (int)vol); // decrease the intensity of the fire if not enough water
             }
             r.setCurrentVolume(r.getCurrentVolume() - vol); // decrease the volume of water of the robot
         }

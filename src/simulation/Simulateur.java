@@ -1,13 +1,13 @@
 package simulation;
 
+import fire.Fire;
 import gui.*;
 import io.Draw;
 import java.util.ArrayList;
 import java.util.List;
-
-import fire.Fire;
-import robot.*;
+import java.util.Random;
 import map.*;
+import robot.*;
 
 public class Simulateur implements Simulable{
     private static long dateSimulation;
@@ -81,9 +81,17 @@ public class Simulateur implements Simulable{
             copy.clear();
         }
         
-        if (Simulateur.getGUI().isFirePropagationEnabled() && this.dateSimulation % (Math.round(Map.getDataMap().getCaseSize()/2)) == 0 && this.dateSimulation != 0) { // Exemple : propagation tous les en fonction de la taille de la case
-            for (Fire fire : Fire.getListFires()) {
-                this.ajouteEvenement(new FirePropa(this.dateSimulation, fire));
+        Random rand = new Random();
+        if (Simulateur.getGUI().isFirePropagationEnabled() && dateSimulation != 0) { // Exemple : propagation tous les en fonction de la taille de la case
+            if (dateSimulation % (Math.round(Map.getDataMap().getCaseSize()/2)) == 0)
+            {
+                for (Fire fire : Fire.getListFires()) {
+                    Double proba = rand.nextDouble();
+                    if (proba < 0.1)
+                    {
+                        ajouteEvenement(new FirePropa(dateSimulation, fire));
+                    }
+                }
             }
         }
 

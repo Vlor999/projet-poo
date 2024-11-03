@@ -177,6 +177,7 @@ public class Map {
     public static TypeLand getTypeLand(int row, int column){ return currentMap[row][column].getNature();}
     public static List<Box> getListWater() { return listWater; }
     public static List<Fire> getListFire() { return Fire.getListFires(); }
+    public static Box getBox(int row, int column) { return currentMap[row][column]; }
     public static List<Box> getListBoxFire()
     {
         List<Box> listBoxFire = new ArrayList<>();

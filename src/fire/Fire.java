@@ -1,16 +1,12 @@
 package fire;
 
-import java.util.ArrayList;
-import java.util.List;
-import map.*;
-
-import java.util.Arrays;
-import java.util.Collections;
-
 import enumerator.Direction;
 import enumerator.TypeLand;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import map.*;
-
 import robot.Robot;
 
 public class Fire 
@@ -27,9 +23,6 @@ public class Fire
         this.initValues = intensity;
         this.currentPosition = currentPosition;
         this.intensity = intensity;
-        listFires.add(this);
-        listFiresMemory.add(this); // to keep the initial values of the fires
-        numberFire++;
     }
 
     // Factory method
@@ -183,7 +176,10 @@ public class Fire
                     // Crée un nouvel incendie avec une intensité réduite
                     int newIntensity = this.intensity / 2; // Réduit l'intensité
                     if (newIntensity > 0) {
-                        Map.setFire(newRow, newColumn, newIntensity);
+                        // Map.setFire(newRow, newColumn, newIntensity);
+                        Fire fire = new Fire(Map.getBox(newRow, newColumn), newIntensity);
+                        listFires.add(fire);
+                        numberFire++;
                         break; // Propagation réussie, on arrête la boucle
                     }
                 }
