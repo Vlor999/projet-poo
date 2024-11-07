@@ -38,6 +38,8 @@ public abstract class Robot{
     
     // Time to spill the tank (in seconds)
     protected int spillTime;
+    protected int currentTimeNeededToSpill = 0;
+    protected double quantityPerTimes;
     
     // Current terrain type robot is on
     protected Box currentCase;
@@ -77,6 +79,7 @@ public abstract class Robot{
         this.initBox = new Box(currentCase.getRow(), currentCase.getColumn(), currentCase.getNature());
         this.currentVolume = 0;
         // We are currently using the second as the time unit so we have to know the time needed to spill the tank
+        this.quantityPerTimes = quantityPerTimes;
         if(!(this instanceof CaptainRobot))
         {
             listRobots.add(this);
@@ -188,6 +191,8 @@ public abstract class Robot{
     public void setEndFill(boolean b){this.endFill = b;}
 
     public boolean getIsUseless(){ return this.isUseless;}
+
+    public double getQuantityPerTimes(){ return quantityPerTimes;}
 
     public void setBoxIterator(Iterator<Box> I){ this.boxIterator = I;}
 
@@ -341,11 +346,19 @@ public abstract class Robot{
         Simulateur.ajouteEvenement(setIteratorObject);
         
         Fire fire = Fire.getClosestFire(robot.getPositionRobot());
-        DecreaseIntensity d = new DecreaseIntensity(Simulateur.getDateSimulation());
-        Simulateur.ajouteEvenement(d);
-        
-        if (DecreaseIntensity.decreaseIntensity(robot, fire)) {
-            adjustRobotsDirection();
+        if (currentTimeNeededToSpill == spillTime)
+        {
+            DecreaseIntensity d = new DecreaseIntensity(Simulateur.getDateSimulation());
+            Simulateur.ajouteEvenement(d);
+            
+            if (DecreaseIntensity.decreaseIntensity(robot, fire)) {
+                adjustRobotsDirection();
+            }
+            currentTimeNeededToSpill = 0;
+        }
+        else
+        {
+            currentTimeNeededToSpill++;
         }
     }
     

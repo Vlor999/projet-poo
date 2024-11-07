@@ -20,7 +20,7 @@ public class DecreaseIntensity extends Evenement{
             //if the volume is under the spillVolumePerTimes, we spill everything
             // constant to go a little bit faster in the Simulation
             // double vol = (1+absolu(r.getFillingTime()/r.getSpillingTime()))*Double.min(r.getSpillVolumePerTimes(), r.getCurrentVolume()); // the volume of water that the robot can spill
-            double vol = Double.min(r.getSpillVolumePerTimes(), r.getCurrentVolume()); // the volume of water that the robot can spill
+            double vol = r.getQuantityPerTimes();
             if (r instanceof LeggedRobot)
             {
                 vol = 10;// constant to go a little bit faster in the Simulation

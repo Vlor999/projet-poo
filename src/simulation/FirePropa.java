@@ -1,8 +1,6 @@
 package simulation;
 
 import fire.*;
-import map.*;
-import java.util.List;
 
 public class FirePropa extends Evenement{
     private Fire fire;
