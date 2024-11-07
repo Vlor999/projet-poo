@@ -4,10 +4,6 @@ import java.awt.Color;
 import simulation.Simulateur;
 
 public class Main {
-
-    
-    
-
     public static void main(String[] args) {
         /*
          * This part is if you want to test the program without using the terminal
