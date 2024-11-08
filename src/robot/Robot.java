@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import map.Box;
 import map.Map;
 import simulation.*;
@@ -23,7 +24,7 @@ public abstract class Robot{
     // Water tank capacity and volume already spilled (in liters)
     protected int tankCapacity;
     protected double spillVolumePerTimes;
-    protected int currentVolume;
+    protected int currentVolume = 0;
     
     // Travel speed (in m/s)
     protected double travelSpeed;
@@ -77,7 +78,6 @@ public abstract class Robot{
         this.travelSpeed = travelSpeed;
         this.currentCase = currentCase;
         this.initBox = new Box(currentCase.getRow(), currentCase.getColumn(), currentCase.getNature());
-        this.currentVolume = 0;
         // We are currently using the second as the time unit so we have to know the time needed to spill the tank
         this.quantityPerTimes = quantityPerTimes;
         if(!(this instanceof CaptainRobot))
@@ -298,6 +298,21 @@ public abstract class Robot{
         }
     }
     
+    private static void addRandomFire()
+    {
+        Random rand = new Random();
+        if (Simulateur.getGUI().isFirePropagationEnabled() && Simulateur.getDateSimulation() != 0) {
+            double caseSize = Map.getDataMap().getCaseSize();
+            
+            if (Simulateur.getDateSimulation() % Math.round(caseSize / 2.0) == 0) {
+                for (Fire fire : Fire.getListFires()) {
+                    if (rand.nextDouble() < 0.2) {
+                        Simulateur.ajouteEvenement(new FirePropa(Simulateur.getDateSimulation(), fire));
+                    }
+                }
+            }
+        }
+    }
 
     /**
      * Nous voulions quelque chose qui fonctionne pour tous les robots. 
@@ -309,6 +324,8 @@ public abstract class Robot{
         if (endNext) {
             return true;
         }
+
+        addRandomFire();
         
         for (Robot robot : listRobots) {
             if (processNextRobotStep(robot)) {
@@ -341,36 +358,39 @@ public abstract class Robot{
     }
     
     private void handleFireExtinguishing(Robot robot) {
-        SetIterator setIteratorObject = new SetIterator(Simulateur.getDateSimulation());
-        SetIterator.setIterator(Fire.getListFireBox(), robot);
-        Simulateur.ajouteEvenement(setIteratorObject);
-        
         Fire fire = Fire.getClosestFire(robot.getPositionRobot());
-        if (currentTimeNeededToSpill == spillTime)
+        DecreaseIntensity d;
+        
+        if (robot.currentTimeNeededToSpill == robot.spillTime - 1)
         {
-            DecreaseIntensity d = new DecreaseIntensity(Simulateur.getDateSimulation());
-            Simulateur.ajouteEvenement(d);
-            
-            if (DecreaseIntensity.decreaseIntensity(robot, fire)) {
-                adjustRobotsDirection();
+            d = new DecreaseIntensity(Simulateur.getDateSimulation(), robot, fire, true);
+            robot.currentTimeNeededToSpill = 0;
+            if (Fire.getNumberFire() > 0)
+            {
+                SetIterator setIteratorObject = new SetIterator(Simulateur.getDateSimulation(), robot, Fire.getListFireBox());
+                Simulateur.ajouteEvenement(setIteratorObject);
             }
-            currentTimeNeededToSpill = 0;
+            else
+            {
+                endNext = true;
+            }
         }
         else
         {
-            currentTimeNeededToSpill++;
+            d = new DecreaseIntensity(Simulateur.getDateSimulation(), robot, fire, false);            
+            robot.currentTimeNeededToSpill++;
         }
+        Simulateur.ajouteEvenement(d);
     }
     
-    private void adjustRobotsDirection() {
+    public static void adjustRobotsDirection() {
         for (Robot r : listRobots) {
             if (r.currentVolume >= 0) {
-                SetIterator setIteratorObject = new SetIterator(Simulateur.getDateSimulation());
-                if (r instanceof Drone && !Fire.isFire(r.getPositionRobot())) {
-                    r.currentVolume = 0;
-                    SetIterator.setIterator(Map.getListWater(), r);
+                SetIterator setIteratorObject;
+                if (r.currentVolume == 0 && ! (r instanceof LeggedRobot)) {
+                    setIteratorObject = new SetIterator(Simulateur.getDateSimulation(), r, Map.getListWater());
                 } else {
-                    SetIterator.setIterator(Fire.getListFireBox(), r);
+                    setIteratorObject = new SetIterator(Simulateur.getDateSimulation(), r, Fire.getListFireBox());                    
                 }
                 Simulateur.ajouteEvenement(setIteratorObject);
             }
@@ -379,16 +399,13 @@ public abstract class Robot{
     
     private void handleWaterRefill(Robot robot) {
         if (robot.waterAround()) {
-            FillUp fillup = new FillUp(Simulateur.getDateSimulation());
-            FillUp.fillUpRobot(robot);
+            FillUp fillup = new FillUp(Simulateur.getDateSimulation(), robot);
             Simulateur.ajouteEvenement(fillup);
         } else {
-            SetIterator setIteratorObject = new SetIterator(Simulateur.getDateSimulation());
-            SetIterator.setIterator(Map.getListWater(), robot);
+            SetIterator setIteratorObject = new SetIterator(Simulateur.getDateSimulation(), robot, Map.getListWater());
             Simulateur.ajouteEvenement(setIteratorObject);
         }
     }
-    
     
     /**
      * Restart the simulation by putting all the robots at their initial position and reset the fire
@@ -397,7 +414,6 @@ public abstract class Robot{
     {
         endNext = false;
         SetListFires setFire = new SetListFires(Simulateur.getDateSimulation());
-        SetListFires.setListFires();
         Simulateur.ajouteEvenement(setFire);
         for(Robot robot : listRobots)
         {

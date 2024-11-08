@@ -1,8 +1,6 @@
 package simulation;
 import fire.*;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 public class SetListFires extends Evenement{
@@ -29,6 +27,11 @@ public class SetListFires extends Evenement{
 
     @Override
     public String toString(){
-        return "Feux mis en place";
+        return "[" + this.getDate() + "]Feux mis en place\n";
+    }
+
+    @Override
+    public void execute() {
+        setListFires();
     }
 }

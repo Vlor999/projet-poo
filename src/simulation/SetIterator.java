@@ -5,9 +5,12 @@ import map.*;
 import robot.*;
 
 public class SetIterator extends Evenement{
-
-    public SetIterator(long date){
+    private final Robot robot;
+    private final List<Box> list;
+    public SetIterator(long date, Robot r, List<Box> list){
         super(date);
+        this.robot = r;
+        this.list = list;
     }
 
     /**
@@ -30,6 +33,11 @@ public class SetIterator extends Evenement{
 
     @Override
     public String toString(){
-        return "Nouveau chemin trouvé";
+        return  "[" + this.getDate() + "] Nouveau chemin trouvé\n";
+    }
+
+    @Override
+    public void execute() {
+        setIterator(this.list, this.robot);
     }
 }

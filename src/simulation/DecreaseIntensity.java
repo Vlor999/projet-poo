@@ -3,8 +3,14 @@ import fire.*;
 import robot.*;
 
 public class DecreaseIntensity extends Evenement{
-    public DecreaseIntensity(long date){
+    private final Robot robot;
+    private final Fire fire;
+    private final boolean action;
+    public DecreaseIntensity(long date, Robot r, Fire f, boolean action){
         super(date);
+        this.robot = r;
+        this.fire = f;
+        this.action = action;
     }
 
     /**
@@ -12,8 +18,11 @@ public class DecreaseIntensity extends Evenement{
      * @param r the robot
      * @return result boolean if the fire is extinguished
      */
-    public static boolean decreaseIntensity(Robot r, Fire f){
-
+    public static boolean decreaseIntensity(Robot r, Fire f, boolean  action){
+        if (!action)
+        {
+            return false;
+        }
         boolean result = false;
         if (r.getPositionRobot().distanceTo(f.getCurrentPosition()) <= Integer.min(r.getFillingType(), 1) && (r.getCurrentVolume() > 0 || r instanceof LeggedRobot))
         {
@@ -21,18 +30,10 @@ public class DecreaseIntensity extends Evenement{
             // constant to go a little bit faster in the Simulation
             // double vol = (1+absolu(r.getFillingTime()/r.getSpillingTime()))*Double.min(r.getSpillVolumePerTimes(), r.getCurrentVolume()); // the volume of water that the robot can spill
             double vol = r.getQuantityPerTimes();
-            if (r instanceof LeggedRobot)
-            {
-                vol = 10;// constant to go a little bit faster in the Simulation
-            }
             if (f.getIntensity() - vol <= 0){
                 result = true;
                 f.setIntensity(f.getInitValues()); // reset the intensity
                 Fire.removeFire(f); // remove the fire from the list
-                if (r instanceof Drone)
-                {
-                    r.setCurrentVolume(0); // spend everything in one round for the drone
-                }
             }
             else{
                 f.setIntensity(f.getIntensity() - (int)vol); // decrease the intensity of the fire if not enough water
@@ -45,7 +46,19 @@ public class DecreaseIntensity extends Evenement{
 
     @Override
     public String toString(){
-        return "Extinction du feu en cours";
+        return "[" + this.getDate() + "] Extinction du feu en cours\n";
+    }
+
+    @Override
+    public void execute()
+    {
+        if (this.fire == null)
+        {
+            return;
+        }
+        if (DecreaseIntensity.decreaseIntensity(this.robot, this.fire, this.action)) {
+            Robot.adjustRobotsDirection();
+        }
     }
 
 }

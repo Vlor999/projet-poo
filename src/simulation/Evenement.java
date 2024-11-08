@@ -11,8 +11,6 @@ public abstract class Evenement {
         return this.date;
     }
 
-    public void execute()
-    { 
-        System.out.println("["+this.date+"] " + this.toString()+"\n");
-    }
+    public abstract void execute();
+    public abstract String toString();
 }

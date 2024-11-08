@@ -6,8 +6,10 @@ import robot.*;
 
 public class FillUp extends Evenement{
 
-    public FillUp(long date){
+    private final Robot robot;
+    public FillUp(long date, Robot r){
         super(date);
+        this.robot = r;
     }
 
     /**
@@ -37,7 +39,17 @@ public class FillUp extends Evenement{
     }
 
     @Override
+    public void execute()
+    {
+        if (Data.getIsVerbose())
+        {
+            System.out.println("Filling up the tank.");
+        }
+        fillUpRobot(this.robot);
+    }
+
+    @Override
     public String toString(){
-        return "Rechargement du robot en cours";
+        return "[" + this.getDate() + "] Rechargement du robot en cours\n";
     }
 }

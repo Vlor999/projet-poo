@@ -55,7 +55,6 @@ public class LecteurDonnees {
         System.out.println("\n == Lecture terminee");
         if (isVerbose)
         {
-            System.out.println(Map.showMap());
             System.out.println(TypeLand.infos());
         }
     }

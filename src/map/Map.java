@@ -110,7 +110,7 @@ public class Map {
      * @param column
      * @return
      */
-    private final static String positionColored(int row, int column)
+    private static String positionColored(int row, int column)
     {
         String txt = "|";
         boolean fire = Fire.isFire(row,column);
