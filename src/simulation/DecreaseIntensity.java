@@ -24,7 +24,7 @@ public class DecreaseIntensity extends Evenement{
             return false;
         }
         boolean result = false;
-        if (r.getPositionRobot().distanceTo(f.getCurrentPosition()) <= Integer.min(r.getFillingType(), 1) && (r.getCurrentVolume() > 0 || r instanceof LeggedRobot))
+        if (r.getPositionRobot().distanceTo(f.getCurrentPosition()) <= Integer.min(r.getFillingType(), 1) && (r.getCurrentVolume() > 0 || LeggedRobot.isLegged(r)))
         {
             //if the volume is under the spillVolumePerTimes, we spill everything
             // constant to go a little bit faster in the Simulation

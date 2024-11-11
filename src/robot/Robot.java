@@ -80,7 +80,7 @@ public abstract class Robot{
         this.initBox = new Box(currentCase.getRow(), currentCase.getColumn(), currentCase.getNature());
         // We are currently using the second as the time unit so we have to know the time needed to spill the tank
         this.quantityPerTimes = quantityPerTimes;
-        if(!(this instanceof CaptainRobot))
+        if(!(CaptainRobot.isCaptain(this)))
         {
             listRobots.add(this);
             this.spillVolumePerTimes = quantityPerTimes / this.spillTime;

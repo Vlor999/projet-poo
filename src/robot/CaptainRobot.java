@@ -31,6 +31,15 @@ public class CaptainRobot extends Robot{
         return this.nextOP();
     }
 
+    public static boolean isCaptain(Object o)
+    {
+        if (o instanceof CaptainRobot)
+        {
+            return true;
+        }
+        return false;
+    }
+
     public void restart()
     {
         this.restartOP();

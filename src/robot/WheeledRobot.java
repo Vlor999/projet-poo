@@ -45,6 +45,15 @@ public class WheeledRobot extends Robot
                 return normalSpeed;
         }
     }
+
+    public static boolean isWheeled(Object o)
+    {
+        if (o instanceof WheeledRobot)
+        {
+            return true;
+        }
+        return false;
+    }
 }
 
 

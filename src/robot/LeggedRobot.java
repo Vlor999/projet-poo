@@ -43,4 +43,12 @@ public class LeggedRobot extends Robot
         }
     }
 
+    public static boolean isLegged(Object o)
+    {
+        if (o instanceof LeggedRobot)
+        {
+            return true;
+        }
+        return false;
+    }
 }

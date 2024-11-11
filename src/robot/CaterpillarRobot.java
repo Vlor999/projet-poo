@@ -46,4 +46,13 @@ public class CaterpillarRobot extends Robot
                 return normalSpeed;
         }
     }
+
+    public static boolean isCatterpillar(Object o)
+    {
+        if (o instanceof CaterpillarRobot)
+        {
+            return true;
+        }
+        return false;
+    }
 }

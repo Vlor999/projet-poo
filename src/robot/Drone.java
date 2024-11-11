@@ -38,4 +38,13 @@ public class Drone extends Robot
     {
         return "Drone";
     }
+
+    public static boolean isDrone(Object o)
+    {
+        if (o instanceof Drone)
+        {
+            return true;
+        }
+        return false;
+    }
 }
