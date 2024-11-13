@@ -67,16 +67,11 @@ public class Fire
         return closestFire;
     }
 
-    
-    /**
-     * Get the list of fires
-     * @return List<Fire>
-     */
     public static List<Fire> getListFires(){return listFires;}
 
 
     public static void setListFires(List<Fire> L){ 
-        listFires = L; //DOUTE
+        listFires = L;
     }
     public static List<Fire> getListFiresMemory(){return listFiresMemory;}
 

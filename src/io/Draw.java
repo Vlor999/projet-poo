@@ -12,6 +12,9 @@ import map.Box;
 import map.Map;
 import robot.Robot;
 
+/**
+ * This class is used to draw the map with the boxes and the robots but also the fires water and other stuff
+ */
 public class Draw {
 
     private static int numberToShow = 0;

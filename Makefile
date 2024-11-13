@@ -16,7 +16,7 @@ cleanDocs:
 	rm -rf docs/* docs
 
 docs:
-	javadoc -d docs src/*/*.java
+	javadoc -d docs src/*/*.java 2> /dev/null 
 
 help:
 	@echo "Les cibles disponibles sont :"

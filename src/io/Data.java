@@ -1,5 +1,8 @@
 package io;
 
+/*
+ * This class is used to store the data of the map.
+ */
 public class Data {
     // Number of rows in the map
     private int numberOfRows;

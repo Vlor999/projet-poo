@@ -14,7 +14,10 @@ import map.Box;
 import map.Map;
 import simulation.*;
 
-
+/**
+ * Robot class that represents a robot in the simulation.
+ * It contains the robot's properties and methods to move the robot.
+ */
 public abstract class Robot{
     
     // This is the iterator that will allow the robot to move and gui is the graphical interface
