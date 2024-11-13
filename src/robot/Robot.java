@@ -91,8 +91,8 @@ public abstract class Robot{
 
     /**
      * Set the robot as useless if there is no need to look for the closest fire or water. The robot is blocked.
-     * @param isUseless
-     * @return
+     * @param isUseless boolean that says if the robot is useless
+     * @return boolean if the robot is useless
      */
     public boolean setIsUseless(boolean isUseless)
     {
@@ -165,9 +165,8 @@ public abstract class Robot{
         + "\n\t * Current Tank Capacity: " + this.currentVolume + "L : witch represent  : " + 100 * this.currentVolume/this.tankCapacity + "%";
     }
     
-    /**
-     * Getters for various robot properties.
-     */
+    // Getters for various robot properties.
+    
     public abstract double getSpecialSpeed(TypeLand type);
     
     public abstract String getType();
@@ -209,7 +208,6 @@ public abstract class Robot{
 
     /**
      * Show all the robots
-     * @return
      */
     public static String showAllRobots() {
         // Not used but may be usefull with the verbose mode
@@ -224,7 +222,7 @@ public abstract class Robot{
      * Will say if at the position there is a robot
      * @param row The row index where the robot should be placed.
      * @param column The column index where the robot should be placed.
-     * @return boolean
+     * @return boolean that says if there is a robot at the position
      */
     public static boolean isRobot(int row, int column)
     {
@@ -319,6 +317,7 @@ public abstract class Robot{
      * L'idée ici est de regarder à travers tous les robots qui peuvent bouger quel est le prochain mouvement à faire.
      * Une fois avoir trouvé pour tous les robots ce qu'ils doivent faire alors on les fait bouger.
      * Si un robot ne peut plus bouger alors on le met en inutile. 
+     * @return boolean that says if the simulation is over
      */
     public boolean nextOP() {
         if (endNext) {

@@ -13,8 +13,8 @@ public class AStar {
 
     /**
      * Find the closest box from the robot among the elements in the list
-     * @param robot
-     * @param list
+     * @param robot The robot that will move
+     * @param list The list of boxes that the robot can reach
      * @return the closest box from the robot and the path
      */
     public List<Box> findBestWayTo(Robot robot, List<Box> list)
@@ -53,8 +53,8 @@ public class AStar {
     /**
      * Ponderate the path to have a better view of the path. This represent the time that the robot will take to go to the end box
      * We are copying the box as many time as the robot will take to go to the next box
-     * @param robot
-     * @param path
+     * @param robot The robot that will move
+     * @param path The path that the robot will take
      * @return
      */
     public static List<Box> listPonderatedPath(Robot robot, List<Box> path)
@@ -80,6 +80,7 @@ public class AStar {
      * @param grid that represents the map using Box objects
      * @param currentRobot the robot that will be moving on the map, realy useful to get the speed of the robot and the spec
      * @param endBox the box that the robot wants to reach
+     * @param maxValue the maximum value of the cost that the robot can reach. Won't go further than this value
      * @return a list of boxes that represents the path from the robot to the end box
      */
     public List<Box> aStarSearch(Box[][] grid, Robot currentRobot, Box endBox, double maxValue) {
@@ -183,7 +184,6 @@ public class AStar {
 
     /**Create a normal copy of d
      * @param d the list of directions 
-     * @return the copy of d
      */
     public void setFinalListDirection(List<Direction> d){
         List <Direction> res =new ArrayList<>();
@@ -215,7 +215,9 @@ public class AStar {
         return info.toString();
     }
 
-    //Constructor that clear the list of directions
+    /**
+    * Constructor that clear the list of directions
+    */
     public AStar()
     {
         clearListDirection();
