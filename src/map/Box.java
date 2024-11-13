@@ -44,9 +44,9 @@ public class Box {
 
     /**
      * Calculate the costs of the box depending on the robot that you are using
-     * @param start
-     * @param end
-     * @param robot
+     * @param start the first Box
+     * @param end the last Box
+     * @param robot the robot aimed
      */
     public void calculateCosts(Box start, Box end, Robot robot) {
         double caseSize = Map.getDataMap().getCaseSize();
@@ -74,7 +74,7 @@ public class Box {
 
     /**
      * Compare the box with another box. It will be usefull onto Direction enum
-     * @param other
+     * @param other another Box 
      * @return
      */
     public int[] compareBox(Box other) {
@@ -82,7 +82,8 @@ public class Box {
     }
 
     @Override
-    /**Checks if obj is the same box as the studied box */
+    /** Checks if obj is the same box as the studied box
+     */
     public boolean equals(Object obj) {
         if (!(obj instanceof Box)) {
             return false;
@@ -92,15 +93,16 @@ public class Box {
     }
 
     @Override
-    //Prints (x,y) and the type of land 
+    /** Prints (x,y) and the type of land 
+     */
     public String toString() {
         return "* Position: (" + this.row + ", " + this.column + ") \n* Terrain type: " + this.typeLand;
     }
 
     /**
      * Return the string of the box with a tabulation
-     * @param t
-     * @return
+     * @param t the number of positions to print
+     * @return all the data for the cases
      */
     public String toString(int t)
     {
@@ -115,7 +117,7 @@ public class Box {
 
     /**
      * Calculate the distance between two boxes
-     * @param otherBox 
+     * @param otherBox the other Box to compare with 
      * @return the distance between the two boxes squared
      */
     public double distanceTo(Box otherBox) {
