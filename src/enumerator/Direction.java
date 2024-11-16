@@ -10,7 +10,8 @@ public enum Direction {
     NORTH(0, 1, "N"),
     SOUTH(0, -1, "S"),
     WEST(-1, 0, "W"),
-    EAST(1, 0, "E");
+    EAST(1, 0, "E"),
+    NEUTRAL(0, 0, "NEUTRAL");
 
     private final int x, y;
     private final String name;
@@ -63,6 +64,6 @@ public enum Direction {
         } else if (diff[0] == 0 && diff[1] == -1) {
             return Direction.SOUTH;
         }
-        return null;
+        return Direction.NEUTRAL;
     }
 }

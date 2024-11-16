@@ -49,10 +49,6 @@ public class CaterpillarRobot extends Robot
 
     public static boolean isCatterpillar(Object o)
     {
-        if (o instanceof CaterpillarRobot)
-        {
-            return true;
-        }
-        return false;
+        return (o instanceof CaterpillarRobot);
     }
 }

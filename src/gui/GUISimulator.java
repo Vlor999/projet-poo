@@ -28,6 +28,8 @@ public class GUISimulator extends JFrame {
     private JSpinner speedSpinner;
     private JLabel stepLabel;
     private JSpinner stepSpinner;
+    private JLabel probaLabel;
+    private JSpinner probaSpinner;
     private JComboBox<String> selectBox;
     private static final int INIT_SPEED = 100;
     private static final int MIN_SPEED = 1;
@@ -98,7 +100,12 @@ public class GUISimulator extends JFrame {
         this.stepSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 10000, 10));
         controlSettingsPanel.add(this.stepLabel);
         controlSettingsPanel.add(this.stepSpinner);
-    
+
+        this.probaLabel = new JLabel("Proba de propagation du feu :");
+        this.probaSpinner = new JSpinner(new SpinnerNumberModel(0.2, 0, 1, 0.1));
+        controlSettingsPanel.add(this.probaLabel);
+        controlSettingsPanel.add(this.probaSpinner);
+
         // Panneau de boutons de contrôle (bas de l'écran)
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         this.fileButton = createHoverButton("Ouvrir un fichier (*.map)");
@@ -142,7 +149,8 @@ public class GUISimulator extends JFrame {
         this.typeImage.addActionListener(displayControler);
         this.fileButton.setActionCommand("fileButton");
         this.fileButton.addActionListener(displayControler);
-                //Fire propagation DLC
+        
+        //Fire propagation DLC
         this.fireToggleButton = new JButton("Propagation: OFF");
         this.fireToggleButton.setActionCommand("toggleFirePropagation");
         this.fireToggleButton.addActionListener(new ActionListener() {
@@ -163,6 +171,9 @@ public class GUISimulator extends JFrame {
         return this.firePropagationEnabled;
     }
     
+    public double getProba() {
+        return (double) this.probaSpinner.getValue();
+    }
 
     public void setSimulable(Simulable paramSimulable) {
     this.simulator = paramSimulable;

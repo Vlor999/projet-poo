@@ -1,13 +1,12 @@
 package map;
 
-import java.util.*;
-
 import enumerator.*;
+import java.util.*;
 import robot.*;
 
 public class AStar {
     private static final Direction[] DIRECTIONS = {Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH}; 
-    private List<Direction> listDirection = new ArrayList<>();
+    private final List<Direction> listDirection = new ArrayList<>();
     private static final List<Box> EMPTY_LIST = Collections.emptyList();
     private List<Direction> finalListDirection = new ArrayList<>();
 
@@ -46,7 +45,7 @@ public class AStar {
         }
         else
         {
-            return listPonderatedPath(robot, bestPath); // We return the ponderated path
+            return this.listPonderatedPath(robot, bestPath); // We return the ponderated path
         }
     }
 
@@ -57,11 +56,12 @@ public class AStar {
      * @param path The path that the robot will take
      * @return
      */
-    public static List<Box> listPonderatedPath(Robot robot, List<Box> path)
+    public List<Box> listPonderatedPath(Robot robot, List<Box> path)
     {
         List<Box> res = new ArrayList<>();
         Box current;
         double caseSize = Map.getDataMap().getCaseSize();
+        Box prev = robot.getPositionRobot();
         for (int i = 0; i < path.size(); i+=1)
         {
             current = path.get(i);
@@ -71,6 +71,7 @@ public class AStar {
             {
                 res.add(current); // We add the box as many time as the robot will take to go to the next box
             }
+            prev = current;
         }
         return res;
     }

@@ -18,8 +18,8 @@ import simulation.*;
  * Robot class that represents a robot in the simulation.
  * It contains the robot's properties and methods to move the robot.
  */
-public abstract class Robot{
-    
+public abstract class Robot
+{   
     // This is the iterator that will allow the robot to move and gui is the graphical interface
     protected Iterator<Box> boxIterator = Collections.emptyIterator();
     protected GUISimulator gui;
@@ -109,7 +109,8 @@ public abstract class Robot{
     private void validatePosition(Box currentCase, Data mapData) {
         int startX = currentCase.getRow();
         int startY = currentCase.getColumn();
-        if (startX < 0 || startY < 0 || startX >= mapData.getRows() || startY >= mapData.getColumns()) {
+        if (startX < 0 || startY < 0 || startX >= mapData.getRows() || startY >= mapData.getColumns()) 
+        {
             throw new IllegalArgumentException("Invalid coordinates for the robot's starting position.");
         }
     }
@@ -123,27 +124,32 @@ public abstract class Robot{
      * @return Robot instance
      */
     public static Robot stringToRobot(String type, Data mapData, Box currentCase, double travelSpeed) {
-        switch (type.toUpperCase()) {
+        switch (type.toUpperCase()) 
+        {
             case "CHENILLES":
-                if (travelSpeed <= 0 || travelSpeed > 80) {
+                if (travelSpeed <= 0 || travelSpeed > 80) 
+                {
                     travelSpeed = 60; // Default speed if over the limit
                 }
                 travelSpeed = travelSpeed / 3.6; // Conversion from km/h to m/s
                 return new CaterpillarRobot(mapData, currentCase, travelSpeed);
             case "DRONE":
-                if (travelSpeed <= 0 || travelSpeed > 150) {
+                if (travelSpeed <= 0 || travelSpeed > 150) 
+                {
                     travelSpeed = 100;
                 }
                 travelSpeed = travelSpeed / 3.6;
                 return new Drone(mapData, currentCase, travelSpeed);
             case "PATTES":
-                if (travelSpeed != 30) {
+                if (travelSpeed != 30) 
+                {
                     travelSpeed = 30;
                 }
                 travelSpeed = travelSpeed / 3.6;
                 return new LeggedRobot(mapData, currentCase, travelSpeed);
             case "ROUES":
-                if (travelSpeed <= 0) {
+                if (travelSpeed <= 0) 
+                {
                     travelSpeed = 80; // no max value for the speed
                 }
                 travelSpeed = travelSpeed / 3.6;
@@ -170,34 +176,32 @@ public abstract class Robot{
     
     // Getters for various robot properties.
     
+    public abstract String getType();
+    
+    public int getFillingType(){return fillingType;}
+    public void setEndFill(boolean b){this.endFill = b;}
+    public boolean getIsUseless(){return this.isUseless;}
     public abstract double getSpecialSpeed(TypeLand type);
     
-    public abstract String getType();
-
-    public int getFillingType() { return fillingType;}
+    public Box getPositionRobot(){return this.currentCase;}
     
-    public Box getPositionRobot() { return this.currentCase;}
+    public double getSpillingTime(){return this.spillTime;}
+    public double getFillingTime(){return this.fillingTime;}
     
-    public double getSpillVolumePerTimes() { return this.spillVolumePerTimes; }
     
     public String getFiles(int number){return files[number];} 
-
-    public double getFillingTime() {return this.fillingTime;}
-
-    public double getSpillingTime() {return this.spillTime;}
-
+    
     public int getCurrentVolume(){return this.currentVolume;}
-
+    
     public double getTankCapacity(){return this.tankCapacity;}
-
-    public void setEndFill(boolean b){this.endFill = b;}
-
-    public boolean getIsUseless(){ return this.isUseless;}
-
-    public double getQuantityPerTimes(){ return quantityPerTimes;}
-
-    public void setBoxIterator(Iterator<Box> I){ this.boxIterator = I;}
-
+    
+    
+    public double getQuantityPerTimes(){return quantityPerTimes;}
+    
+    public void setBoxIterator(Iterator<Box> I){this.boxIterator = I;}
+    
+    public double getSpillVolumePerTimes(){return this.spillVolumePerTimes;}
+    
     /**
      * Sets the robot's position to a new case with a deep copy.
      * @param newCase The new case where the robot should move to.
@@ -207,15 +211,17 @@ public abstract class Robot{
         this.currentCase = new Box(newCase.getRow(), newCase.getColumn(), newCase.getNature());
     }
 
-    public static void clearRobots() { listRobots.clear(); } // Not used but may be usefull
+    public static void clearRobots() {listRobots.clear();} // Not used but may be usefull
 
     /**
      * Show all the robots
      */
-    public static String showAllRobots() {
+    public static String showAllRobots() 
+    {
         // Not used but may be usefull with the verbose mode
         String result = "Number of robots: " + robotCount + "\n";
-        for (Robot robot : listRobots) {
+        for (Robot robot : listRobots) 
+        {
             result += robot.toString() + "\n";
         }
         return result;
@@ -266,27 +272,35 @@ public abstract class Robot{
      * Check if there is water around the robot and at a good distance. This last depends on the type of robot
      * @return boolean that says so
      */
-    protected boolean waterAround() {
-        int row = this.getPositionRobot().getRow();
-        int col = this.getPositionRobot().getColumn();
+    protected boolean waterAround() 
+    {
+        Box currentBox = this.getPositionRobot();
+        int row = currentBox.getRow();
+        int col = currentBox.getColumn();
         
         // Get map dimensions
-        int maxRows = Map.getDataMap().getRows();
-        int maxCols = Map.getDataMap().getColumns();
+        Data mapData = Map.getDataMap();
+        int maxRows = mapData.getRows();
+        int maxCols = mapData.getColumns();
         
         // Check if the robot is a Drone
-        if (this instanceof Drone) {
+        if (Drone.isDrone(this)) 
+        {
             return Map.getTypeLand(row, col).getValueTerrain() == TypeLand.WATER.getValueTerrain();
-        } else {
+        } 
+        else 
+        {
             // Define the relative positions to check (down, up, right, left)
-            int[][] directions = {
+            int[][] directions = 
+            {
                 Direction.SOUTH.getDirection(),  // down
                 Direction.NORTH.getDirection(),  // up
                 Direction.EAST.getDirection(),   // right
                 Direction.WEST.getDirection()    // left
             };
 
-            for (int[] dir : directions) {
+            for (int[] dir : directions) 
+            {
                 int newRow = row + dir[0];
                 int newCol = col + dir[1];
                 // Check boundaries and water terrain
@@ -302,12 +316,16 @@ public abstract class Robot{
     private static void addRandomFire()
     {
         Random rand = new Random();
-        if (Simulateur.getGUI().isFirePropagationEnabled() && Simulateur.getDateSimulation() != 0) {
-            double caseSize = Map.getDataMap().getCaseSize();
-            
-            if (Simulateur.getDateSimulation() % Math.round(caseSize / 2.0) == 0) {
-                for (Fire fire : Fire.getListFires()) {
-                    if (rand.nextDouble() < 0.2) {
+        if (Simulateur.getGUI().isFirePropagationEnabled() && Simulateur.getDateSimulation() != 0) 
+        {
+            double caseSize = Map.getDataMap().getCaseSize();    
+            if (Simulateur.getDateSimulation() % Math.round(caseSize / 2.0) == 0) 
+            {
+                for (Fire fire : Fire.getListFires()) 
+                {
+                    double valProba = Simulateur.getGUI().getProba();
+                    if (rand.nextDouble() < valProba) 
+                    {
                         Simulateur.ajouteEvenement(new FirePropa(Simulateur.getDateSimulation(), fire));
                     }
                 }
@@ -322,44 +340,56 @@ public abstract class Robot{
      * Si un robot ne peut plus bouger alors on le met en inutile. 
      * @return boolean that says if the simulation is over
      */
-    public boolean nextOP() {
-        if (endNext) {
+    public boolean nextOP() 
+    {
+        if (endNext) 
+        {
             return true;
         }
-
         addRandomFire();
-        
-        for (Robot robot : listRobots) {
-            if (processNextRobotStep(robot)) {
+        for (Robot robot : listRobots) 
+        {
+            if (processNextRobotStep(robot)) 
+            {
                 endNext = true;
                 break;
             }
             Draw.drawMap(Simulateur.getGUI());
         }
-        
         return endNext;
     }
     
-    private boolean processNextRobotStep(Robot robot) {
-        try {
-            if (robot.boxIterator.hasNext()) {
+    private boolean processNextRobotStep(Robot robot) 
+    {
+        try 
+        {
+            if (robot.boxIterator.hasNext()) 
+            {
                 robot.setPositionRobot(robot.boxIterator.next());
-            } else if (shouldExtinguishFire(robot)) {
+            }
+            else if (shouldExtinguishFire(robot)) 
+            {
                 handleFireExtinguishing(robot);
-            } else {
+            } 
+            else 
+            {
                 handleWaterRefill(robot);
             }
-        } catch (NullPointerException e) {
+        } 
+        catch (NullPointerException e) 
+        {
             return true; // Fin de la simulation en cas d'exception.
         }
         return false;
     }
     
-    private boolean shouldExtinguishFire(Robot robot) {
-        return robot instanceof LeggedRobot || (robot.currentVolume > 0 && robot.endFill);
+    private boolean shouldExtinguishFire(Robot robot) 
+    {
+        return LeggedRobot.isLegged(robot) || (robot.currentVolume > 0 && robot.endFill);
     }
     
-    private void handleFireExtinguishing(Robot robot) {
+    private void handleFireExtinguishing(Robot robot) 
+    {
         Fire fire = Fire.getClosestFire(robot.getPositionRobot());
         DecreaseIntensity d;
         
@@ -385,25 +415,37 @@ public abstract class Robot{
         Simulateur.ajouteEvenement(d);
     }
     
-    public static void adjustRobotsDirection() {
-        for (Robot r : listRobots) {
-            if (r.currentVolume >= 0) {
+    public static void adjustRobotsDirection() 
+    {
+        for (Robot r : listRobots) 
+        {
+            if (r.currentVolume >= 0) 
+            {
                 SetIterator setIteratorObject;
-                if (r.currentVolume == 0 && ! (r instanceof LeggedRobot)) {
-                    setIteratorObject = new SetIterator(Simulateur.getDateSimulation(), r, Map.getListWater());
-                } else {
-                    setIteratorObject = new SetIterator(Simulateur.getDateSimulation(), r, Fire.getListFireBox());                    
+                List<Box> list;
+                if (r.currentVolume == 0 && ! (LeggedRobot.isLegged(r))) 
+                {
+                    list = Map.getListWater();
                 }
+                else 
+                {
+                    list = Fire.getListFireBox();
+                }
+                setIteratorObject = new SetIterator(Simulateur.getDateSimulation(), r, list);
                 Simulateur.ajouteEvenement(setIteratorObject);
             }
         }
     }
     
-    private void handleWaterRefill(Robot robot) {
-        if (robot.waterAround()) {
+    private void handleWaterRefill(Robot robot) 
+    {
+        if (robot.waterAround()) 
+        {
             FillUp fillup = new FillUp(Simulateur.getDateSimulation(), robot);
             Simulateur.ajouteEvenement(fillup);
-        } else {
+        } 
+        else 
+        {
             SetIterator setIteratorObject = new SetIterator(Simulateur.getDateSimulation(), robot, Map.getListWater());
             Simulateur.ajouteEvenement(setIteratorObject);
         }
@@ -412,7 +454,6 @@ public abstract class Robot{
     /**
      * Restart the simulation by putting all the robots at their initial position and reset the fire
      */
-
     public void restartOP()
     {
         endNext = false;

@@ -6,7 +6,7 @@ testLecture:
 	javac -d bin -sourcepath src src/Main.java
 
 # Execution:
-exeLecture: 
+run: 
 	java -classpath bin Main cartes/carteSujet.map
 
 clean:
@@ -22,7 +22,7 @@ help:
 	@echo "Les cibles disponibles sont :"
 	@echo "  all: compile le projet"
 	@echo "  testLecture: compile le projet"
-	@echo "  exeLecture: execute le projet"
+	@echo "  run: execute le projet"
 	@echo "  clean: supprime les fichiers générés"
 	@echo "  cleanDocs: supprime la documentation"
 	@echo "  docs: génère la documentation"

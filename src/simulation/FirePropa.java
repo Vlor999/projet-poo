@@ -18,6 +18,6 @@ public class FirePropa extends Evenement{
 
     @Override
     public String toString() {
-        return "[" + this.getDate() + "] Événement de propagation de feu à la position : " + fire.getCurrentPosition() + "\n";
+        return "[" + this.getDate() + "] Événement de propagation de feu à la position : \n" + fire.getCurrentPosition() + "\n";
     }
 }

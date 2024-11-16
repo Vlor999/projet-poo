@@ -33,11 +33,7 @@ public class CaptainRobot extends Robot{
 
     public static boolean isCaptain(Object o)
     {
-        if (o instanceof CaptainRobot)
-        {
-            return true;
-        }
-        return false;
+        return o instanceof CaptainRobot;
     }
 
     public void restart()

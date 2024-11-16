@@ -34,7 +34,8 @@ public class WheeledRobot extends Robot
      */
     public double getSpecialSpeed(TypeLand type) {
         double normalSpeed = this.travelSpeed;
-        switch (type) {
+        switch (type) 
+        {
             case STONE:
                 return 0;
             case WATER:
@@ -48,11 +49,7 @@ public class WheeledRobot extends Robot
 
     public static boolean isWheeled(Object o)
     {
-        if (o instanceof WheeledRobot)
-        {
-            return true;
-        }
-        return false;
+        return (o instanceof WheeledRobot);
     }
 }
 

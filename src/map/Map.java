@@ -172,12 +172,12 @@ public class Map {
     }
     
     // Getters
-    public static Data getDataMap() { return dataMap; }
-    public static Box[][] getCurrentMap() { return currentMap; }
-    public static TypeLand getTypeLand(int row, int column){ return currentMap[row][column].getNature();}
-    public static List<Box> getListWater() { return listWater; }
-    public static List<Fire> getListFire() { return Fire.getListFires(); }
-    public static Box getBox(int row, int column) { return currentMap[row][column]; }
+    public static Data getDataMap(){return dataMap;}
+    public static Box[][] getCurrentMap(){return currentMap;}
+    public static TypeLand getTypeLand(int row, int column){return currentMap[row][column].getNature();}
+    public static List<Box> getListWater(){return listWater;}
+    public static List<Fire> getListFire(){return Fire.getListFires(); }
+    public static Box getBox(int row, int column){return currentMap[row][column]; }
     public static List<Box> getListBoxFire()
     {
         List<Box> listBoxFire = new ArrayList<>();
@@ -201,5 +201,16 @@ public class Map {
         resetAllWater();
         Fire.resetAllFires();
         Robot.resetAllRobots();
+    }
+
+    public static Box getBox(Box currentBox, Direction direction)
+    {
+        int row = currentBox.getRow();
+        int column = currentBox.getColumn();
+        int x = direction.getX();
+        int y = direction.getY();
+        row += x;
+        column += y;
+        return getBox(row, column);
     }
 }
